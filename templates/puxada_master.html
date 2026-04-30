@@ -1,0 +1,705 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>123 Milhas - Consulta de Credores</title>
+
+    <!-- Bootstrap 5 Dark Theme -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+    <!-- Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <style>
+      :root {
+        --bg-dark: #0a0c10;
+        --card-dark: #1a1d24;
+        --border-dark: #2a2d35;
+        --text-primary: #e9ecef;
+        --text-secondary: #adb5bd;
+        --accent-primary: #f05929;
+        --accent-hover: #d94a1a;
+        --success: #28a745;
+        --danger: #dc3545;
+        --warning: #ffc107;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: 'Inter', 'Poppins', sans-serif;
+        background: var(--bg-dark);
+        color: var(--text-primary);
+        min-height: 100vh;
+      }
+
+      /* Header */
+      .header-dark {
+        background: linear-gradient(135deg, #0f1117 0%, #1a1d24 100%);
+        border-bottom: 1px solid var(--border-dark);
+        padding: 1rem 0;
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        backdrop-filter: blur(10px);
+      }
+
+      .logo {
+        height: 50px;
+        filter: brightness(0) invert(1);
+      }
+
+      /* Main Container */
+      .main-container {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 2rem 1.5rem;
+      }
+
+      /* Search Card */
+      .search-card {
+        background: var(--card-dark);
+        border-radius: 20px;
+        border: 1px solid var(--border-dark);
+        padding: 2rem;
+        margin-bottom: 2rem;
+        transition:
+          transform 0.3s ease,
+          box-shadow 0.3s ease;
+      }
+
+      .search-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      }
+
+      .search-title {
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+        color: var(--accent-primary);
+      }
+
+      .search-title i {
+        margin-right: 10px;
+      }
+
+      .form-control-dark {
+        background: var(--bg-dark);
+        border: 1px solid var(--border-dark);
+        color: var(--text-primary);
+        padding: 0.75rem 1rem;
+        border-radius: 12px;
+        transition: all 0.3s ease;
+      }
+
+      .form-control-dark:focus {
+        background: var(--bg-dark);
+        border-color: var(--accent-primary);
+        box-shadow: 0 0 0 3px rgba(240, 89, 41, 0.2);
+        color: var(--text-primary);
+      }
+
+      .form-control-dark::placeholder {
+        color: var(--text-secondary);
+      }
+
+      .btn-primary-custom {
+        background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-hover) 100%);
+        border: none;
+        padding: 0.75rem 2rem;
+        border-radius: 12px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+      }
+
+      .btn-primary-custom:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(240, 89, 41, 0.3);
+      }
+
+      .btn-outline-custom {
+        background: transparent;
+        border: 1px solid var(--border-dark);
+        color: var(--text-primary);
+        padding: 0.75rem 1.5rem;
+        border-radius: 12px;
+        transition: all 0.3s ease;
+      }
+
+      .btn-outline-custom:hover {
+        border-color: var(--accent-primary);
+        color: var(--accent-primary);
+      }
+
+      /* Stats Cards */
+      .stats-card {
+        background: var(--card-dark);
+        border-radius: 15px;
+        border: 1px solid var(--border-dark);
+        padding: 1.5rem;
+        text-align: center;
+        transition: all 0.3s ease;
+      }
+
+      .stats-card:hover {
+        transform: translateY(-3px);
+        border-color: var(--accent-primary);
+      }
+
+      .stats-number {
+        font-size: 2rem;
+        font-weight: 800;
+        color: var(--accent-primary);
+      }
+
+      .stats-label {
+        font-size: 0.85rem;
+        color: var(--text-secondary);
+        margin-top: 0.5rem;
+      }
+
+      /* Results Table */
+      .results-container {
+        background: var(--card-dark);
+        border-radius: 20px;
+        border: 1px solid var(--border-dark);
+        overflow: hidden;
+      }
+
+      .table-header {
+        padding: 1.5rem;
+        border-bottom: 1px solid var(--border-dark);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 1rem;
+      }
+
+      .table-responsive-custom {
+        overflow-x: auto;
+      }
+
+      .table-custom {
+        margin-bottom: 0;
+        color: var(--text-primary);
+      }
+
+      .table-custom thead th {
+        background: var(--bg-dark);
+        border-bottom: 2px solid var(--border-dark);
+        padding: 1rem;
+        font-weight: 600;
+        color: var(--accent-primary);
+      }
+
+      .table-custom tbody td {
+        padding: 1rem;
+        border-bottom: 1px solid var(--border-dark);
+        vertical-align: middle;
+      }
+
+      .table-custom tbody tr:hover {
+        background: rgba(240, 89, 41, 0.05);
+      }
+
+      .badge-custom {
+        background: var(--accent-primary);
+        color: white;
+        padding: 0.3rem 0.8rem;
+        border-radius: 20px;
+        font-size: 0.75rem;
+      }
+
+      /* Loading Spinner */
+      .loading-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.8);
+        z-index: 9999;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        backdrop-filter: blur(5px);
+      }
+
+      .spinner-custom {
+        width: 50px;
+        height: 50px;
+        border: 4px solid var(--border-dark);
+        border-top-color: var(--accent-primary);
+        border-radius: 50%;
+        animation: spin 0.8s linear infinite;
+      }
+
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      /* Footer */
+      .footer-dark {
+        background: linear-gradient(135deg, #0f1117 0%, #1a1d24 100%);
+        border-top: 1px solid var(--border-dark);
+        padding: 2rem 0;
+        margin-top: 3rem;
+      }
+
+      /* Empty State */
+      .empty-state {
+        text-align: center;
+        padding: 3rem;
+        color: var(--text-secondary);
+      }
+
+      .empty-state i {
+        font-size: 4rem;
+        margin-bottom: 1rem;
+        opacity: 0.5;
+      }
+
+      /* Responsive */
+      @media (max-width: 768px) {
+        .main-container {
+          padding: 1rem;
+        }
+
+        .search-card {
+          padding: 1.5rem;
+        }
+
+        .table-header {
+          flex-direction: column;
+          align-items: stretch;
+        }
+
+        .stats-card {
+          margin-bottom: 1rem;
+        }
+      }
+
+      /* Animations */
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .result-item {
+        animation: fadeIn 0.5s ease forwards;
+      }
+
+      /* Scrollbar */
+      ::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+      }
+
+      ::-webkit-scrollbar-track {
+        background: var(--bg-dark);
+      }
+
+      ::-webkit-scrollbar-thumb {
+        background: var(--accent-primary);
+        border-radius: 4px;
+      }
+
+      ::-webkit-scrollbar-thumb:hover {
+        background: var(--accent-hover);
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Header -->
+    <!-- Header -->
+    <header class="header-dark">
+      <div class="container">
+        <div class="d-flex justify-content-between align-items-center">
+          <img src="{{ url_for('static', filename='assets/img/logo.avif') }}" alt="123 Milhas" class="logo" style="height: 40px" />
+          <div>
+            <span class="badge-custom"> <i class="fas fa-shield-alt"></i> Ambiente Seguro </span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="main-container">
+      <!-- Search Section -->
+      <div class="search-card">
+        <div class="search-title"><i class="fas fa-search"></i> Consulta de Credores</div>
+        <div class="row g-3">
+          <div class="col-md-8">
+            <label class="form-label text-secondary">Nome ou Sobrenome</label>
+            <input
+              type="text"
+              class="form-control form-control-dark"
+              id="searchInput"
+              placeholder="Ex: Maria, Silva, João, Alves..."
+              autocomplete="off"
+            />
+          </div>
+          <div class="col-md-4 d-flex align-items-end">
+            <button class="btn btn-primary-custom w-100" onclick="buscarCredores()"><i class="fas fa-search"></i> Buscar</button>
+          </div>
+        </div>
+        <div class="row mt-3">
+          <div class="col-12">
+            <small class="text-secondary">
+              <i class="fas fa-info-circle"></i> Digite qualquer parte do nome para buscar resultados relacionados
+            </small>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stats Section -->
+      <div class="row g-3 mb-4" id="statsSection" style="display: none">
+        <div class="col-md-4">
+          <div class="stats-card">
+            <div class="stats-number" id="totalResults">0</div>
+            <div class="stats-label">Total de Resultados</div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="stats-card">
+            <div class="stats-number" id="uniqueNames">0</div>
+            <div class="stats-label">Nomes Únicos</div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="stats-card">
+            <div class="stats-number" id="totalValue">R$ 0</div>
+            <div class="stats-label">Valor Total</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Results Section -->
+      <div class="results-container" id="resultsContainer" style="display: none">
+        <div class="table-header">
+          <div><i class="fas fa-list"></i> <strong>Resultados Encontrados</strong></div>
+          <div class="d-flex gap-2">
+            <button class="btn btn-outline-custom btn-sm" onclick="exportarTXT()"><i class="fas fa-download"></i> Exportar TXT</button>
+            <button class="btn btn-outline-custom btn-sm" onclick="limparBusca()"><i class="fas fa-eraser"></i> Limpar</button>
+          </div>
+        </div>
+        <div class="table-responsive-custom">
+          <table class="table table-custom" id="resultsTable">
+            <thead>
+              <tr>
+                  <th>#</th>
+                <th>Nome Completo</th>
+                <th>Valor</th>
+                <th>Classe</th>
+                <th>Telefone</th>
+                <th>E-mail</th>
+                <th>CPF</th>
+              </tr>
+            </thead>
+            <tbody id="resultsBody">
+              <tr>
+                <td colspan="7" class="text-center">Nenhum resultado encontrado</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer-dark">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-6 text-center text-md-start">
+            <p class="mb-0 text-secondary"><i class="fas fa-shield-alt"></i> Dados protegidos pela LGPD</p>
+          </div>
+          <div class="col-md-6 text-center text-md-end">
+            <p class="mb-0 text-secondary">&copy; 2024 123 Milhas - Todos os direitos reservados</p>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      let dadosCompletos = []
+      let resultadosFiltrados = []
+
+      // Função para buscar dados da API
+      async function buscarCredores() {
+        const searchTerm = document.getElementById('searchInput').value.trim()
+
+        if (!searchTerm) {
+          Swal.fire({
+            title: 'Atenção!',
+            text: 'Digite um nome ou sobrenome para buscar',
+            icon: 'warning',
+            background: '#1a1d24',
+            color: '#e9ecef',
+            confirmButtonColor: '#f05929'
+          })
+          return
+        }
+
+        // Mostrar loading
+        mostrarLoading(true)
+
+        try {
+          const apiUrl =
+            'https://script.googleusercontent.com/macros/echo?user_content_key=AUkAhnTR4yy2IMqwPiLk52hoU9MbNXy02VAkJD7ji4VWQmcgjMWwHwpov4DgZu_cWLxnO3JpJLnABeTh-J8veigPKKRnByMZIk5n802LYW4gZYQYRseNbnjP72_4U3BupJesiTl9R9svN-S4fyN6LbD4pi1oYC1HmunUoBGKLrTO3QNVo79YrqvzOjXp-Nk_Uu80ThJRX8Z_Cc8IQUJYKW-kkbhIVeeSXIiIA1E719HwJyOULOinORVfAZPprZU-yPAP3Zx-RE1b9zkjMNYThrvnSrEjaqJjtA&lib=MvEZO36dcWMObm4x5RaouINet2obLStiZ'
+
+          const response = await fetch(apiUrl)
+          const data = await response.json()
+
+          // Verificar se os dados são um array
+          if (Array.isArray(data)) {
+            dadosCompletos = data
+          } else if (data.data && Array.isArray(data.data)) {
+            dadosCompletos = data.data
+          } else {
+            dadosCompletos = [data]
+          }
+
+          console.log('Dados carregados:', dadosCompletos.length)
+
+          // Filtrar por nome/sobrenome
+          filtrarPorNome(searchTerm)
+        } catch (error) {
+          console.error('Erro ao buscar dados:', error)
+          Swal.fire({
+            title: 'Erro!',
+            text: 'Não foi possível carregar os dados. Tente novamente.',
+            icon: 'error',
+            background: '#1a1d24',
+            color: '#e9ecef',
+            confirmButtonColor: '#f05929'
+          })
+        } finally {
+          mostrarLoading(false)
+        }
+      }
+
+      // Função para filtrar por nome/sobrenome
+      function filtrarPorNome(termo) {
+        const termoLower = termo
+          .toLowerCase()
+          .normalize('NFD')
+          .replace(/[\u0300-\u036f]/g, '')
+
+        resultadosFiltrados = dadosCompletos.filter((item) => {
+          if (!item.nome) return false
+          const nomeLower = item.nome
+            .toLowerCase()
+            .normalize('NFD')
+            .replace(/[\u0300-\u036f]/g, '')
+          return nomeLower.includes(termoLower)
+        })
+
+        if (resultadosFiltrados.length === 0) {
+          Swal.fire({
+            title: 'Nenhum resultado',
+            text: `Não encontramos nenhum credor com o nome "${termo}"`,
+            icon: 'info',
+            background: '#1a1d24',
+            color: '#e9ecef',
+            confirmButtonColor: '#f05929'
+          })
+          document.getElementById('resultsContainer').style.display = 'none'
+          document.getElementById('statsSection').style.display = 'none'
+          return
+        }
+
+        // Mostrar resultados
+        exibirResultados()
+        atualizarStats()
+      }
+
+      // Função para exibir resultados na tabela
+      function exibirResultados() {
+        const tbody = document.getElementById('resultsBody')
+        tbody.innerHTML = ''
+
+        resultadosFiltrados.forEach((item, index) => {
+          const row = tbody.insertRow()
+          row.className = 'result-item'
+
+          // Número
+          row.insertCell(0).innerHTML = `<strong>${index + 1}</strong>`
+
+          // Nome
+          row.insertCell(1).innerHTML = `<strong>${item.nome || 'N/A'}</strong>`
+
+          // CPF
+          let cpf = item.cpf_limpo || ''
+          if (cpf && cpf.length === 11) {
+            cpf = cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4')
+          }
+          row.insertCell(2).innerHTML = cpf || 'N/A'
+
+          // Valor
+          row.insertCell(2).innerHTML = `<span class="text-success">${item.valor_real || 'R$ 0,00'}</span>`
+
+          // Classe
+          row.insertCell(3).innerHTML = `<span class="badge-custom">${item.classe_txt || 'Quirografário'}</span>`
+
+          // Telefone
+          let telefone = item.telefone || ''
+          if (telefone && telefone.length === 11) {
+            telefone = telefone.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3')
+          }
+          row.insertCell(4).innerHTML = telefone || 'N/A'
+
+          // E-mail
+          row.insertCell(5).innerHTML = item.email || 'N/A'
+        })
+
+        document.getElementById('resultsContainer').style.display = 'block'
+        document.getElementById('statsSection').style.display = 'flex'
+      }
+
+      // Função para atualizar estatísticas
+      function atualizarStats() {
+        const total = resultadosFiltrados.length
+
+        // Contar nomes únicos
+        const nomesUnicos = new Set(resultadosFiltrados.map((item) => item.nome)).size
+
+        // Calcular valor total
+        let valorTotal = 0
+        resultadosFiltrados.forEach((item) => {
+          if (item.valor_real) {
+            const valorNumerico = parseFloat(item.valor_real.replace('R$', '').replace(/\./g, '').replace(',', '.').trim())
+            if (!isNaN(valorNumerico)) {
+              valorTotal += valorNumerico
+            }
+          }
+        })
+
+        document.getElementById('totalResults').innerHTML = total
+        document.getElementById('uniqueNames').innerHTML = nomesUnicos
+        document.getElementById('totalValue').innerHTML =
+          `R$ ${valorTotal.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
+      }
+
+      // Função para exportar em TXT
+      function exportarTXT() {
+        if (resultadosFiltrados.length === 0) {
+          Swal.fire({
+            title: 'Atenção!',
+            text: 'Não há dados para exportar',
+            icon: 'warning',
+            background: '#1a1d24',
+            color: '#e9ecef',
+            confirmButtonColor: '#f05929'
+          })
+          return
+        }
+
+        let conteudo = '='.repeat(80) + '\n'
+        conteudo += 'RELATÓRIO DE CREDORES - 123 MILHAS\n'
+        conteudo += `Data da consulta: ${new Date().toLocaleString('pt-BR')}\n`
+        conteudo += `Total de registros: ${resultadosFiltrados.length}\n`
+        conteudo += '='.repeat(80) + '\n\n'
+
+        resultadosFiltrados.forEach((item, index) => {
+          conteudo += `[REGISTRO ${index + 1}]\n`
+          conteudo += `Nome: ${item.nome || 'N/A'}\n`
+          conteudo += `CPF: ${item.cpf_limpo || 'N/A'}\n`
+          conteudo += `Valor: ${item.valor_real || 'R$ 0,00'}\n`
+          conteudo += `Classe: ${item.classe_txt || 'Quirografário'}\n`
+          conteudo += `Telefone: ${item.telefone || 'N/A'}\n`
+          conteudo += `E-mail: ${item.email || 'N/A'}\n`
+          conteudo += '-'.repeat(40) + '\n'
+        })
+
+        conteudo += '\n' + '='.repeat(80) + '\n'
+        conteudo += 'Documento gerado automaticamente pelo sistema 123 Milhas\n'
+        conteudo += 'Todos os dados estão protegidos pela LGPD\n'
+
+        // Criar e baixar arquivo
+        const blob = new Blob([conteudo], { type: 'text/plain;charset=utf-8' })
+        const link = document.createElement('a')
+        const url = URL.createObjectURL(blob)
+        link.href = url
+        link.download = `credores_123milhas_${new Date().toISOString().slice(0, 19).replace(/:/g, '-')}.txt`
+        document.body.appendChild(link)
+        link.click()
+        document.body.removeChild(link)
+        URL.revokeObjectURL(url)
+
+        Swal.fire({
+          title: 'Sucesso!',
+          text: 'Arquivo TXT gerado com sucesso',
+          icon: 'success',
+          background: '#1a1d24',
+          color: '#e9ecef',
+          confirmButtonColor: '#f05929',
+          timer: 2000
+        })
+      }
+
+      // Função para limpar busca
+      function limparBusca() {
+        document.getElementById('searchInput').value = ''
+        resultadosFiltrados = []
+        document.getElementById('resultsContainer').style.display = 'none'
+        document.getElementById('statsSection').style.display = 'none'
+        document.getElementById('searchInput').focus()
+      }
+
+      // Função para mostrar/ocultar loading
+      function mostrarLoading(show) {
+        if (show) {
+          const overlay = document.createElement('div')
+          overlay.id = 'loadingOverlay'
+          overlay.className = 'loading-overlay'
+          overlay.innerHTML = `
+                    <div class="spinner-custom"></div>
+                    <div class="mt-3">Carregando dados...</div>
+                `
+          document.body.appendChild(overlay)
+        } else {
+          const overlay = document.getElementById('loadingOverlay')
+          if (overlay) overlay.remove()
+        }
+      }
+
+      // Permitir busca com Enter
+      document.getElementById('searchInput').addEventListener('keypress', function (e) {
+        if (e.key === 'Enter') {
+          buscarCredores()
+        }
+      })
+
+      // Carregar dados iniciais (opcional)
+      window.addEventListener('load', () => {
+        console.log('Sistema pronto para consulta')
+        document.getElementById('searchInput').focus()
+      })
+    </script>
+  </body>
+</html>

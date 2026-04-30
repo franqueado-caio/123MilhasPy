@@ -1,0 +1,788 @@
+<!doctype html>
+<html lang="pt">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard - Atendimento 123 Milhas</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <style>
+      :root {
+        --primary-color: #f05929;
+        --secondary-color: #ff6b35;
+        --text-dark: #2c3e50;
+        --text-light: #7f8c8d;
+        --bg-gray: #f8f9fa;
+        --border-color: #e0e0e0;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #f5f7fa 0%, #e9ecef 100%);
+        min-height: 100vh;
+      }
+
+      .navbar-custom {
+        background: linear-gradient(135deg, var(--primary-color) 0%, #d94a1a 100%) !important;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        padding: 12px 0;
+      }
+
+      .navbar-brand {
+        font-weight: 700;
+        font-size: 1.3rem;
+      }
+
+      .navbar-brand i {
+        margin-right: 8px;
+      }
+
+      .operador-badge {
+        background: rgba(255, 255, 255, 0.2);
+        padding: 6px 15px;
+        border-radius: 50px;
+        font-size: 0.85rem;
+      }
+
+      .card-dashboard {
+        border: none;
+        border-radius: 16px;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+        overflow: hidden;
+        min-height: 620px;
+      }
+
+      .card-header-custom {
+        background: linear-gradient(135deg, var(--primary-color) 0%, #d94a1a 100%);
+        padding: 15px 20px;
+        border: none;
+      }
+
+      .card-header-custom h5 {
+        margin: 0;
+        color: white;
+        font-weight: 600;
+      }
+
+      .card-header-custom i {
+        margin-right: 8px;
+      }
+
+      .fila-count {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: var(--primary-color);
+        display: block;
+        line-height: 1;
+      }
+
+      .fila-label {
+        color: var(--text-light);
+        font-size: 0.85rem;
+        margin-top: 5px;
+      }
+
+      .cliente-card {
+        cursor: pointer;
+        transition: all 0.3s ease;
+        border: 1px solid var(--border-color);
+        border-radius: 12px;
+        background: white;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .cliente-card::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 4px;
+        background: var(--primary-color);
+      }
+
+      .cliente-card:hover {
+        transform: translateX(5px);
+        box-shadow: 0 8px 20px rgba(240, 89, 41, 0.15);
+        border-color: var(--primary-color);
+      }
+
+      .cliente-card .card-body {
+        padding: 15px;
+      }
+
+      .cliente-card strong {
+        color: var(--text-dark);
+        font-size: 1rem;
+      }
+
+      .cliente-card small {
+        color: var(--text-light);
+        font-size: 0.7rem;
+      }
+
+      .chat-area {
+        height: 450px;
+        overflow-y: auto;
+        background: var(--bg-gray);
+        border-radius: 12px;
+        padding: 15px;
+      }
+
+      .message-item {
+        margin-bottom: 15px;
+        padding: 12px 15px;
+        border-radius: 12px;
+        animation: fadeIn 0.3s ease;
+        max-width: 85%;
+      }
+
+      .message-client {
+        background: white;
+        border-left: 3px solid var(--primary-color);
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        text-align: left;
+      }
+
+      .message-operator {
+        background: linear-gradient(135deg, var(--primary-color) 0%, #d94a1a 100%);
+        color: white;
+        border-left: 3px solid #fff;
+        text-align: right;
+        margin-left: auto;
+      }
+
+      .message-operator strong {
+        color: rgba(255, 255, 255, 0.9);
+      }
+
+      .message-operator small {
+        color: rgba(255, 255, 255, 0.7);
+      }
+
+      .message-item strong {
+        display: block;
+        margin-bottom: 5px;
+        font-size: 0.8rem;
+      }
+
+      .message-item small {
+        font-size: 0.65rem;
+        opacity: 0.7;
+        display: block;
+        margin-top: 5px;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .input-group-custom {
+        margin-top: 15px;
+        gap: 10px;
+      }
+
+      .input-group-custom input {
+        border-radius: 50px !important;
+        border: 1px solid var(--border-color);
+        padding: 12px 20px;
+        font-size: 0.9rem;
+      }
+
+      .input-group-custom input:focus {
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 2px rgba(240, 89, 41, 0.2);
+      }
+
+      .btn-send {
+        background: linear-gradient(135deg, var(--primary-color) 0%, #d94a1a 100%);
+        border: none;
+        border-radius: 50px !important;
+        padding: 10px 25px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+      }
+
+      .btn-send:hover {
+        transform: scale(1.02);
+        box-shadow: 0 5px 15px rgba(240, 89, 41, 0.3);
+      }
+
+      .btn-close-chat {
+        background: #dc3545;
+        border: none;
+        border-radius: 50px !important;
+        padding: 10px 25px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+      }
+
+      .btn-close-chat:hover {
+        background: #c82333;
+        transform: scale(1.02);
+      }
+
+      .empty-state {
+        text-align: center;
+        padding: 40px 20px;
+        color: var(--text-light);
+      }
+
+      .empty-state i {
+        font-size: 3rem;
+        margin-bottom: 15px;
+        opacity: 0.5;
+      }
+
+      .chat-area::-webkit-scrollbar {
+        width: 6px;
+      }
+
+      .chat-area::-webkit-scrollbar-track {
+        background: var(--border-color);
+        border-radius: 10px;
+      }
+
+      .chat-area::-webkit-scrollbar-thumb {
+        background: var(--primary-color);
+        border-radius: 10px;
+      }
+
+      .custom-modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 9999;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .custom-modal-content {
+        background: white;
+        border-radius: 20px;
+        padding: 30px;
+        max-width: 400px;
+        width: 90%;
+        text-align: center;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        animation: slideUp 0.3s ease;
+      }
+
+      @keyframes slideUp {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .custom-modal-content input {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid var(--border-color);
+        border-radius: 10px;
+        margin-bottom: 20px;
+        font-size: 1rem;
+      }
+
+      .custom-modal-content input:focus {
+        border-color: var(--primary-color);
+        outline: none;
+        box-shadow: 0 0 0 2px rgba(240, 89, 41, 0.2);
+      }
+
+      .custom-modal-content button {
+        background: linear-gradient(135deg, var(--primary-color) 0%, #d94a1a 100%);
+        color: white;
+        border: none;
+        padding: 12px 24px;
+        border-radius: 50px;
+        cursor: pointer;
+        width: 100%;
+        font-weight: 600;
+        transition: all 0.3s ease;
+      }
+
+      .custom-modal-content button:hover {
+        transform: scale(1.02);
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar navbar-custom mb-4">
+      <div class="container">
+        <span class="navbar-brand text-white"> <i class="fas fa-headset"></i> 123 Milhas - Atendimento </span>
+        <span class="operador-badge text-white" id="operadorNome"> <i class="fas fa-user-circle"></i> Carregando... </span>
+      </div>
+    </nav>
+
+    <div class="container">
+      <div class="row g-4">
+        <div class="col-lg-4">
+          <div class="card-dashboard">
+            <div class="card-header-custom">
+              <h5><i class="fas fa-clock"></i> Fila de Espera</h5>
+            </div>
+            <div class="card-body text-center">
+              <div class="mb-3">
+                <span class="fila-count" id="totalFila">0</span>
+                <div class="fila-label">clientes aguardando</div>
+              </div>
+              <div id="listaFila">
+                <div class="empty-state">
+                  <i class="fas fa-user-friends"></i>
+                  <p>Nenhum cliente na fila</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-8">
+          <div class="card-dashboard">
+            <div class="card-header-custom">
+              <h5 id="chatTitulo"><i class="fas fa-comments"></i> Nenhum atendimento ativo</h5>
+            </div>
+            <div class="card-body">
+              <div id="chatArea" class="chat-area mb-3">
+                <div class="empty-state">
+                  <i class="fas fa-comment-dots"></i>
+                  <p>Selecione um cliente para iniciar o atendimento</p>
+                </div>
+              </div>
+              <div class="input-group-custom d-flex">
+                <input type="text" id="msgInput" class="form-control" placeholder="Digite sua mensagem..." disabled />
+                <button class="btn btn-send text-white" onclick="enviarMensagem()" disabled>
+                  <i class="fas fa-paper-plane"></i> Enviar
+                </button>
+                <button class="btn btn-close-chat text-white" onclick="fecharAtendimento()" disabled>
+                  <i class="fas fa-times"></i> Finalizar
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      let clienteAtual = null
+      let salaId = null
+      let ultimoIndexMsg = -1
+      let pollInterval = null
+      let operadorNome = null
+
+      function mostrarModalNome() {
+        const modalHtml = `
+          <div id="nomeModal" class="custom-modal">
+            <div class="custom-modal-content">
+              <div style="margin-bottom: 20px;">
+                <i class="fas fa-headset" style="font-size: 3rem; color: var(--primary-color);"></i>
+              </div>
+              <h3 style="color: var(--primary-color); margin-bottom: 10px;">Bem-vindo!</h3>
+              <p style="color: var(--text-light); margin-bottom: 20px;">Digite seu nome para iniciar o atendimento</p>
+              <input type="text" id="nomeInput" placeholder="Seu nome" autocomplete="off">
+              <button id="confirmarNome">Começar atendimento</button>
+            </div>
+          </div>
+        `
+        document.body.insertAdjacentHTML('beforeend', modalHtml)
+
+        document.getElementById('confirmarNome').onclick = () => {
+          const nome = document.getElementById('nomeInput').value.trim()
+          if (nome) {
+            operadorNome = nome
+            localStorage.setItem('operadorNome', nome)
+            document.getElementById('operadorNome').innerHTML = `<i class="fas fa-user-circle"></i> ${operadorNome}`
+            document.getElementById('nomeModal').remove()
+            iniciarDashboard()
+          } else {
+            mostrarAlertaPersonalizado('Por favor, digite seu nome')
+          }
+        }
+
+        document.getElementById('nomeInput').onkeypress = (e) => {
+          if (e.key === 'Enter') {
+            document.getElementById('confirmarNome').click()
+          }
+        }
+      }
+
+      function iniciarDashboard() {
+        setInterval(buscarFila, 2000)
+      }
+
+      const nomeSalvo = localStorage.getItem('operadorNome')
+      if (nomeSalvo) {
+        operadorNome = nomeSalvo
+        document.getElementById('operadorNome').innerHTML = `<i class="fas fa-user-circle"></i> ${operadorNome}`
+        iniciarDashboard()
+      } else {
+        mostrarModalNome()
+      }
+
+      async function buscarFila() {
+        try {
+          const response = await fetch('/api/fila')
+          const data = await response.json()
+
+          const lista = document.getElementById('listaFila')
+          const total = document.getElementById('totalFila')
+          const totalAntigo = parseInt(total.innerText)
+          total.innerText = data.total
+
+          if (data.clientes.length === 0) {
+            lista.innerHTML = `
+              <div class="empty-state">
+                <i class="fas fa-user-friends"></i>
+                <p>Nenhum cliente na fila</p>
+              </div>
+            `
+            return
+          }
+
+          lista.innerHTML = data.clientes
+            .map(
+              (cliente) => `
+                <div class="cliente-card mb-2" onclick="atender('${cliente.id}', '${cliente.nome}')">
+                  <div class="card-body">
+                    <strong><i class="fas fa-user"></i> ${cliente.nome}</strong><br>
+                    <small><i class="fas fa-clock"></i> Aguardando desde ${cliente.timestamp}</small>
+                  </div>
+                </div>
+              `
+            )
+            .join('')
+
+          // Notificação visual em vez de áudio
+          if (data.clientes.length > totalAntigo) {
+            mostrarNotificacaoVisual()
+          }
+        } catch (error) {
+          console.error('Erro ao buscar fila:', error)
+        }
+      }
+
+      function mostrarNotificacaoVisual() {
+        const toast = document.createElement('div')
+        toast.style.cssText = `
+          position: fixed;
+          bottom: 20px;
+          right: 20px;
+          background: linear-gradient(135deg, var(--primary-color) 0%, #d94a1a 100%);
+          color: white;
+          padding: 12px 20px;
+          border-radius: 50px;
+          font-size: 0.9rem;
+          z-index: 9999;
+          animation: fadeOut 3s ease forwards;
+          box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        `
+        toast.innerHTML = '<i class="fas fa-user-plus"></i> Novo cliente na fila!'
+        document.body.appendChild(toast)
+        setTimeout(() => toast.remove(), 3000)
+      }
+
+      async function atender(clienteId, nome) {
+        try {
+          const response = await fetch('/api/atender', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              cliente_id: clienteId,
+              operador: operadorNome
+            })
+          })
+
+          const data = await response.json()
+
+          if (data.success) {
+            const chatHtml = `<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Atendimento - ${nome}</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root { --primary-color: #f05929; --secondary-color: #ff6b35; --text-dark: #2c3e50; --text-light: #7f8c8d; --bg-gray: #f8f9fa; --border-color: #e0e0e0; }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #f5f7fa 0%, #e9ecef 100%); min-height: 100vh; }
+    .chat-container { max-width: 900px; margin: 20px auto; padding: 0 20px; }
+    .chat-card { background: white; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); overflow: hidden; }
+    .chat-header { background: linear-gradient(135deg, var(--primary-color) 0%, #d94a1a 100%); color: white; padding: 20px; }
+    .chat-header h4 { margin: 0; font-weight: 600; }
+    .chat-header p { margin: 5px 0 0; opacity: 0.9; font-size: 0.85rem; }
+    .chat-area { height: 500px; overflow-y: auto; padding: 20px; background: var(--bg-gray); }
+    .message { margin-bottom: 15px; display: flex; flex-direction: column; }
+    .message-client { align-items: flex-start; }
+    .message-operator { align-items: flex-end; }
+    .message-bubble { max-width: 70%; padding: 10px 15px; border-radius: 18px; word-wrap: break-word; }
+    .message-client .message-bubble { background: white; border-left: 3px solid var(--primary-color); box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+    .message-operator .message-bubble { background: linear-gradient(135deg, var(--primary-color) 0%, #d94a1a 100%); color: white; }
+    .message-name { font-size: 0.75rem; margin-bottom: 3px; padding-left: 5px; font-weight: 600; }
+    .message-operator .message-name { text-align: right; color: var(--primary-color); }
+    .message-client .message-name { color: var(--primary-color); }
+    .message-time { font-size: 0.65rem; opacity: 0.7; margin-top: 3px; padding-left: 8px; }
+    .input-area { padding: 15px 20px; background: white; border-top: 1px solid var(--border-color); display: flex; gap: 10px; }
+    .input-area input { flex: 1; padding: 12px 20px; border: 1px solid var(--border-color); border-radius: 50px; font-size: 0.9rem; outline: none; }
+    .input-area input:focus { border-color: var(--primary-color); box-shadow: 0 0 0 2px rgba(240,89,41,0.2); }
+    .input-area button { background: linear-gradient(135deg, var(--primary-color) 0%, #d94a1a 100%); border: none; color: white; padding: 12px 25px; border-radius: 50px; cursor: pointer; font-weight: 600; transition: all 0.2s; }
+    .input-area button:hover { transform: scale(1.02); box-shadow: 0 5px 15px rgba(240,89,41,0.3); }
+    .btn-fechar { background: #dc3545; margin-left: 10px; }
+    .btn-fechar:hover { background: #c82333; }
+    .status-online { display: inline-block; width: 8px; height: 8px; background: #4caf50; border-radius: 50%; margin-left: 8px; animation: pulse 1.5s infinite; }
+    @keyframes pulse { 0% { transform: scale(0.8); opacity: 0.5; } 100% { transform: scale(1.2); opacity: 0; } }
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--border-color); border-radius: 10px; }
+    ::-webkit-scrollbar-thumb { background: var(--primary-color); border-radius: 10px; }
+  </style>
+</head>
+<body>
+  <div class="chat-container">
+    <div class="chat-card">
+      <div class="chat-header">
+        <h4><i class="fas fa-user-circle"></i> ${nome}<span class="status-online"></span></h4>
+        <p><i class="fas fa-clock"></i> Atendimento iniciado - Online agora</p>
+      </div>
+      <div class="chat-area" id="chatArea">
+        <div class="text-center text-muted py-5">
+          <i class="fas fa-comment-dots" style="font-size: 2rem; opacity: 0.5;"></i>
+          <p>Atendimento iniciado. Aguardando mensagens...</p>
+        </div>
+      </div>
+      <div class="input-area">
+        <input type="text" id="msgInput" placeholder="Digite sua mensagem..." onkeypress="if(event.key === 'Enter') enviarMensagem()">
+        <button onclick="enviarMensagem()"><i class="fas fa-paper-plane"></i> Enviar</button>
+        <button class="btn-fechar" onclick="fecharAtendimento()"><i class="fas fa-times"></i> Finalizar</button>
+      </div>
+    </div>
+  </div>
+  <script>
+    const salaId = '${data.sala_id}';
+    const operadorNome = '${operadorNome}';
+    let ultimoIndexMsg = -1;
+    let pollInterval = null;
+
+    function adicionarMensagem(remetente, texto, isMinha) {
+      const container = document.getElementById('chatArea');
+      if (container.children.length === 1 && container.children[0].classList?.contains('text-center')) {
+        container.innerHTML = '';
+      }
+      const div = document.createElement('div');
+      div.className = 'message ' + (isMinha ? 'message-operator' : 'message-client');
+      div.innerHTML = '<div class="message-name"><i class="fas ' + (isMinha ? 'fa-user-check' : 'fa-user') + '"></i> ' + remetente + '</div>' +
+        '<div class="message-bubble">' + texto + '</div>' +
+        '<div class="message-time"><i class="fas fa-clock"></i> ' + new Date().toLocaleTimeString() + '</div>';
+      container.appendChild(div);
+      container.scrollTop = container.scrollHeight;
+    }
+
+    async function buscarMensagens() {
+      try {
+        const response = await fetch('/api/mensagens/' + salaId + '?ultimo=' + ultimoIndexMsg);
+        const data = await response.json();
+        if (data.mensagens && data.mensagens.length > 0) {
+          for (const msg of data.mensagens) {
+            const isMinha = msg.de === operadorNome;
+            adicionarMensagem(msg.de, msg.texto, isMinha);
+            ultimoIndexMsg = data.total - 1;
+          }
+        }
+      } catch (error) { console.error('Erro:', error); }
+    }
+
+    window.enviarMensagem = async function() {
+      const input = document.getElementById('msgInput');
+      if (!input.value.trim()) return;
+      const texto = input.value.trim();
+      input.value = '';
+      try {
+        await fetch('/api/enviar_mensagem', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ sala_id: salaId, de: operadorNome, texto: texto })
+        });
+      } catch (error) { console.error('Erro:', error); alert('Erro ao enviar mensagem'); }
+    }
+
+    window.fecharAtendimento = async function() {
+      if (confirm('Finalizar este atendimento?')) {
+        try {
+          await fetch('/api/fechar', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ sala_id: salaId }) });
+          if (pollInterval) clearInterval(pollInterval);
+          alert('Atendimento finalizado!');
+          window.close();
+        } catch (error) { console.error('Erro:', error); alert('Erro ao finalizar atendimento'); }
+      }
+    }
+
+    pollInterval = setInterval(buscarMensagens, 1500);
+    buscarMensagens();
+    window.onbeforeunload = function() { if (pollInterval) clearInterval(pollInterval); };
+  <\/script>
+</body>
+</html>`
+
+            const chatWindow = window.open('', '_blank')
+            chatWindow.document.write(chatHtml)
+            chatWindow.document.close()
+          } else {
+            mostrarAlertaPersonalizado('Cliente não está mais disponível')
+            buscarFila()
+          }
+        } catch (error) {
+          console.error('Erro:', error)
+          mostrarAlertaPersonalizado('Erro ao iniciar atendimento')
+        }
+      }
+
+      async function buscarMensagens() {
+        if (!salaId) return
+        try {
+          const response = await fetch(`/api/mensagens/${salaId}?ultimo=${ultimoIndexMsg}`)
+          const data = await response.json()
+          if (data.mensagens && data.mensagens.length > 0) {
+            data.mensagens.forEach((msg) => {
+              const isMinha = msg.de === operadorNome
+              adicionarMensagemAoChat(msg.de, msg.texto, isMinha)
+              ultimoIndexMsg = data.total - 1
+            })
+          }
+        } catch (error) {
+          console.error('Erro ao buscar mensagens:', error)
+        }
+      }
+
+      function adicionarMensagemAoChat(remetente, texto, isMinha) {
+        const container = document.getElementById('chatArea')
+        const div = document.createElement('div')
+        div.className = `message-item ${isMinha ? 'message-operator' : 'message-client'}`
+        div.innerHTML = `
+          <strong><i class="fas ${isMinha ? 'fa-user-check' : 'fa-user'}"></i> ${remetente}</strong>
+          ${texto}
+          <small><i class="fas fa-clock"></i> ${new Date().toLocaleTimeString()}</small>
+        `
+        container.appendChild(div)
+        container.scrollTop = container.scrollHeight
+      }
+
+      async function enviarMensagem() {
+        const input = document.getElementById('msgInput')
+        if (!salaId || !input.value.trim()) return
+        const texto = input.value.trim()
+        try {
+          await fetch('/api/enviar_mensagem', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ sala_id: salaId, de: operadorNome, texto: texto })
+          })
+          input.value = ''
+        } catch (error) {
+          console.error('Erro:', error)
+          mostrarAlertaPersonalizado('Erro ao enviar mensagem')
+        }
+      }
+
+      async function fecharAtendimento() {
+        if (!salaId) return
+        mostrarConfirmacaoPersonalizada('Finalizar este atendimento?', async () => {
+          try {
+            await fetch('/api/fechar', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ sala_id: salaId })
+            })
+            if (pollInterval) clearInterval(pollInterval)
+            salaId = null
+            clienteAtual = null
+            document.getElementById('chatTitulo').innerHTML = '<i class="fas fa-comments"></i> Nenhum atendimento ativo'
+            document.getElementById('msgInput').disabled = true
+            document.querySelectorAll('.btn-send, .btn-close-chat').forEach((btn) => (btn.disabled = true))
+            document.getElementById('chatArea').innerHTML = `
+              <div class="empty-state">
+                <i class="fas fa-check-circle"></i>
+                <p>Atendimento finalizado</p>
+              </div>
+            `
+            buscarFila()
+          } catch (error) {
+            mostrarAlertaPersonalizado('Erro ao finalizar atendimento')
+          }
+        })
+      }
+
+      function mostrarAlertaPersonalizado(mensagem) {
+        const alertHtml = `
+          <div id="alertModal" class="custom-modal">
+            <div class="custom-modal-content">
+              <div style="margin-bottom: 20px;"><i class="fas fa-info-circle" style="font-size: 3rem; color: var(--primary-color);"></i></div>
+              <p style="margin-bottom: 20px;">${mensagem}</p>
+              <button id="fecharAlerta" style="background: var(--primary-color);">OK</button>
+            </div>
+          </div>
+        `
+        document.body.insertAdjacentHTML('beforeend', alertHtml)
+        document.getElementById('fecharAlerta').onclick = () => {
+          document.getElementById('alertModal').remove()
+        }
+      }
+
+      function mostrarConfirmacaoPersonalizada(mensagem, onConfirm) {
+        const confirmHtml = `
+          <div id="confirmModal" class="custom-modal">
+            <div class="custom-modal-content">
+              <div style="margin-bottom: 20px;"><i class="fas fa-question-circle" style="font-size: 3rem; color: var(--primary-color);"></i></div>
+              <p style="margin-bottom: 20px;">${mensagem}</p>
+              <div style="display: flex; gap: 10px;">
+                <button id="confirmarSim" style="background: var(--primary-color); flex: 1;">Sim</button>
+                <button id="confirmarNao" style="background: #6c757d; flex: 1;">Não</button>
+              </div>
+            </div>
+          </div>
+        `
+        document.body.insertAdjacentHTML('beforeend', confirmHtml)
+        document.getElementById('confirmarSim').onclick = () => {
+          document.getElementById('confirmModal').remove()
+          onConfirm()
+        }
+        document.getElementById('confirmarNao').onclick = () => {
+          document.getElementById('confirmModal').remove()
+        }
+      }
+
+      // Adicionar o CSS da animação da notificação
+      const style = document.createElement('style')
+      style.textContent = `
+        @keyframes fadeOut {
+          0% { opacity: 1; transform: translateX(0); }
+          70% { opacity: 1; transform: translateX(0); }
+          100% { opacity: 0; transform: translateX(100px); display: none; }
+        }
+      `
+      document.head.appendChild(style)
+    </script>
+  </body>
+</html>

