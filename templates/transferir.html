@@ -4,16 +4,11 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover" />
     <title>123 Milhas - Transferir Cota</title>
-
-    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-
-    <!-- Google Fonts -->
     <link
       href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Nunito:wght@400;600;700&display=swap"
       rel="stylesheet"
     />
-
     <style>
       :root {
         --primary-color: #f05929;
@@ -27,13 +22,11 @@
         --shadow-md: 0 5px 20px rgba(0, 0, 0, 0.06);
         --shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.08);
       }
-
       * {
         margin: 0;
         padding: 0;
         box-sizing: border-box;
       }
-
       body {
         font-family: 'Montserrat', 'Nunito', sans-serif;
         background: linear-gradient(135deg, #fff5f0 0%, #ffffff 50%, #fef9f5 100%);
@@ -41,21 +34,34 @@
         color: var(--text-dark);
       }
 
+      /* ── HEADER ── */
+      .header-simples {
+        padding: 1rem 1.5rem;
+        width: 100%;
+      }
+      .logo {
+        height: 45px;
+        width: auto;
+        display: block;
+        position: relative;
+        left: 5px;
+        top: 5px;
+      }
+
+      /* ── LAYOUT ── */
       .main-container {
         max-width: 500px;
         margin: 0 auto;
-        padding: 1rem 1rem 2rem;
+        padding: 0.5rem 1rem 5rem;
         min-height: 100vh;
       }
-
       .page-header {
         display: flex;
         align-items: center;
         gap: 1rem;
         margin-bottom: 1.5rem;
-        padding-top: 1rem;
+        padding-top: 0.5rem;
       }
-
       .btn-back {
         background: none;
         border: none;
@@ -70,17 +76,16 @@
         justify-content: center;
         transition: all 0.2s;
       }
-
       .btn-back:hover {
         background: rgba(240, 89, 41, 0.1);
       }
-
       .page-header h1 {
         font-size: 1.3rem;
         font-weight: 800;
         color: var(--text-dark);
       }
 
+      /* ── CARD ── */
       .transfer-card {
         background: var(--bg-card);
         border-radius: 28px;
@@ -88,14 +93,12 @@
         box-shadow: var(--shadow-md);
         border: 1px solid var(--border-color);
       }
-
       .valor-disponivel {
         text-align: center;
         margin-bottom: 2rem;
         padding-bottom: 1.5rem;
         border-bottom: 2px solid var(--border-color);
       }
-
       .valor-disponivel .label {
         font-size: 0.7rem;
         text-transform: uppercase;
@@ -103,18 +106,15 @@
         color: var(--text-light);
         font-weight: 600;
       }
-
       .valor-disponivel .valor {
         font-size: 2rem;
         font-weight: 800;
         color: var(--primary-color);
         margin-top: 0.3rem;
       }
-
       .form-group {
         margin-bottom: 1.5rem;
       }
-
       .form-label {
         font-size: 0.7rem;
         font-weight: 700;
@@ -124,7 +124,6 @@
         display: block;
         margin-bottom: 0.6rem;
       }
-
       .custom-select {
         width: 100%;
         padding: 1rem;
@@ -142,19 +141,16 @@
         background-repeat: no-repeat;
         background-position: right 1rem center;
       }
-
       .custom-select:focus {
         outline: none;
         border-color: var(--primary-color);
       }
-
-      .input-group {
+      .input-grid {
         display: grid;
         grid-template-columns: 1fr 1fr;
         gap: 1rem;
       }
-
-      input {
+      .field-input {
         width: 100%;
         padding: 1rem;
         font-size: 0.9rem;
@@ -163,17 +159,14 @@
         font-family: 'Montserrat', sans-serif;
         transition: all 0.2s;
       }
-
-      input:focus {
+      .field-input:focus {
         outline: none;
         border-color: var(--primary-color);
       }
-
-      input::placeholder {
+      .field-input::placeholder {
         color: #cbd5e0;
         font-weight: 400;
       }
-
       .btn-confirmar {
         width: 100%;
         background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
@@ -186,21 +179,18 @@
         cursor: pointer;
         transition: all 0.2s;
         margin-top: 1rem;
-        position: relative;
       }
-
-      .btn-confirmar:hover {
+      .btn-confirmar:hover:not(:disabled) {
         transform: translateY(-2px);
         box-shadow: var(--shadow-lg);
       }
-
       .btn-confirmar:disabled {
         opacity: 0.7;
         cursor: not-allowed;
         transform: none;
       }
 
-      /* Loading spinner */
+      /* ── SPINNER ── */
       .spinner {
         display: inline-block;
         width: 20px;
@@ -210,113 +200,40 @@
         border-top-color: white;
         animation: spin 0.8s linear infinite;
         margin-right: 8px;
+        vertical-align: middle;
       }
-
       @keyframes spin {
         to {
           transform: rotate(360deg);
         }
       }
 
-      /* Modal TRANSFERÊNCIA RECUSADA */
-      .modal-recusado {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.7);
-        z-index: 2000;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        animation: fadeIn 0.3s ease;
-      }
-
-      .modal-recusado-content {
-        background: white;
-        border-radius: 32px;
-        max-width: 350px;
-        width: 90%;
-        padding: 2rem 1.5rem;
-        text-align: center;
-        animation: slideUp 0.3s ease;
-      }
-
-      .modal-recusado-content .icon-circle {
-        width: 70px;
-        height: 70px;
-        background: rgba(220, 53, 69, 0.1);
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin: 0 auto 1rem;
-      }
-
-      .modal-recusado-content i {
-        font-size: 2.5rem;
-        color: #dc3545;
-      }
-
-      .modal-recusado-content h2 {
-        font-size: 1.3rem;
-        font-weight: 800;
-        margin-bottom: 0.8rem;
-        color: var(--text-dark);
-      }
-
-      .modal-recusado-content p {
-        font-size: 0.85rem;
-        color: var(--text-light);
-        margin-bottom: 1.5rem;
-        line-height: 1.5;
-      }
-
-      .btn-fechar-modal {
-        background: var(--primary-color);
-        color: white;
-        border: none;
-        padding: 0.8rem 1.5rem;
-        border-radius: 30px;
-        font-size: 0.9rem;
-        font-weight: 700;
-        cursor: pointer;
-        width: 100%;
-      }
-
-      /* Countdown timer */
+      /* ── COUNTDOWN ── */
       .countdown-timer {
         position: fixed;
         bottom: 30px;
         left: 50%;
         transform: translateX(-50%);
-        background: rgba(0, 0, 0, 0.8);
+        background: rgba(0, 0, 0, 0.85);
         color: white;
-        padding: 12px 24px;
+        padding: 14px 28px;
         border-radius: 50px;
         font-size: 0.9rem;
         font-weight: 600;
         z-index: 1500;
-        animation: fadeInUp 0.3s ease;
         display: flex;
         align-items: center;
-        gap: 10px;
+        gap: 12px;
         backdrop-filter: blur(10px);
+        width: 90%;
+        max-width: 420px;
+        justify-content: center;
+        animation: fadeInUp 0.3s ease;
       }
-
       .countdown-timer i {
+        color: var(--primary-light);
         font-size: 1.1rem;
       }
-
-      .countdown-number {
-        background: var(--primary-color);
-        padding: 4px 12px;
-        border-radius: 40px;
-        font-weight: 800;
-        font-size: 1rem;
-      }
-
       @keyframes fadeInUp {
         from {
           opacity: 0;
@@ -328,7 +245,21 @@
         }
       }
 
-      @keyframes fadeIn {
+      /* ══════════════════════════════════
+         OVERLAY + MODAIS PERSONALIZADOS
+      ══════════════════════════════════ */
+      .modal-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.6);
+        z-index: 3000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        animation: fadeOverlay 0.22s ease;
+      }
+      @keyframes fadeOverlay {
         from {
           opacity: 0;
         }
@@ -337,10 +268,20 @@
         }
       }
 
+      .modal-box {
+        background: white;
+        border-radius: 28px;
+        padding: 2rem 1.8rem;
+        max-width: 360px;
+        width: 100%;
+        text-align: center;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+        animation: slideUp 0.25s ease;
+      }
       @keyframes slideUp {
         from {
           opacity: 0;
-          transform: translateY(30px);
+          transform: translateY(24px);
         }
         to {
           opacity: 1;
@@ -348,13 +289,319 @@
         }
       }
 
-      .logo {
-        position: relative;
-        left: 10px;
-        top: 10px;
+      /* Logo dentro do modal */
+      .modal-logo-wrap {
+        width: 64px;
+        height: 64px;
+        border-radius: 18px;
+        background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1rem;
+        box-shadow: 0 6px 20px rgba(240, 89, 41, 0.35);
       }
-      .countdown-timer {
-        width: 90%;
+      .modal-logo-wrap img {
+        width: 44px;
+        height: 44px;
+        object-fit: contain;
+      }
+
+      /* Ícone de estado (erro/aviso) */
+      .modal-icon-circle {
+        width: 68px;
+        height: 68px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1rem;
+      }
+      .modal-icon-circle.danger {
+        background: rgba(220, 53, 69, 0.1);
+      }
+      .modal-icon-circle.warning {
+        background: rgba(255, 193, 7, 0.15);
+      }
+      .modal-icon-circle i {
+        font-size: 2.2rem;
+      }
+      .modal-icon-circle.danger i {
+        color: #dc3545;
+      }
+      .modal-icon-circle.warning i {
+        color: #e0a800;
+      }
+
+      .modal-box h3 {
+        font-size: 1.2rem;
+        font-weight: 800;
+        color: var(--text-dark);
+        margin-bottom: 0.5rem;
+      }
+      .modal-box p {
+        font-size: 0.85rem;
+        color: var(--text-light);
+        margin-bottom: 1.5rem;
+        line-height: 1.55;
+      }
+
+      .modal-btn {
+        width: 100%;
+        border: none;
+        padding: 0.85rem;
+        border-radius: 50px;
+        font-size: 0.95rem;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.18s;
+        font-family: inherit;
+      }
+      .modal-btn.primary {
+        background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+        color: white;
+        box-shadow: 0 4px 14px rgba(240, 89, 41, 0.3);
+      }
+      .modal-btn.primary:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 6px 18px rgba(240, 89, 41, 0.4);
+      }
+      .modal-btn.ghost {
+        background: #f0f0f0;
+        color: var(--text-dark);
+        margin-top: 0.6rem;
+      }
+      .modal-btn.ghost:hover {
+        background: #e2e2e2;
+      }
+
+      /* ── CHAT ── */
+      .chat-btn-custom {
+        position: fixed !important;
+        bottom: 28px !important;
+        right: 22px !important;
+        width: 58px !important;
+        height: 58px !important;
+        border-radius: 50% !important;
+        background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%) !important;
+        border: none !important;
+        cursor: pointer !important;
+        box-shadow: 0 5px 20px rgba(240, 89, 41, 0.4) !important;
+        z-index: 1000 !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        transition: transform 0.2s !important;
+      }
+      .chat-btn-custom:hover {
+        transform: scale(1.08) !important;
+      }
+      .chat-btn-custom i {
+        font-size: 1.6rem !important;
+        color: white !important;
+      }
+
+      .chat-modal-custom {
+        position: fixed !important;
+        bottom: 96px !important;
+        right: 22px !important;
+        width: 360px !important;
+        max-width: calc(100vw - 44px) !important;
+        background: white !important;
+        border-radius: 20px !important;
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2) !important;
+        z-index: 1001 !important;
+        display: none !important;
+        flex-direction: column !important;
+        overflow: hidden !important;
+      }
+      .chat-modal-custom.active {
+        display: flex !important;
+      }
+
+      .chat-modal-header {
+        background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%) !important;
+        color: white !important;
+        padding: 14px 18px !important;
+        display: flex !important;
+        align-items: center !important;
+        gap: 11px !important;
+      }
+      .chat-modal-logo {
+        width: 38px !important;
+        height: 38px !important;
+        background: white !important;
+        border-radius: 11px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        flex-shrink: 0 !important;
+      }
+      .chat-modal-logo img {
+        width: 28px !important;
+        height: 28px !important;
+        object-fit: contain !important;
+      }
+      .chat-modal-title {
+        flex: 1 !important;
+      }
+      .chat-modal-title h4 {
+        margin: 0 !important;
+        font-size: 0.9rem !important;
+        font-weight: 700 !important;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .chat-modal-title p {
+        margin: 0 !important;
+        font-size: 0.62rem !important;
+        opacity: 0.88 !important;
+      }
+      .chat-modal-close {
+        background: none !important;
+        border: none !important;
+        color: white !important;
+        font-size: 1.1rem !important;
+        cursor: pointer !important;
+        width: 28px !important;
+        height: 28px !important;
+        border-radius: 50% !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+      }
+      .chat-modal-close:hover {
+        background: rgba(255, 255, 255, 0.15) !important;
+      }
+
+      .chat-modal-body {
+        height: 390px !important;
+        display: flex !important;
+        flex-direction: column !important;
+        background: #f5f7fa !important;
+      }
+      .chat-modal-messages {
+        flex: 1 !important;
+        overflow-y: auto !important;
+        padding: 13px !important;
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 9px !important;
+      }
+      .chat-modal-messages::-webkit-scrollbar {
+        width: 4px;
+      }
+      .chat-modal-messages::-webkit-scrollbar-thumb {
+        background: #ddd;
+        border-radius: 10px;
+      }
+
+      .message-bubble {
+        max-width: 84% !important;
+        padding: 9px 13px !important;
+        border-radius: 18px !important;
+        font-size: 0.82rem !important;
+        line-height: 1.45 !important;
+      }
+      .message-bubble.system {
+        background: #e9ecef !important;
+        color: #495057 !important;
+        align-self: flex-start !important;
+      }
+      .message-bubble.user {
+        background: var(--primary-color) !important;
+        color: white !important;
+        align-self: flex-end !important;
+      }
+      .message-bubble.operator {
+        background: white !important;
+        color: var(--text-dark) !important;
+        align-self: flex-start !important;
+        border: 1px solid #e0e0e0 !important;
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05) !important;
+      }
+      .message-time {
+        font-size: 0.58rem !important;
+        opacity: 0.65 !important;
+        margin-top: 4px !important;
+        display: block !important;
+      }
+
+      .chat-modal-input-area {
+        padding: 12px !important;
+        background: white !important;
+        border-top: 1px solid #e8e8e8 !important;
+        display: flex !important;
+        gap: 9px !important;
+        align-items: center !important;
+      }
+      .chat-modal-input-area input {
+        flex: 1 !important;
+        padding: 11px 14px !important;
+        border: 1.5px solid #e0e0e0 !important;
+        border-radius: 25px !important;
+        font-size: 0.83rem !important;
+        outline: none !important;
+        font-family: inherit !important;
+        transition: border-color 0.2s !important;
+      }
+      .chat-modal-input-area input:focus {
+        border-color: var(--primary-color) !important;
+      }
+      .chat-modal-input-area button {
+        background: linear-gradient(135deg, var(--primary-color), var(--primary-dark)) !important;
+        border: none !important;
+        color: white !important;
+        width: 40px !important;
+        height: 40px !important;
+        border-radius: 50% !important;
+        cursor: pointer !important;
+        flex-shrink: 0 !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+      }
+
+      .chat-online-indicator {
+        display: inline-block !important;
+        width: 7px !important;
+        height: 7px !important;
+        border-radius: 50% !important;
+        background: #4caf50 !important;
+        animation: pulse 1.5s infinite !important;
+      }
+      @keyframes pulse {
+        0% {
+          transform: scale(0.8);
+          opacity: 0.5;
+        }
+        100% {
+          transform: scale(1.3);
+          opacity: 0;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .main-container {
+          padding: 0.5rem 0.8rem 5rem;
+        }
+        .transfer-card {
+          padding: 1.4rem;
+        }
+        .input-grid {
+          grid-template-columns: 1fr;
+        }
+        .valor-disponivel .valor {
+          font-size: 1.7rem;
+        }
+        .chat-modal-custom {
+          right: 10px !important;
+          left: 10px !important;
+          width: auto !important;
+          max-width: none !important;
+          bottom: 88px !important;
+        }
       }
     </style>
   </head>
@@ -362,6 +609,7 @@
     <div class="header-simples">
       <img src="{{ url_for('static', filename='assets/img/logo.avif') }}" alt="123 Milhas" class="logo" />
     </div>
+
     <div class="main-container">
       <div class="page-header">
         <button class="btn-back" onclick="window.location.href = '/home'">
@@ -383,14 +631,14 @@
           </select>
         </div>
 
-        <div class="input-group">
+        <div class="input-grid">
           <div class="form-group">
             <div class="form-label">AGÊNCIA</div>
-            <input type="text" id="agencia" placeholder="0001" maxlength="10" />
+            <input type="text" id="agencia" class="field-input" placeholder="0001" maxlength="10" />
           </div>
           <div class="form-group">
             <div class="form-label">CONTA COM DÍGITO</div>
-            <input type="text" id="conta" placeholder="000000-0" oninput="mascararConta(this)" />
+            <input type="text" id="conta" class="field-input" placeholder="000000-0" oninput="mascararConta(this)" />
           </div>
         </div>
 
@@ -398,29 +646,115 @@
       </div>
     </div>
 
+    <!-- BOTÃO FLUTUANTE DO CHAT -->
+    <button class="chat-btn-custom" onclick="abrirChat()">
+      <i class="fas fa-comment-dots"></i>
+    </button>
+
+    <!-- MODAL DO CHAT -->
+    <div id="chatModal" class="chat-modal-custom">
+      <div class="chat-modal-header">
+        <div class="chat-modal-logo">
+          <img src="{{ url_for('static', filename='assets/img/logo.avif') }}" alt="123 Milhas" />
+        </div>
+        <div class="chat-modal-title">
+          <h4>Atendimento 123 Milhas <span class="chat-online-indicator"></span></h4>
+          <p>Online - Respondemos em instantes</p>
+        </div>
+        <button class="chat-modal-close" onclick="fecharChat()">✕</button>
+      </div>
+      <div class="chat-modal-body">
+        <div class="chat-modal-messages" id="chatMessages">
+          <div class="message-bubble system">
+            <strong>👋 Olá!</strong><br />
+            Bem-vindo ao canal de atendimento da 123 Milhas.<br />
+            Como podemos ajudar você hoje?
+            <span class="message-time">Online agora</span>
+          </div>
+        </div>
+        <div class="chat-modal-input-area">
+          <input type="text" id="chatInput" placeholder="Digite sua mensagem..." />
+          <button onclick="enviarMensagem()"><i class="fas fa-paper-plane"></i></button>
+        </div>
+      </div>
+    </div>
+
     <script>
-      // Variáveis de controle
-      let timeoutId = null
-      let countdownInterval = null
+      // ══════════════════════════════════════════════
+      // MODAL SYSTEM — substitui todos os alert()
+      // ══════════════════════════════════════════════
+      function abrirModal({
+        tipo = 'aviso',
+        titulo,
+        mensagem,
+        botaoPrimario = 'OK',
+        botaoSecundario = null,
+        callbackPrimario = null,
+        callbackSecundario = null
+      }) {
+        fecharModalAtivo()
 
-      // ===== FUNÇÃO DE MÁSCARA PARA CONTA =====
-      function mascararConta(input) {
-        let valor = input.value.replace(/\D/g, '')
+        // Decide o ícone de estado (quando não usa o logo)
+        const useLogoHeader = tipo === 'logo'
+        let iconeHtml = ''
 
-        if (valor.length > 8) {
-          valor = valor.substring(0, 8)
-        }
-
-        if (valor.length > 6) {
-          input.value = valor.substring(0, 6) + '-' + valor.substring(6, 8)
-        } else if (valor.length > 0) {
-          input.value = valor
+        if (!useLogoHeader) {
+          const tipoMap = {
+            erro: { circulo: 'danger', icon: 'fa-ban' },
+            aviso: { circulo: 'warning', icon: 'fa-exclamation-triangle' },
+            info: { circulo: 'warning', icon: 'fa-info-circle' }
+          }
+          const cfg = tipoMap[tipo] || tipoMap.info
+          iconeHtml = `
+            <div class="modal-icon-circle ${cfg.circulo}">
+              <i class="fas ${cfg.icon}"></i>
+            </div>`
         } else {
-          input.value = ''
+          iconeHtml = `
+            <div class="modal-logo-wrap">
+              <img src="/static/assets/img/logo.avif" alt="123 Milhas" />
+            </div>`
         }
+
+        const secBtn = botaoSecundario ? `<button class="modal-btn ghost" id="modalBtnSec">${botaoSecundario}</button>` : ''
+
+        const overlay = document.createElement('div')
+        overlay.className = 'modal-overlay'
+        overlay.id = 'modalAtivo'
+        overlay.innerHTML = `
+          <div class="modal-box">
+            ${iconeHtml}
+            <h3>${titulo}</h3>
+            <p>${mensagem}</p>
+            <button class="modal-btn primary" id="modalBtnPri">${botaoPrimario}</button>
+            ${secBtn}
+          </div>`
+
+        document.body.appendChild(overlay)
+
+        document.getElementById('modalBtnPri').onclick = () => {
+          fecharModalAtivo()
+          if (callbackPrimario) callbackPrimario()
+        }
+        if (botaoSecundario) {
+          document.getElementById('modalBtnSec').onclick = () => {
+            fecharModalAtivo()
+            if (callbackSecundario) callbackSecundario()
+          }
+        }
+        // Fechar clicando fora
+        overlay.addEventListener('click', (e) => {
+          if (e.target === overlay) fecharModalAtivo()
+        })
       }
 
-      // ===== LISTA DE BANCOS =====
+      function fecharModalAtivo() {
+        document.getElementById('modalAtivo')?.remove()
+      }
+
+      // ══════════════════════════════════════════════
+      // DADOS & BANCOS
+      // ══════════════════════════════════════════════
       const bancosBrasil = [
         { codigo: '001', nome: 'Banco do Brasil' },
         { codigo: '033', nome: 'Santander' },
@@ -443,11 +777,6 @@
         { codigo: '749', nome: 'Banco Cooperativo do Brasil - Sicoob' },
         { codigo: '751', nome: 'Scotiabank Brasil' },
         { codigo: '752', nome: 'Banco BNP Paribas Brasil' },
-        { codigo: '753', nome: 'Banco Novum' },
-        { codigo: '754', nome: 'Banco Sistema' },
-        { codigo: '755', nome: 'Banco Fator' },
-        { codigo: '756', nome: 'Banco Cooperativo Sicoob' },
-        { codigo: '757', nome: 'Banco Keb Hana do Brasil' },
         { codigo: '260', nome: 'Nubank' },
         { codigo: '077', nome: 'Banco Inter' },
         { codigo: '212', nome: 'Banco Original' },
@@ -461,16 +790,12 @@
         { codigo: '093', nome: 'Banco Digio' },
         { codigo: '132', nome: 'Banco Bmg' },
         { codigo: '173', nome: 'Banco BS2' },
-        { codigo: '119', nome: 'Banco Western Union' },
         { codigo: '253', nome: 'Banco Genial' },
         { codigo: '268', nome: 'Banco Bari' },
-        { codigo: '307', nome: 'Banco Terra' },
-        { codigo: '318', nome: 'Banco BMG' },
         { codigo: '336', nome: 'Banco C6 Bank' },
         { codigo: '367', nome: 'Banco Votorantim (BV)' }
       ]
 
-      // Carregar dados do usuário do localStorage
       const userData = JSON.parse(localStorage.getItem('userData')) || {
         nome: 'VANDERLUCIÁ',
         creditoTotal: 22872.6,
@@ -480,91 +805,56 @@
         cotasRestantes: 3
       }
 
-      // Atualizar valor disponível
-      document.getElementById('valorDisponivel').innerHTML =
+      document.getElementById('valorDisponivel').textContent =
         `R$ ${userData.cotaLiberada.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`
 
-      // Popular dropdown de bancos
-      const selectBanco = document.getElementById('bancoDestino')
-      bancosBrasil.forEach((banco) => {
-        const option = document.createElement('option')
-        option.value = banco.codigo
-        option.textContent = `${banco.codigo} - ${banco.nome}`
-        selectBanco.appendChild(option)
+      const sel = document.getElementById('bancoDestino')
+      bancosBrasil.forEach((b) => {
+        const o = document.createElement('option')
+        o.value = b.codigo
+        o.textContent = `${b.codigo} - ${b.nome}`
+        sel.appendChild(o)
       })
 
-      // Função para mostrar contador regressivo
-      function mostrarCountdown(segundos) {
-        // Remove countdown existente
-        const countdownExistente = document.querySelector('.countdown-timer')
-        if (countdownExistente) countdownExistente.remove()
+      // ══════════════════════════════════════════════
+      // TRANSFERÊNCIA
+      // ══════════════════════════════════════════════
+      let timeoutId = null
+      let countdownInterval = null
 
+      function mascararConta(input) {
+        let v = input.value.replace(/\D/g, '')
+        if (v.length > 8) v = v.substring(0, 8)
+        input.value = v.length > 6 ? v.substring(0, 6) + '-' + v.substring(6, 8) : v
+      }
+
+      function mostrarCountdown() {
+        document.querySelector('.countdown-timer')?.remove()
         if (countdownInterval) clearInterval(countdownInterval)
-
-        const countdownHtml = `
+        document.body.insertAdjacentHTML(
+          'beforeend',
+          `
           <div class="countdown-timer" id="countdownTimer">
             <i class="fas fa-hourglass-half"></i>
             <span>Verificando dados bancários...</span>
-          </div>
-        `
-        document.body.insertAdjacentHTML('beforeend', countdownHtml)
-
-        let tempoRestante = segundos
-        const countdownNumberEl = document.getElementById('countdownNumber')
-
-        countdownInterval = setInterval(() => {
-          tempoRestante--
-          if (countdownNumberEl) {
-            countdownNumberEl.textContent = tempoRestante
-          }
-
-          if (tempoRestante <= 0) {
-            clearInterval(countdownInterval)
-            const countdownTimer = document.getElementById('countdownTimer')
-            if (countdownTimer) countdownTimer.remove()
-          }
-        }, 1000)
+          </div>`
+        )
       }
 
-      // Função para remover countdown
       function removerCountdown() {
         if (countdownInterval) {
           clearInterval(countdownInterval)
           countdownInterval = null
         }
-        const countdownTimer = document.getElementById('countdownTimer')
-        if (countdownTimer) countdownTimer.remove()
+        document.getElementById('countdownTimer')?.remove()
       }
 
-      // Função para mostrar loading no botão
-      function mostrarLoadingBotao(mostrar) {
+      function mostrarLoadingBotao(ativo) {
         const btn = document.getElementById('btnConfirmar')
-        if (mostrar) {
-          btn.disabled = true
-          btn.innerHTML = '<span class="spinner"></span> PROCESSANDO...'
-        } else {
-          btn.disabled = false
-          btn.innerHTML = 'CONFIRMAR ENVIO'
-        }
+        btn.disabled = ativo
+        btn.innerHTML = ativo ? '<span class="spinner"></span> PROCESSANDO...' : 'CONFIRMAR ENVIO'
       }
 
-      // Função para mostrar modal de erro com delay de 7 segundos
-      function mostrarModalComDelay() {
-        let tempoRestante = 7
-
-        // Mostrar countdown
-        mostrarCountdown(tempoRestante)
-
-        // Configurar timeout para mostrar o modal após 7 segundos
-        timeoutId = setTimeout(() => {
-          removerCountdown()
-          mostrarModalRecusado()
-          mostrarLoadingBotao(false)
-          timeoutId = null
-        }, 7000)
-      }
-
-      // Cancelar timeout se necessário
       function cancelarTimeout() {
         if (timeoutId) {
           clearTimeout(timeoutId)
@@ -574,84 +864,228 @@
       }
 
       function mostrarModalRecusado() {
-        const modalExistente = document.getElementById('modalRecusado')
-        if (modalExistente) modalExistente.remove()
-
-        const modalHtml = `
-          <div id="modalRecusado" class="modal-recusado">
-            <div class="modal-recusado-content">
-              <div class="icon-circle">
-                <i class="fas fa-ban"></i>
-              </div>
-              <h2>TRANSFERÊNCIA RECUSADA</h2>
-              <p>O banco de destino não autorizou o recebimento desta cota judicial no momento, entre em contato para solicitar a liberação ou tente outra conta da mesma titularidade, caso persista, chame o suporte via chat.</p>
-              <button class="btn-fechar-modal" onclick="fecharModal()">
-                VOLTAR
-              </button>
-            </div>
-          </div>
-        `
-        document.body.insertAdjacentHTML('beforeend', modalHtml)
+        abrirModal({
+          tipo: 'erro',
+          titulo: 'TRANSFERÊNCIA RECUSADA',
+          mensagem:
+            'O banco de destino não autorizou o recebimento desta cota judicial no momento. Tente outra conta da mesma titularidade ou acione o suporte via chat.',
+          botaoPrimario: 'Tentar Novamente',
+          botaoSecundario: 'Falar no Chat',
+          callbackPrimario: () => mostrarLoadingBotao(false),
+          callbackSecundario: () => {
+            mostrarLoadingBotao(false)
+            abrirChat()
+          }
+        })
       }
 
-      function fecharModal() {
-        const modal = document.getElementById('modalRecusado')
-        if (modal) modal.remove()
-        // Resetar o botão caso ainda esteja em loading
-        mostrarLoadingBotao(false)
-        cancelarTimeout()
-      }
-
-      // Função principal de confirmação
       function confirmarTransferencia() {
-        // Cancelar qualquer timeout pendente
         cancelarTimeout()
-
         const banco = document.getElementById('bancoDestino').value
         const agencia = document.getElementById('agencia').value.trim()
         const conta = document.getElementById('conta').value.trim()
 
         if (!banco) {
-          alert('❌ Por favor, selecione um banco de destino')
+          abrirModal({ tipo: 'aviso', titulo: 'Campo obrigatório', mensagem: 'Por favor, selecione um banco de destino para continuar.' })
           return
         }
-
         if (!agencia) {
-          alert('❌ Por favor, digite a agência')
+          abrirModal({ tipo: 'aviso', titulo: 'Campo obrigatório', mensagem: 'Por favor, informe o número da agência bancária.' })
           return
         }
-
         if (!conta) {
-          alert('❌ Por favor, digite a conta')
+          abrirModal({ tipo: 'aviso', titulo: 'Campo obrigatório', mensagem: 'Por favor, informe o número da conta com dígito.' })
           return
         }
 
-        // Mostrar loading no botão
         mostrarLoadingBotao(true)
+        mostrarCountdown()
 
-        // Iniciar o delay de 7 segundos antes de mostrar o modal de erro
-        mostrarModalComDelay()
+        timeoutId = setTimeout(() => {
+          removerCountdown()
+          mostrarModalRecusado()
+          timeoutId = null
+        }, 7000)
       }
 
-      // Prevenir que o usuário saia da página enquanto processa
-      window.addEventListener('beforeunload', function (e) {
+      window.addEventListener('beforeunload', (e) => {
         if (timeoutId !== null) {
           e.preventDefault()
           e.returnValue = 'A transferência está sendo processada. Tem certeza que deseja sair?'
-          return 'A transferência está sendo processada. Tem certeza que deseja sair?'
         }
       })
+      window.addEventListener('unload', () => {
+        if (timeoutId) clearTimeout(timeoutId)
+        if (countdownInterval) clearInterval(countdownInterval)
+      })
 
-      // Limpar timeout quando a página for descarregada
-      window.addEventListener('unload', function () {
-        if (timeoutId) {
-          clearTimeout(timeoutId)
+      // ══════════════════════════════════════════════
+      // CHAT — SISTEMA BASEADO EM TIMESTAMP
+      // (idêntico ao padrão das demais páginas)
+      // ══════════════════════════════════════════════
+      const STORAGE_KEYS = { USER_NAME: 'chatUserName' }
+
+      let chatClienteId = null
+      let chatSalaId = null
+      let chatUltimoTs = 0
+      let chatNome = null
+      let chatVerifInterval = null
+      let chatMsgInterval = null
+
+      function escHtml(s) {
+        const d = document.createElement('div')
+        d.textContent = s
+        return d.innerHTML
+      }
+
+      function addMsg(tipo, texto, remetente) {
+        const c = document.getElementById('chatMessages')
+        if (!c) return
+        const div = document.createElement('div')
+        div.className = `message-bubble ${tipo}`
+        const nome = tipo === 'user' ? 'Você' : tipo === 'operator' ? remetente || 'Atendente' : '💬 Sistema'
+        const hora = new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })
+        div.innerHTML = `<strong>${nome}</strong><br>${escHtml(texto)}<span class="message-time">${hora}</span>`
+        c.appendChild(div)
+        c.scrollTop = c.scrollHeight
+      }
+
+      async function entrarFila(nome) {
+        try {
+          const r = await fetch('/api/entrar_fila', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ nome })
+          })
+          const d = await r.json()
+          chatClienteId = d.cliente_id
+          chatNome = nome
+          addMsg('system', `Olá ${nome}, você entrou na fila. Aguarde um atendente.`)
+          if (chatVerifInterval) clearInterval(chatVerifInterval)
+          chatVerifInterval = setInterval(verificarSala, 3000)
+        } catch {
+          addMsg('system', '❌ Erro ao conectar. Tente novamente.')
         }
-        if (countdownInterval) {
-          clearInterval(countdownInterval)
+      }
+
+      async function verificarSala() {
+        if (chatSalaId || !chatClienteId) return
+        try {
+          const r = await fetch(`/api/verificar_sala/${chatClienteId}`)
+          const d = await r.json()
+          if (d.status === 'em_atendimento' && d.sala_id) {
+            chatSalaId = d.sala_id
+            clearInterval(chatVerifInterval)
+            chatVerifInterval = null
+            addMsg('operator', '🎧 Um atendente entrou no chat! Como posso ajudar?')
+            if (chatMsgInterval) clearInterval(chatMsgInterval)
+            chatMsgInterval = setInterval(buscarMensagens, 2000)
+          }
+        } catch {}
+      }
+
+      async function buscarMensagens() {
+        if (!chatSalaId) return
+        try {
+          const r = await fetch(`/api/mensagens/${chatSalaId}?ultimo_timestamp=${chatUltimoTs}`)
+          const d = await r.json()
+          if (d.mensagens && d.mensagens.length > 0) {
+            d.mensagens.forEach((msg) => {
+              if (msg.time > chatUltimoTs) chatUltimoTs = msg.time
+              // Não re-exibir msgs do próprio cliente (já exibidas otimisticamente)
+              if (msg.de === chatNome) return
+              if (msg.de === 'sistema') {
+                if (msg.texto && msg.texto.includes('encerrado')) {
+                  clearInterval(chatMsgInterval)
+                  chatMsgInterval = null
+                  chatSalaId = null
+                }
+                addMsg('system', msg.texto)
+              } else {
+                addMsg('operator', msg.texto, msg.de)
+              }
+            })
+            if (d.ultimo_timestamp > chatUltimoTs) chatUltimoTs = d.ultimo_timestamp
+          }
+        } catch {}
+      }
+
+      async function enviarMensagem() {
+        const input = document.getElementById('chatInput')
+        const texto = input ? input.value.trim() : ''
+        if (!texto) return
+        addMsg('user', texto)
+        input.value = ''
+        if (!chatSalaId) return
+        try {
+          const r = await fetch('/api/enviar_mensagem', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ sala_id: chatSalaId, de: chatNome, texto, cliente_id: chatClienteId })
+          })
+          const d = await r.json()
+          if (d.success && d.mensagem && d.mensagem.time > chatUltimoTs) chatUltimoTs = d.mensagem.time
+        } catch {}
+      }
+
+      function pedirNome() {
+        // Usa o próprio sistema de modal personalizado
+        fecharModalAtivo()
+        const overlay = document.createElement('div')
+        overlay.className = 'modal-overlay'
+        overlay.id = 'modalAtivo'
+        overlay.innerHTML = `
+          <div class="modal-box">
+            <div class="modal-logo-wrap">
+              <img src="/static/assets/img/logo.avif" alt="123 Milhas" />
+            </div>
+            <h3>Bem-vindo!</h3>
+            <p>Para iniciarmos o atendimento, qual é o seu nome?</p>
+            <input type="text" id="nomeInputModal"
+              placeholder="Digite seu nome"
+              style="width:100%;padding:0.85rem 1rem;border:1.5px solid #e0e0e0;border-radius:14px;font-size:0.95rem;font-family:inherit;margin-bottom:1rem;outline:none;transition:border-color 0.2s;"
+              onfocus="this.style.borderColor='#f05929'" onblur="this.style.borderColor='#e0e0e0'"
+            />
+            <button class="modal-btn primary" id="btnConfNome">Começar atendimento</button>
+          </div>`
+        document.body.appendChild(overlay)
+        const inp = document.getElementById('nomeInputModal')
+        inp.focus()
+        inp.addEventListener('keypress', (e) => {
+          if (e.key === 'Enter') confirmarNome()
+        })
+        document.getElementById('btnConfNome').onclick = confirmarNome
+      }
+
+      function confirmarNome() {
+        const nome = (document.getElementById('nomeInputModal')?.value || '').trim()
+        if (!nome) {
+          abrirModal({ tipo: 'aviso', titulo: 'Nome obrigatório', mensagem: 'Por favor, digite seu nome para iniciar o atendimento.' })
+          return
         }
+        localStorage.setItem(STORAGE_KEYS.USER_NAME, nome)
+        fecharModalAtivo()
+        entrarFila(nome)
+      }
+
+      async function abrirChat() {
+        document.getElementById('chatModal').classList.add('active')
+        if (chatSalaId || chatClienteId) return
+        const nome = localStorage.getItem(STORAGE_KEYS.USER_NAME)
+        if (!nome) {
+          pedirNome()
+          return
+        }
+        entrarFila(nome)
+      }
+
+      function fecharChat() {
+        document.getElementById('chatModal').classList.remove('active')
+      }
+
+      document.getElementById('chatInput').addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') enviarMensagem()
       })
     </script>
   </body>
 </html>
-
