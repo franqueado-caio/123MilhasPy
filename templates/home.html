@@ -1003,7 +1003,7 @@
           const data = await response.json()
           clienteIdCustom = data.cliente_id
           nomeCliente = nome
-          addChatMessage('system', `✅ Olá ${nome}, você entrou na fila de atendimento.`)
+          addChatMessage('system', ` Olá ${nome}, você entrou na fila de atendimento.`)
           if (verificarIntervalCustom) clearInterval(verificarIntervalCustom)
           verificarIntervalCustom = setInterval(verificarAtendimentoCustom, 3000)
         } catch (error) {
@@ -1030,7 +1030,7 @@
           })
           const data = await response.json()
           clienteIdCustom = data.cliente_id
-          addChatMessage('system', `✅ Olá ${nome}, você entrou na fila de atendimento.`)
+          addChatMessage('system', ` Olá ${nome}, você entrou na fila de atendimento.`)
           if (verificarIntervalCustom) clearInterval(verificarIntervalCustom)
           verificarIntervalCustom = setInterval(verificarAtendimentoCustom, 3000)
         } catch (error) {

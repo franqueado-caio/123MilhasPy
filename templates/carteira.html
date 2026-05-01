@@ -612,7 +612,7 @@
           if (raw) {
             const u = JSON.parse(raw)
             if (senha === u.senha) {
-              showToast('✅ Acesso autorizado!', 'success')
+              showToast(' Acesso autorizado!', 'success')
               localStorage.setItem('userLogado', JSON.stringify({ cpf, nome: u.nome, logadoEm: new Date().toISOString() }))
               setTimeout(() => (window.location.href = '/transferir'), 1500)
             } else {
@@ -624,7 +624,7 @@
           } else {
             const credorData = localStorage.getItem('credorData')
             if (credorData && senha.length >= 6) {
-              showToast('✅ Cadastro pendente. Complete seu cadastro.', 'warning')
+              showToast(' Cadastro pendente. Complete seu cadastro.', 'warning')
               setTimeout(() => (window.location.href = '/habilitacao'), 1500)
             } else {
               showToast('❌ Nenhum cadastro encontrado.', 'error')

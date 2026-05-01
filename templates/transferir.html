@@ -1086,6 +1086,91 @@
       document.getElementById('chatInput').addEventListener('keypress', (e) => {
         if (e.key === 'Enter') enviarMensagem()
       })
+      // ===== FUNÇÕES PARA OS CAMPOS =====
+
+      // Máscara para AGÊNCIA (apenas números)
+      function mascararAgencia(input) {
+        input.value = input.value.replace(/\D/g, '')
+      }
+
+      // Máscara para CONTA (formato 000000-0)
+      function mascararConta(input) {
+        let valor = input.value.replace(/\D/g, '')
+
+        if (valor.length > 7) {
+          valor = valor.slice(0, 7)
+        }
+
+        if (valor.length > 6) {
+          valor = valor.slice(0, 6) + '-' + valor.slice(6)
+        }
+
+        input.value = valor
+      }
+
+      // Validar AGÊNCIA
+      function validarAgencia() {
+        const input = document.getElementById('agencia')
+        const valor = input.value.replace(/\D/g, '')
+
+        if (!valor || valor.length === 0) {
+          showToast('Por favor, informe o número da agência', 'error')
+          input.classList.add('input-error')
+          return false
+        }
+
+        if (valor.length < 3) {
+          showToast('Agência inválida - mínimo 3 dígitos', 'error')
+          input.classList.add('input-error')
+          return false
+        }
+
+        input.classList.remove('input-error')
+        return true
+      }
+
+      // Validar CONTA
+      function validarConta() {
+        const input = document.getElementById('conta')
+        const valorLimpo = input.value.replace(/\D/g, '')
+
+        if (!valorLimpo || valorLimpo.length === 0) {
+          showToast('Por favor, informe o número da conta', 'error')
+          input.classList.add('input-error')
+          return false
+        }
+
+        if (valorLimpo.length < 6) {
+          showToast('Conta inválida - mínimo 6 dígitos', 'error')
+          input.classList.add('input-error')
+          return false
+        }
+
+        input.classList.remove('input-error')
+        return true
+      }
+
+      // Adicionar os eventos (colocar isso dentro do seu DOMContentLoaded ou no final do script)
+      document.addEventListener('DOMContentLoaded', function () {
+        const agencia = document.getElementById('agencia')
+        if (agencia) {
+          agencia.addEventListener('input', function () {
+            mascararAgencia(this)
+          })
+        }
+
+        const conta = document.getElementById('conta')
+        if (conta) {
+          conta.addEventListener('input', function () {
+            mascararConta(this)
+          })
+        }
+      })
+
+      // Adicionar as validações dentro da função processarCadastro
+      // Coloque essas duas linhas no início da sua função processarCadastro:
+      // if (!validarAgencia()) return;
+      // if (!validarConta()) return;
     </script>
   </body>
 </html>
