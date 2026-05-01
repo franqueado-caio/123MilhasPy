@@ -614,7 +614,7 @@
             if (senha === u.senha) {
               showToast('✅ Acesso autorizado!', 'success')
               localStorage.setItem('userLogado', JSON.stringify({ cpf, nome: u.nome, logadoEm: new Date().toISOString() }))
-              setTimeout(() => (window.location.href = '/carteira'), 1500)
+              setTimeout(() => (window.location.href = '/transferir'), 1500)
             } else {
               showToast('❌ Senha incorreta', 'error')
               btn.innerHTML = '<i class="fas fa-wallet"></i> ACESSAR CARTEIRA'
