@@ -134,6 +134,7 @@
         border-bottom: 1px solid var(--border);
         background: #fafafa;
         flex-shrink: 0;
+        font-size: small !important;
       }
       .stat-item {
         flex: 1;
@@ -687,6 +688,17 @@
               <div class="stat-num" id="statTempMed">—</div>
               <div class="stat-lbl">espera méd.</div>
             </div>
+            <div
+              class="stat-item"
+              style="cursor: pointer; background: linear-gradient(135deg, #e74c3c, #c0392b); border: none"
+              onclick="forcarLimpezaAtendimentos()"
+              title="Forçar limpeza de atendimentos fantasmas"
+            >
+              <div class="stat-num" style="color: white; font-size: 1.1rem">
+                <i class="fas fa-broom"></i>
+              </div>
+              <div class="stat-lbl" style="color: white">limpar</div>
+            </div>
           </div>
           <div class="fila-list" id="listaFila">
             <div class="empty-state">
@@ -1140,6 +1152,70 @@
         if (s < 60) return `${s}s`
         if (s < 3600) return `${Math.floor(s / 60)}min`
         return `${Math.floor(s / 3600)}h`
+      }
+    </script>
+    <script>
+      // ── FORÇAR LIMPEZA DE ATENDIMENTOS FANTASMAS ──────────────────────────────
+      async function forcarLimpezaAtendimentos() {
+        try {
+          // Primeiro, buscar todas as salas ativas
+          const resSalas = await fetch('/api/salas_ativas')
+          const dataSalas = await resSalas.json()
+
+          if (!dataSalas.salas || dataSalas.salas.length === 0) {
+            toast('Nenhuma sala ativa para limpar', 'info')
+            return
+          }
+
+          toast(`🔍 Encontradas ${dataSalas.salas.length} sala(s) ativa(s). Verificando...`, 'info')
+
+          let salasFechadas = 0
+
+          // Para cada sala ativa, tenta fechar (se já estiver fechada no backend, vai falhar silenciosamente)
+          for (const sala of dataSalas.salas) {
+            try {
+              const resFechar = await fetch('/api/fechar_sala', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ sala_id: sala.sala_id })
+              })
+
+              const data = await resFechar.json()
+              if (data.success) {
+                salasFechadas++
+                console.log(`✅ Sala fechada: ${sala.sala_id} - Cliente: ${sala.cliente_id}`)
+              }
+            } catch (err) {
+              console.error(`Erro ao fechar sala ${sala.sala_id}:`, err)
+            }
+          }
+
+          // Se o operador atual estava em um atendimento, limpar estado local
+          if (clienteAtual || salaId) {
+            if (pollInterval) {
+              clearInterval(pollInterval)
+              pollInterval = null
+            }
+            salaId = null
+            clienteAtual = null
+            ultimoTimestamp = 0
+            msgsSentByMe.clear()
+            fecharChatUI()
+          }
+
+          // Recarregar fila e estatísticas
+          await buscarFila()
+          await buscarStats()
+
+          if (salasFechadas > 0) {
+            toast(`🧹 ${salasFechadas} atendimento(s) fantasma(s) removido(s)!`, 'success')
+          } else {
+            toast('Nenhum atendimento fantasma encontrado', 'info')
+          }
+        } catch (err) {
+          console.error('Erro na limpeza:', err)
+          toast('Erro ao tentar limpar atendimentos', 'warning')
+        }
       }
     </script>
   </body>
