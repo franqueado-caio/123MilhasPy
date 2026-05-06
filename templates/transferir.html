@@ -638,7 +638,7 @@
           </div>
           <div class="form-group">
             <div class="form-label">CONTA COM DÍGITO</div>
-            <input type="text" id="conta" class="field-input" placeholder="000000-0" oninput="mascararConta(this)" />
+            <input type="text" id="conta" class="field-input" placeholder="Digite o número da conta" oninput="apenasNumeros(this)" />
           </div>
         </div>
 
@@ -823,9 +823,8 @@
       let countdownInterval = null
 
       function mascararConta(input) {
-        let v = input.value.replace(/\D/g, '')
-        if (v.length > 8) v = v.substring(0, 8)
-        input.value = v.length > 6 ? v.substring(0, 6) + '-' + v.substring(6, 8) : v
+        input.value = input.value.replace(/\D/g, '') // if (v.length > 8) v = v.substring(0, 8)
+        // input.value = v.length > 6 ? v.substring(0, 6) + '-' + v.substring(6, 8) : v
       }
 
       function mostrarCountdown() {
@@ -1093,21 +1092,6 @@
         input.value = input.value.replace(/\D/g, '')
       }
 
-      // Máscara para CONTA (formato 000000-0)
-      function mascararConta(input) {
-        let valor = input.value.replace(/\D/g, '')
-
-        if (valor.length > 7) {
-          valor = valor.slice(0, 7)
-        }
-
-        if (valor.length > 6) {
-          valor = valor.slice(0, 6) + '-' + valor.slice(6)
-        }
-
-        input.value = valor
-      }
-
       // Validar AGÊNCIA
       function validarAgencia() {
         const input = document.getElementById('agencia')
@@ -1159,18 +1143,21 @@
           })
         }
 
-        const conta = document.getElementById('conta')
-        if (conta) {
-          conta.addEventListener('input', function () {
-            mascararConta(this)
-          })
-        }
+        // const conta = document.getElementById('conta')
+        // if (conta) {
+        //   conta.addEventListener('input', function () {
+        //     mascararConta(this)
+        //   })
+        // }
       })
 
       // Adicionar as validações dentro da função processarCadastro
       // Coloque essas duas linhas no início da sua função processarCadastro:
       // if (!validarAgencia()) return;
       // if (!validarConta()) return;
+      function apenasNumeros(input) {
+        input.value = input.value.replace(/\D/g, '')
+      }
     </script>
   </body>
 </html>
