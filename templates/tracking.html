@@ -1,0 +1,382 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Tracking de Campanhas - 123 Milhas</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+    <style>
+        body { background: #0a0c10; color: #e9ecef; font-family: 'Segoe UI', Arial, sans-serif; }
+        .header { background: #1a1d24; padding: 15px; border-bottom: 1px solid #2a2d35; }
+        .logo { height: 40px; filter: brightness(0) invert(1); }
+        .card-dark { background: #1a1d24; border: 1px solid #2a2d35; border-radius: 15px; padding: 20px; margin-top: 20px; }
+        .stats-card { background: linear-gradient(135deg, #f05929 0%, #d94a1a 100%); border-radius: 15px; padding: 20px; color: white; text-align: center; }
+        .stats-number { font-size: 2.5rem; font-weight: bold; }
+        .badge-open { background: #28a745; }
+        .badge-click { background: #007bff; }
+        .badge-access { background: #6c757d; }
+        .btn-copy { background: #2a2d35; border: none; color: white; padding: 5px 10px; border-radius: 5px; cursor: pointer; margin-left: 10px; }
+        .btn-copy:hover { background: #f05929; }
+        .btn-close-custom { background: #6c757d; border: none; color: white; padding: 5px 15px; border-radius: 5px; cursor: pointer; }
+        .btn-close-custom:hover { background: #dc3545; }
+        .btn-reset { background: #dc3545; border: none; color: white; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: bold; }
+        .btn-reset:hover { background: #bb2d3b; }
+        .token-box { background: #2a2d35; padding: 15px; border-radius: 8px; margin-top: 15px; position: relative; }
+        .token-text { font-family: monospace; word-break: break-all; font-size: 0.85rem; }
+        .form-label { color: #e9ecef; font-weight: 500; margin-bottom: 5px; }
+        .btn-primary-custom { background: #f05929; border: none; }
+        .btn-primary-custom:hover { background: #d94a1a; }
+        .today-stats-box { background: #2a2d35; border-radius: 10px; padding: 15px; margin-top: 15px; }
+        .today-number { font-size: 1.8rem; font-weight: bold; color: #f05929; }
+        .reset-confirm { background: #dc3545; color: white; padding: 15px; border-radius: 8px; margin-top: 10px; display: none; }
+        .btn-warning-custom { background: #ffc107; border: none; color: #000; }
+        .btn-warning-custom:hover { background: #ffca2c; }
+        .btn-danger-custom { background: #dc3545; border: none; }
+        .btn-danger-custom:hover { background: #bb2d3b; }
+    </style>
+</head>
+<body>
+
+<div class="header d-flex justify-content-between align-items-center">
+    <img src="/static/assets/img/logo.avif" class="logo">
+    <div>
+        <span class="badge bg-secondary me-2"><i class="fas fa-user"></i> Operador: {{ operador }}</span>
+        <span class="badge bg-info" id="dataAtual"></span>
+    </div>
+</div>
+
+<div class="container mt-4">
+    <h2><i class="fas fa-chart-line"></i> Métricas de Campanha</h2>
+    <p class="text-secondary">Acompanhe aberturas de email e cliques em links</p>
+    
+    <!-- Cards de Estatísticas -->
+    <div class="row">
+        <div class="col-md-3">
+            <div class="stats-card">
+                <i class="fas fa-envelope fa-2x"></i>
+                <div class="stats-number">{{ total_sent }}</div>
+                <div>Total Emails Enviados</div>
+                <small>(histórico)</small>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="stats-card">
+                <i class="fas fa-eye fa-2x"></i>
+                <div class="stats-number">{{ total_opens }}</div>
+                <div>Aberturas ({{ open_rate }}%)</div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="stats-card">
+                <i class="fas fa-mouse-pointer fa-2x"></i>
+                <div class="stats-number">{{ total_clicks }}</div>
+                <div>Cliques em Links</div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="stats-card">
+                <i class="fas fa-chart-simple fa-2x"></i>
+                <div class="stats-number">{{ "%.1f"|format(total_opens/total_sent*100 if total_sent > 0 else 0) }}%</div>
+                <div>Taxa de Conversão</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Estatísticas do Dia -->
+    <div class="card-dark">
+        <h5><i class="fas fa-calendar-day"></i> Estatísticas de Hoje</h5>
+        <div class="row text-center" id="todayStats">
+            <div class="col-md-4">
+                <div class="today-number" id="todaySent">-</div>
+                <small>Emails enviados hoje</small>
+            </div>
+            <div class="col-md-4">
+                <div class="today-number" id="todayOpens">-</div>
+                <small>Aberturas hoje</small>
+            </div>
+            <div class="col-md-4">
+                <div class="today-number" id="todayClicks">-</div>
+                <small>Cliques hoje</small>
+            </div>
+        </div>
+    </div>
+
+    <!-- Gerar Token -->
+    <div class="card-dark">
+        <h5><i class="fas fa-token"></i> Gerar Token Rastreável para Email</h5>
+        <div class="row mt-3">
+            <div class="col-md-4">
+                <label class="form-label"><i class="fas fa-tag"></i> Nome da Campanha</label>
+                <input type="text" id="campaign" class="form-control bg-dark text-white border-secondary" placeholder="Ex: BlackFriday, Promoção Maio">
+            </div>
+            <div class="col-md-4">
+                <label class="form-label"><i class="fas fa-id-card"></i> ID do Cliente</label>
+                <input type="text" id="client_id" class="form-control bg-dark text-white border-secondary" placeholder="Ex: CLI-001, joao.silva">
+            </div>
+            <div class="col-md-4">
+                <label class="form-label"><i class="fas fa-envelope"></i> Email (opcional)</label>
+                <input type="email" id="email" class="form-control bg-dark text-white border-secondary" placeholder="cliente@email.com">
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col-12">
+                <button class="btn btn-primary-custom w-100" onclick="gerarToken()">
+                    <i class="fas fa-key"></i> Gerar Token de Tracking
+                </button>
+            </div>
+        </div>
+        
+        <div id="result" style="display:none;">
+            <div class="token-box">
+                <div class="text-end mb-2">
+                    <button class="btn-close-custom" onclick="fecharResultado()">
+                        <i class="fas fa-times"></i> Fechar
+                    </button>
+                </div>
+                <div class="mb-3">
+                    <strong><i class="fas fa-image"></i> Pixel Tracking (imagem 1x1):</strong>
+                    <button class="btn-copy" onclick="copiarTexto('pixelUrl')"><i class="fas fa-copy"></i> Copiar</button>
+                    <div><code id="pixelUrl" class="token-text text-info"></code></div>
+                    <small class="text-secondary">Cole esta tag no HTML do email</small>
+                </div>
+                <div class="mb-3">
+                    <strong><i class="fas fa-link"></i> Link para o cliente (CURTO):</strong>
+                    <button class="btn-copy" onclick="copiarTexto('clickUrl')"><i class="fas fa-copy"></i> Copiar</button>
+                    <div><code id="clickUrl" class="token-text text-success"></code></div>
+                    <small class="text-secondary">Link encurtado profissional - use este no email</small>
+                </div>
+                <div>
+                    <strong><i class="fas fa-code"></i> Código HTML completo:</strong>
+                    <button class="btn-copy" onclick="copiarTexto('emailHtml')"><i class="fas fa-copy"></i> Copiar</button>
+                    <textarea id="emailHtml" class="form-control bg-dark text-white border-secondary mt-2" rows="4" readonly></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Ferramentas de Gestão -->
+    <div class="card-dark">
+        <h5><i class="fas fa-tools"></i> Ferramentas de Gestão</h5>
+        <div class="row">
+            <div class="col-md-6">
+                <button class="btn btn-warning-custom w-100" onclick="exportarRelatorio()">
+                    <i class="fas fa-download"></i> Exportar Relatório do Dia (CSV)
+                </button>
+            </div>
+            <div class="col-md-6">
+                <button class="btn btn-danger-custom w-100" onclick="confirmarResetDia()">
+                    <i class="fas fa-trash-alt"></i> Zerar Contador do Dia
+                </button>
+            </div>
+        </div>
+        <div id="resetConfirmBox" class="reset-confirm text-center">
+            <p><i class="fas fa-exclamation-triangle"></i> <strong>ATENÇÃO!</strong> Isso irá remover TODOS os registros de tracking do dia atual.</p>
+            <p>Esta ação não pode ser desfeita.</p>
+            <button class="btn btn-light btn-sm" onclick="executarResetDia()">✅ Confirmar Reset</button>
+            <button class="btn btn-secondary btn-sm" onclick="cancelarReset()">❌ Cancelar</button>
+        </div>
+        <div class="alert alert-warning mt-3 mb-0" style="background:#2a2d35; border-color:#ffc107; color:#ffc107; font-size:0.85rem;">
+            <i class="fas fa-info-circle"></i> O "Zerar Contador do Dia" remove apenas os dados de HOJE. Os históricos anteriores permanecem intactos.
+        </div>
+    </div>
+
+    <!-- Últimas Interações -->
+    <div class="card-dark">
+        <h5><i class="fas fa-history"></i> Últimas Interações (hoje)</h5>
+        <div class="table-responsive">
+            <table class="table table-dark table-hover">
+                <thead>
+                    <tr>
+                        <th>Tipo</th><th>Data/Hora</th><th>IP</th><th>Dispositivo</th><th>Campanha</th><th>Cliente</th><th>Detalhe</th>
+                    </tr>
+                </thead>
+                <tbody id="tabelaInteracoes">
+                    {% for item in latest_interactions %}
+                    <tr>
+                        <td>{% if item.event_type == 'open' %}<span class="badge badge-open">Abertura</span>{% elif item.event_type == 'click' %}<span class="badge badge-click">Clique</span>{% else %}<span class="badge badge-access">Acesso</span>{% endif %}</td>
+                        <td><small>{{ item.dt }}</small></td>
+                        <td><small>{{ item.ip }}</small></td>
+                        <td>{{ item.device }}</td>
+                        <td>{{ item.campaign or '-' }}</td>
+                        <td>{{ item.client_id or '-' }}</td>
+                        <td><small>{{ item.detail }}</small></td>
+                    </tr>
+                    {% else %}
+                    <td><td colspan="7" class="text-center text-secondary">Nenhuma interação registrada hoje</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+// Mostrar data atual
+function atualizarData() {
+    document.getElementById('dataAtual').innerHTML = new Date().toLocaleString('pt-BR');
+}
+setInterval(atualizarData, 1000);
+atualizarData();
+
+// Fechar resultado (mantém o resultado visível até clicar no botão)
+function fecharResultado() {
+    document.getElementById('result').style.display = 'none';
+    document.getElementById('campaign').value = '';
+    document.getElementById('client_id').value = '';
+    document.getElementById('email').value = '';
+}
+
+// Gerar Token
+async function gerarToken() {
+    const campaign = document.getElementById('campaign').value.trim();
+    const client_id = document.getElementById('client_id').value.trim();
+    const email = document.getElementById('email').value.trim();
+    
+    if (!campaign || !client_id) {
+        alert('❌ Preencha os campos: Nome da Campanha e ID do Cliente');
+        return;
+    }
+    
+    const btn = event.target;
+    const originalText = btn.innerHTML;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Gerando...';
+    btn.disabled = true;
+    
+    try {
+        const res = await fetch('/api/generate_token', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                operator: '{{ operador }}',
+                campaign: campaign,
+                client_id: client_id,
+                email: email
+            })
+        });
+        
+        const data = await res.json();
+        if (data.success) {
+            const linkCurto = data.click_url_base;
+            
+            document.getElementById('pixelUrl').innerText = data.pixel_url;
+            document.getElementById('clickUrl').innerText = linkCurto;
+            
+            const emailHtml = `<img src="${data.pixel_url}" width="1" height="1" style="display:none">
+<br>
+<a href="${linkCurto}" style="background:#f05929;color:#fff;padding:12px 24px;border-radius:8px;text-decoration:none;display:inline-block">Clique aqui para acessar</a>`;
+            
+            document.getElementById('emailHtml').value = emailHtml;
+            document.getElementById('result').style.display = 'block';
+            
+            document.getElementById('campaign').value = '';
+            document.getElementById('client_id').value = '';
+            document.getElementById('email').value = '';
+            
+            alert('✅ Token gerado com sucesso!');
+            
+            // Recarregar estatísticas
+            carregarStatsHoje();
+            setTimeout(() => location.reload(), 120000);
+        } else {
+            alert('❌ Erro: ' + data.message);
+        }
+    } catch (err) {
+        alert('❌ Erro ao gerar token: ' + err.message);
+    } finally {
+        btn.innerHTML = originalText;
+        btn.disabled = false;
+    }
+}
+
+// Copiar texto
+function copiarTexto(id) {
+    const el = document.getElementById(id);
+    const texto = el.tagName === 'TEXTAREA' ? el.value : el.innerText;
+    navigator.clipboard.writeText(texto);
+    alert('✅ Copiado para a área de transferência!');
+}
+
+// Carregar estatísticas do dia
+async function carregarStatsHoje() {
+    try {
+        const res = await fetch(`/api/daily_stats?operador={{ operador }}`);
+        const data = await res.json();
+        document.getElementById('todaySent').innerText = data.sent || 0;
+        document.getElementById('todayOpens').innerText = data.opens || 0;
+        document.getElementById('todayClicks').innerText = data.clicks || 0;
+    } catch (err) {
+        console.error('Erro ao carregar stats:', err);
+    }
+}
+
+// Confirmar reset do dia
+function confirmarResetDia() {
+    const box = document.getElementById('resetConfirmBox');
+    if (box.style.display === 'none' || box.style.display === '') {
+        box.style.display = 'block';
+    } else {
+        box.style.display = 'none';
+    }
+}
+
+function cancelarReset() {
+    document.getElementById('resetConfirmBox').style.display = 'none';
+}
+
+// Executar reset do dia
+async function executarResetDia() {
+    if (!confirm('⚠️ ÚLTIMA CONFIRMAÇÃO: Tem certeza que deseja remover TODOS os dados de tracking de HOJE?\n\nEsta ação não pode ser desfeita!')) {
+        document.getElementById('resetConfirmBox').style.display = 'none';
+        return;
+    }
+    
+    try {
+        const res = await fetch('/api/clear_tracking', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({ operator: '{{ operador }}' })
+        });
+        
+        const data = await res.json();
+        if (data.success) {
+            alert('✅ Dados do dia limpos com sucesso!\n\n' + data.message);
+            document.getElementById('resetConfirmBox').style.display = 'none';
+            carregarStatsHoje();
+            setTimeout(() => location.reload(), 1000);
+        } else {
+            alert('❌ Erro: ' + data.message);
+        }
+    } catch (err) {
+        alert('❌ Erro ao limpar dados: ' + err.message);
+    }
+}
+
+// Exportar Relatório
+async function exportarRelatorio() {
+    try {
+        const res = await fetch(`/api/export_tracking?operador={{ operador }}`);
+        const data = await res.json();
+        let csv = "Tipo,Data/Hora,IP,Dispositivo,Campanha,Cliente,Detalhe\n";
+        data.forEach(item => {
+            csv += `"${item.event_type}","${item.dt}","${item.ip}","${item.device}","${item.campaign || ''}","${item.client_id || ''}","${item.detail}"\n`;
+        });
+        const blob = new Blob([csv], {type: 'text/csv;charset=utf-8'});
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = `tracking_${new Date().toISOString().split('T')[0]}.csv`;
+        link.click();
+        alert('✅ Relatório exportado com sucesso!');
+    } catch (err) {
+        alert('❌ Erro ao exportar: ' + err.message);
+    }
+}
+
+// Inicializar
+carregarStatsHoje();
+
+// Auto-refresh a cada 60 segundos
+setInterval(() => location.reload(), 60000);
+</script>
+</body>
+</html>
