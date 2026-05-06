@@ -90,7 +90,7 @@
         <thead>
           <tr>
             <th>#</th>
-            <th>Data</th>
+            <th>Data/Hora</th>
             <th>IP</th>
             <th>Sistema</th>
             <th>Dispositivo</th>
@@ -112,38 +112,53 @@
 <script>
 let logs = []
 
-function formatarDataBR(dataString) {
+function formatarDataHora(dataString) {
   if (!dataString) return "-"
-
-  // garante compatibilidade
-  const data = new Date(dataString.replace(" ", "T"))
-
-  if (isNaN(data)) return dataString
-
-  const dia = String(data.getDate()).padStart(2, "0")
-  const mes = String(data.getMonth() + 1).padStart(2, "0")
-  const ano = data.getFullYear()
-
-  return `${dia}/${mes}/${ano}`
+  
+  // O timestamp já vem no formato "YYYY-MM-DD HH:MM:SS"
+  // Se tiver o formato "2026-05-06 00:34:35"
+  if (dataString.includes(' ')) {
+    const [data, hora] = dataString.split(' ')
+    const partesData = data.split('-')
+    if (partesData.length === 3) {
+      return `${partesData[2]}/${partesData[1]}/${partesData[0]} ${hora}`
+    }
+  }
+  
+  return dataString
 }
 
 async function carregarLogs() {
   const filtro = document.getElementById('filtroOS').value
 
   try {
-    const res = await fetch('/logs')
+    // CORREÇÃO: usar /api/logs ao invés de /logs
+    const res = await fetch('/api/logs?limit=200')
+    
+    if (!res.ok) {
+      throw new Error(`HTTP ${res.status}`)
+    }
+    
     logs = await res.json()
-
+    console.log('Logs carregados:', logs.length) // Debug
+    
     renderizar(filtro)
 
   } catch (e) {
-    alert('Erro ao carregar logs')
+    console.error('Erro ao carregar logs:', e)
+    const tbody = document.getElementById('tbody')
+    tbody.innerHTML = `<tr><td colspan="7" class="text-center text-danger">Erro ao carregar logs: ${e.message}</td></tr>`
   }
 }
 
 function renderizar(filtro) {
   const tbody = document.getElementById('tbody')
   tbody.innerHTML = ''
+
+  if (!logs || logs.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="7" class="text-center text-secondary">Nenhum log encontrado</td></tr>`
+    return
+  }
 
   let filtrados = logs
 
@@ -152,28 +167,29 @@ function renderizar(filtro) {
   }
 
   if (filtrados.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="7" class="text-center">Sem dados</td></tr>`
+    tbody.innerHTML = `<tr><td colspan="7" class="text-center text-secondary">Sem dados para o filtro selecionado</td></tr>`
     return
   }
 
   let html = ""
 
   filtrados.forEach((log, i) => {
-
-    let badge = ''
-    if (log.os === 'Android') badge = 'badge-android'
-    else if (log.os === 'iOS') badge = 'badge-ios'
-    else badge = 'badge-desktop'
+    let badgeClass = ''
+    let badgeText = log.os || 'Desconhecido'
+    
+    if (badgeText === 'Android') badgeClass = 'badge-android'
+    else if (badgeText === 'iOS') badgeClass = 'badge-ios'
+    else badgeClass = 'badge-desktop'
 
     html += `
       <tr>
         <td>${i + 1}</td>
-        <td>${formatarDataBR(log.timestamp)}</td>
-        <td>${log.ip}</td>
-        <td><span class="badge ${badge}">${log.os}</span></td>
-        <td>${log.device}</td>
-        <td>${log.browser}</td>
-        <td>${log.rota}</td>
+        <td>${formatarDataHora(log.timestamp)}</td>
+        <td>${log.ip || '-'}</td>
+        <td><span class="badge ${badgeClass}">${badgeText}</span></td>
+        <td>${log.device || '-'}</td>
+        <td>${log.browser || '-'}</td>
+        <td>${log.rota || '-'}</td>
       </tr>
     `
   })
@@ -181,12 +197,15 @@ function renderizar(filtro) {
   tbody.innerHTML = html
 }
 
+// Filtro dinâmico
 document.getElementById('filtroOS').addEventListener('change', () => {
   renderizar(document.getElementById('filtroOS').value)
 })
 
-setInterval(carregarLogs, 5000)
+// Auto-refresh a cada 10 segundos (menos agressivo)
+setInterval(carregarLogs, 10000)
 
+// Carrega logs ao iniciar
 carregarLogs()
 </script>
 

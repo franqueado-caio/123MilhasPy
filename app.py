@@ -383,16 +383,17 @@ def login():
 def carteira():
     return render_template("carteira.html")
 
-
 @app.route("/transferir")
 def transferir():
     return render_template("transferir.html")
-
 
 @app.route("/puxada_master")
 def puxada_master():
     return render_template("puxada_master.html")
 
+@app.route("/logs")
+def logs_page():
+    return render_template("logs.html")
 
 # =========================
 # API CLIENTE
