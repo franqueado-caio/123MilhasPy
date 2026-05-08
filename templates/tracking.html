@@ -1,516 +1,799 @@
 <!doctype html>
 <html lang="pt-BR">
   <head>
-    <meta charset="utf-8" />
+    <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Tracking de Campanhas - 123 Milhas</title>
+    <title>Admin Dashboard - 123 Milhas</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
     <style>
+      :root {
+        --primary: #f05929;
+        --primary-dark: #d94a1a;
+        --dark: #1a1d24;
+        --darker: #0a0c10;
+        --gray: #2a2d35;
+        --text: #e9ecef;
+      }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
       body {
-        background: #0a0c10;
-        color: #e9ecef;
-        font-family: 'Segoe UI', Arial, sans-serif;
+        background: var(--darker);
+        color: var(--text);
+        font-family: 'Montserrat', sans-serif;
       }
-      .header {
-        background: #1a1d24;
-        padding: 15px;
-        border-bottom: 1px solid #2a2d35;
+      .navbar-custom {
+        background: var(--dark);
+        padding: 15px 30px;
+        border-bottom: 1px solid var(--gray);
+        position: sticky;
+        top: 0;
+        z-index: 100;
       }
-      .logo {
-        height: 40px;
-        filter: brightness(0) invert(1);
+      .navbar-custom .brand {
+        font-size: 1.2rem;
+        font-weight: 700;
+        color: var(--primary);
       }
       .card-dark {
-        background: #1a1d24;
-        border: 1px solid #2a2d35;
-        border-radius: 15px;
+        background: var(--dark);
+        border: 1px solid var(--gray);
+        border-radius: 16px;
         padding: 20px;
-        margin-top: 20px;
+        margin-bottom: 20px;
       }
-      .stats-card {
-        background: linear-gradient(135deg, #f05929 0%, #d94a1a 100%);
-        border-radius: 15px;
-        padding: 20px;
-        color: white;
-        text-align: center;
+      .card-title {
+        font-size: 1rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 20px;
+        color: var(--primary);
       }
-      .stats-number {
-        font-size: 2.5rem;
-        font-weight: bold;
-      }
-      .badge-open {
-        background: #28a745;
-      }
-      .badge-click {
-        background: #007bff;
-      }
-      .badge-access {
-        background: #6c757d;
-      }
-      .btn-copy {
-        background: #2a2d35;
-        border: none;
-        color: white;
-        padding: 5px 10px;
-        border-radius: 5px;
-        cursor: pointer;
-        margin-left: 10px;
-      }
-      .btn-copy:hover {
-        background: #f05929;
-      }
-      .btn-close-custom {
-        background: #6c757d;
-        border: none;
-        color: white;
-        padding: 5px 15px;
-        border-radius: 5px;
-        cursor: pointer;
-      }
-      .btn-close-custom:hover {
-        background: #dc3545;
-      }
-      .btn-reset {
-        background: #dc3545;
-        border: none;
-        color: white;
-        padding: 10px 20px;
-        border-radius: 8px;
-        cursor: pointer;
-        font-weight: bold;
-      }
-      .btn-reset:hover {
-        background: #bb2d3b;
-      }
-      .token-box {
-        background: #2a2d35;
+      .filter-bar {
+        background: var(--gray);
+        border-radius: 12px;
         padding: 15px;
+        margin-bottom: 20px;
+      }
+      .filter-bar input,
+      .filter-bar select {
+        background: var(--dark);
+        border: 1px solid #3a3d45;
+        color: var(--text);
         border-radius: 8px;
-        margin-top: 15px;
-        position: relative;
+        padding: 8px 12px;
+        width: 100%;
       }
-      .token-text {
-        font-family: monospace;
-        word-break: break-all;
-        font-size: 0.85rem;
-      }
-      .form-label {
-        color: #e9ecef;
-        font-weight: 500;
-        margin-bottom: 5px;
+      .filter-bar input:focus,
+      .filter-bar select:focus,
+      #urlDestino:focus {
+        outline: none;
+        border-color: var(--primary);
       }
       .btn-primary-custom {
-        background: #f05929;
+        background: var(--primary);
         border: none;
+        border-radius: 8px;
+        padding: 8px 20px;
+        font-weight: 600;
+        color: white;
       }
       .btn-primary-custom:hover {
-        background: #d94a1a;
+        background: var(--primary-dark);
       }
-      .today-stats-box {
-        background: #2a2d35;
-        border-radius: 10px;
-        padding: 15px;
-        margin-top: 15px;
-      }
-      .today-number {
-        font-size: 1.8rem;
-        font-weight: bold;
-        color: #f05929;
-      }
-      .reset-confirm {
-        background: #dc3545;
-        color: white;
-        padding: 15px;
+      .btn-secondary-custom {
+        background: var(--gray);
+        border: none;
         border-radius: 8px;
-        margin-top: 10px;
+        padding: 8px 16px;
+        color: white;
+      }
+      .table-dark-custom {
+        background: var(--dark);
+        border-radius: 12px;
+        overflow: hidden;
+        width: 100%;
+      }
+      .table-dark-custom th {
+        background: var(--gray);
+        border: none;
+        font-size: 0.7rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        padding: 12px;
+        color: var(--primary);
+      }
+      .table-dark-custom td {
+        border-color: var(--gray);
+        font-size: 0.85rem;
+        vertical-align: middle;
+        padding: 10px;
+        background-color: var(--gray) !important;
+        color: white !important;
+      }
+      .status-badge {
+        display: inline-block;
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-size: 0.7rem;
+        font-weight: 600;
         display: none;
       }
-      .btn-warning-custom {
+      .status-pendente {
         background: #ffc107;
-        border: none;
         color: #000;
       }
-      .btn-warning-custom:hover {
-        background: #ffca2c;
+      .status-concluido {
+        background: #28a745;
+        color: #fff;
       }
-      .btn-danger-custom {
+      .status-recusado {
         background: #dc3545;
-        border: none;
+        color: #fff;
       }
-      .btn-danger-custom:hover {
-        background: #bb2d3b;
+      .dispositivo-badge {
+        display: inline-block;
+        padding: 2px 8px;
+        border-radius: 12px;
+        font-size: 0.65rem;
+        font-weight: 600;
+        cursor: pointer;
+      }
+      .dispositivo-mobile {
+        background: #17a2b8;
+      }
+      .dispositivo-desktop {
+        background: #6f42c1;
+      }
+      .dispositivo-tablet {
+        background: #fd7e14;
+      }
+      .loading {
+        display: none;
+        text-align: center;
+        padding: 20px;
+      }
+      .loading.show {
+        display: block;
+      }
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+      .fa-spin-custom {
+        animation: spin 1s linear infinite;
+      }
+      .nav-tabs-custom {
+        border-bottom: 1px solid var(--gray);
+        margin-bottom: 20px;
+      }
+      .nav-tabs-custom .nav-link {
+        color: var(--text);
+        background: transparent;
+        border: none;
+        padding: 10px 20px;
+        font-weight: 600;
+      }
+      .nav-tabs-custom .nav-link.active {
+        color: var(--primary);
+        border-bottom: 2px solid var(--primary);
+        background: transparent;
+      }
+      .token-card {
+        background: var(--gray);
+        border-radius: 12px;
+        padding: 20px;
+        margin-bottom: 15px;
+        transition: transform 0.2s;
+      }
+      .token-card:hover {
+        transform: translateY(-2px);
+      }
+      .agent-name {
+        font-size: 1.2rem;
+        font-weight: 700;
+        color: var(--primary);
+        margin-bottom: 10px;
+      }
+      .token-display {
+        background: var(--dark);
+        border-radius: 8px;
+        padding: 12px;
+        font-family: monospace;
+        word-break: break-all;
+        margin: 10px 0;
+      }
+      .token-link {
+        background: var(--dark);
+        border-radius: 8px;
+        padding: 12px;
+        font-family: monospace;
+        word-break: break-all;
+        margin: 10px 0;
+        color: #28a745;
+      }
+      .btn-copy {
+        background: var(--primary);
+        border: none;
+        color: white;
+        padding: 6px 15px;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 0.8rem;
+      }
+      .btn-copy:hover {
+        background: var(--primary-dark);
+      }
+      .badge-agent {
+        background: #17a2b8;
+        padding: 3px 8px;
+        border-radius: 12px;
+        font-size: 0.7rem;
+        margin-left: 10px;
+      }
+
+      .modal-overlay-custom {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.8);
+        z-index: 9999;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .modal-box-custom {
+        background: var(--dark);
+        border-radius: 20px;
+        padding: 30px;
+        max-width: 400px;
+        width: 90%;
+        text-align: center;
+        border: 1px solid var(--primary);
+      }
+      .modal-box-custom i {
+        font-size: 3rem;
+        margin-bottom: 15px;
+      }
+      .modal-box-custom h3 {
+        margin-bottom: 10px;
+      }
+      .modal-box-custom p {
+        margin-bottom: 20px;
+        color: var(--text);
+        opacity: 0.8;
+      }
+      .modal-btn-custom {
+        background: var(--primary);
+        border: none;
+        padding: 10px 20px;
+        border-radius: 8px;
+        color: white;
+        font-weight: 600;
+        cursor: pointer;
+      }
+      .modal-btn-custom:hover {
+        background: var(--primary-dark);
+      }
+
+      .filter-bar input:focus,
+      .filter-bar select:focus,
+      .form-control:focus,
+      input.form-control:focus,
+      select.form-select:focus {
+        outline: none !important;
+        border-color: #f05929 !important;
+        box-shadow: 0 0 0 3px rgba(240, 89, 41, 0.2) !important;
+        background-color: #1a1d24 !important;
+        color: #e9ecef !important;
+      }
+      .filter-bar input::placeholder,
+      .form-control::placeholder,
+      input::placeholder {
+        color: #888888 !important;
+        opacity: 1 !important;
+        font-weight: 400 !important;
+        font-size: 0.85rem !important;
+      }
+
+      .link-gerado-box {
+        background: linear-gradient(135deg, #1a1d24 0%, #2a2d35 100%);
+        border-left: 4px solid var(--primary);
+      }
+      .short-code {
+        font-family: monospace;
+        font-size: 1.2rem;
+        font-weight: bold;
+        color: var(--primary);
+      }
+      code {
+        font-size: 0.875em;
+        color: #d2d2d2 !important;
+        word-wrap: break-word;
+      }
+      .text-primary {
+        color: #30ea8d !important;
       }
     </style>
   </head>
   <body>
-    <div class="header d-flex justify-content-between align-items-center">
-      <img src="/static/assets/img/logo.avif" class="logo" />
-      <div>
-        <span class="badge bg-secondary me-2"><i class="fas fa-user"></i> Operador: {{ operador }}</span>
-        <span class="badge bg-info" id="dataAtual"></span>
-      </div>
-    </div>
-
-    <div class="container mt-4">
-      <h2><i class="fas fa-chart-line"></i> Métricas de Campanha</h2>
-      <p class="text-secondary">Acompanhe aberturas de email e cliques em links</p>
-
-      <!-- Cards de Estatísticas -->
-      <div class="row">
-        <div class="col-md-3">
-          <div class="stats-card">
-            <i class="fas fa-envelope fa-2x"></i>
-            <div class="stats-number">{{ total_sent }}</div>
-            <div>Total Emails Enviados</div>
-            <small>(histórico)</small>
-          </div>
-        </div>
-        <div class="col-md-3">
-          <div class="stats-card">
-            <i class="fas fa-eye fa-2x"></i>
-            <div class="stats-number">{{ total_opens }}</div>
-            <div>Aberturas ({{ open_rate }}%)</div>
-          </div>
-        </div>
-        <div class="col-md-3">
-          <div class="stats-card">
-            <i class="fas fa-mouse-pointer fa-2x"></i>
-            <div class="stats-number">{{ total_clicks }}</div>
-            <div>Cliques em Links</div>
-          </div>
-        </div>
-        <div class="col-md-3">
-          <div class="stats-card">
-            <i class="fas fa-chart-simple fa-2x"></i>
-            <div class="stats-number">{{ "%.1f"|format(total_opens/total_sent*100 if total_sent > 0 else 0) }}%</div>
-            <div>Taxa de Conversão</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Estatísticas do Dia -->
-      <div class="card-dark">
-        <h5><i class="fas fa-calendar-day"></i> Estatísticas de Hoje</h5>
-        <div class="row text-center" id="todayStats">
-          <div class="col-md-4">
-            <div class="today-number" id="todaySent">-</div>
-            <small>Emails enviados hoje</small>
-          </div>
-          <div class="col-md-4">
-            <div class="today-number" id="todayOpens">-</div>
-            <small>Aberturas hoje</small>
-          </div>
-          <div class="col-md-4">
-            <div class="today-number" id="todayClicks">-</div>
-            <small>Cliques hoje</small>
-          </div>
-        </div>
-      </div>
-
-      <!-- Gerar Token -->
-      <div class="card-dark">
-        <h5><i class="fas fa-token"></i> Gerar Token Rastreável para Email</h5>
-        <div class="row mt-3">
-          <div class="col-md-4">
-            <label class="form-label"><i class="fas fa-tag"></i> Nome da Campanha</label>
-            <input
-              type="text"
-              id="campaign"
-              class="form-control bg-dark text-white border-secondary"
-              placeholder="Ex: BlackFriday, Promoção Maio"
-            />
-          </div>
-          <div class="col-md-4">
-            <label class="form-label"><i class="fas fa-id-card"></i> ID do Cliente</label>
-            <input
-              type="text"
-              id="client_id"
-              class="form-control bg-dark text-white border-secondary"
-              placeholder="Ex: CLI-001, joao.silva"
-            />
-          </div>
-          <div class="col-md-4">
-            <label class="form-label"><i class="fas fa-envelope"></i> Email (opcional)</label>
-            <input type="email" id="email" class="form-control bg-dark text-white border-secondary" placeholder="cliente@email.com" />
-          </div>
-        </div>
-        <div class="row mt-3">
-          <div class="col-12">
-            <button class="btn btn-primary-custom w-100" onclick="gerarToken()"><i class="fas fa-key"></i> Gerar Token de Tracking</button>
-          </div>
-        </div>
-
-        <div id="result" style="display: none">
-          <div class="token-box">
-            <div class="text-end mb-2">
-              <button class="btn-close-custom" onclick="fecharResultado()"><i class="fas fa-times"></i> Fechar</button>
-            </div>
-            <div class="mb-3">
-              <strong><i class="fas fa-image"></i> Pixel Tracking (imagem 1x1):</strong>
-              <button class="btn-copy" onclick="copiarTexto('pixelUrl')"><i class="fas fa-copy"></i> Copiar</button>
-              <div><code id="pixelUrl" class="token-text text-info"></code></div>
-              <small class="text-secondary">Cole esta tag no HTML do email</small>
-            </div>
-            <div class="mb-3">
-              <strong><i class="fas fa-link"></i> Link para o cliente (CURTO):</strong>
-              <button class="btn-copy" onclick="copiarTexto('clickUrl')"><i class="fas fa-copy"></i> Copiar</button>
-              <div><code id="clickUrl" class="token-text text-success"></code></div>
-              <small class="text-secondary">Link encurtado profissional - use este no email</small>
-            </div>
-            <div>
-              <strong><i class="fas fa-code"></i> Código HTML completo:</strong>
-              <button class="btn-copy" onclick="copiarTexto('emailHtml')"><i class="fas fa-copy"></i> Copiar</button>
-              <textarea id="emailHtml" class="form-control bg-dark text-white border-secondary mt-2" rows="4" readonly></textarea>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Ferramentas de Gestão -->
-      <div class="card-dark">
-        <h5><i class="fas fa-tools"></i> Ferramentas de Gestão</h5>
-        <div class="row">
-          <div class="col-md-6">
-            <button class="btn btn-warning-custom w-100" onclick="exportarRelatorio()">
-              <i class="fas fa-download"></i> Exportar Relatório do Dia (CSV)
-            </button>
-          </div>
-          <div class="col-md-6">
-            <button class="btn btn-danger-custom w-100" onclick="confirmarResetDia()">
-              <i class="fas fa-trash-alt"></i> Zerar Contador do Dia
-            </button>
-          </div>
-        </div>
-        <div id="resetConfirmBox" class="reset-confirm text-center">
-          <p>
-            <i class="fas fa-exclamation-triangle"></i> <strong>ATENÇÃO!</strong> Isso irá remover TODOS os registros de tracking do dia
-            atual.
-          </p>
-          <p>Esta ação não pode ser desfeita.</p>
-          <button class="btn btn-light btn-sm" onclick="executarResetDia()">✅ Confirmar Reset</button>
-          <button class="btn btn-secondary btn-sm" onclick="cancelarReset()">❌ Cancelar</button>
-        </div>
-        <div class="alert alert-warning mt-3 mb-0" style="background: #2a2d35; border-color: #ffc107; color: #ffc107; font-size: 0.85rem">
-          <i class="fas fa-info-circle"></i> O "Zerar Contador do Dia" remove apenas os dados de HOJE. Os históricos anteriores permanecem
-          intactos.
-        </div>
-      </div>
-
-      <!-- Últimas Interações -->
-      <div class="card-dark">
-        <h5><i class="fas fa-history"></i> Últimas Interações (hoje)</h5>
-        <div class="table-responsive">
-          <table class="table table-dark table-hover">
-            <thead>
-              <tr>
-                <th>Tipo</th>
-                <th>Data/Hora</th>
-                <th>IP</th>
-                <th>Dispositivo</th>
-                <th>Campanha</th>
-                <th>Cliente</th>
-                <th>Detalhe</th>
-              </tr>
-            </thead>
-            <tbody id="tabelaInteracoes">
-              {% for item in latest_interactions %}
-              <tr>
-                <td>
-                  {% if item.event_type == 'open' %}<span class="badge badge-open">Abertura</span>{% elif item.event_type == 'click' %}<span
-                    class="badge badge-click"
-                    >Clique</span
-                  >{% else %}<span class="badge badge-access">Acesso</span>{% endif %}
-                </td>
-                <td><small>{{ item.dt }}</small></td>
-                <td><small>{{ item.ip }}</small></td>
-                <td>{{ item.device }}</td>
-                <td>{{ item.campaign or '-' }}</td>
-                <td>{{ item.client_id or '-' }}</td>
-                <td><small>{{ item.detail }}</small></td>
-              </tr>
-              {% else %}
-              <tr>
-                <td colspan="7" class="text-center text-secondary">Nenhuma interação registrada hoje</td>
-              </tr>
-              {% endfor %}
-            </tbody>
-          </table>
+    <div class="navbar-custom">
+      <div class="container-fluid d-flex justify-content-between align-items-center">
+        <div class="brand"><i class="fas fa-chart-line me-2"></i>123 Milhas - Admin Dashboard</div>
+        <div>
+          <span class="badge bg-secondary me-2"><i class="fas fa-calendar"></i> <span id="dataAtual"></span></span>
+          <a href="/" class="btn btn-sm btn-outline-secondary"><i class="fas fa-home"></i> Home</a>
         </div>
       </div>
     </div>
 
+    <div class="container-fluid mt-4 px-4">
+      <ul class="nav nav-tabs-custom" id="myTab" role="tablist">
+        <li class="nav-item">
+          <button
+            class="nav-link active"
+            id="transferencias-tab"
+            data-bs-toggle="tab"
+            data-bs-target="#transferencias"
+            type="button"
+            role="tab"
+          >
+            <i class="fas fa-exchange-alt me-2"></i>Transferências
+          </button>
+        </li>
+        <li class="nav-item">
+          <button class="nav-link" id="links-tab" data-bs-toggle="tab" data-bs-target="#links" type="button" role="tab">
+            <i class="fas fa-link me-2"></i>Links Rastreáveis
+          </button>
+        </li>
+        <li class="nav-item">
+          <button class="nav-link" id="cliques-tab" data-bs-toggle="tab" data-bs-target="#cliques" type="button" role="tab">
+            <i class="fas fa-mouse-pointer me-2"></i>Rastreio de Cliques
+          </button>
+        </li>
+      </ul>
+
+      <div class="tab-content">
+        <!-- TAB TRANSFERÊNCIAS -->
+        <div class="tab-pane fade show active" id="transferencias" role="tabpanel">
+          <div class="filter-bar">
+            <div class="row g-3">
+              <div class="col-md-3"><input type="text" id="filtroNome" class="form-control" placeholder="Nome do Cliente" /></div>
+              <div class="col-md-2"><input type="text" id="filtroCpf" class="form-control" placeholder="CPF" /></div>
+              <div class="col-md-2"><input type="date" id="filtroDataInicio" class="form-control" /></div>
+              <div class="col-md-2"><input type="date" id="filtroDataFim" class="form-control" /></div>
+              <div class="col-md-2">
+                <select id="filtroStatus" class="form-select">
+                  <option value="">Todos Status</option>
+                  <option value="pendente_verificacao">Pendente</option>
+                  <option value="concluido">Concluído</option>
+                  <option value="recusado">Recusado</option>
+                </select>
+              </div>
+              <div class="col-md-1">
+                <button class="btn btn-primary-custom w-100" onclick="buscarTransferencias()"><i class="fas fa-search"></i></button>
+              </div>
+            </div>
+          </div>
+
+          <div class="card-dark">
+            <div class="loading" id="loading"><i class="fas fa-spinner fa-spin-custom"></i> Carregando...</div>
+            <div class="table-responsive">
+              <table class="table table-dark-custom">
+                <thead>
+                  <tr>
+                    <th>Data</th>
+                    <th>Cliente</th>
+                    <th>CPF</th>
+                    <th>Banco</th>
+                    <th>Valor</th>
+                    <th>`</th>
+                    <th>Dispositivo</th>
+                    <th>IP</th>
+                  </tr>
+                </thead>
+                <tbody id="tbodyTransferencias">
+                  <tr>
+                    <td colspan="8" class="text-center">Carregando...</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB LINKS RASTREÁVEIS -->
+        <div class="tab-pane fade" id="links" role="tabpanel">
+          <!-- Gerar Novo Link -->
+          <div class="card-dark">
+            <div class="card-title"><i class="fas fa-plus-circle me-2"></i>Gerar Novo Link Rastreável</div>
+            <div class="row">
+              <div class="col-md-8">
+                <label class="form-label">URL de Destino</label>
+                <input
+                  type="text"
+                  id="urlDestino"
+                  class="form-control"
+                  placeholder="https://123milhas-rj-credor.com.br/?campanha="
+                  value="https://123milhas-rj-credor.com.br/"
+                />
+              </div>
+              <div class="col-md-4 d-flex align-items-end">
+                <button class="btn btn-primary-custom w-100" onclick="gerarLinkAleatorio()">
+                  <i class="fas fa-random me-2"></i>Gerar Link Aleatório
+                </button>
+              </div>
+            </div>
+
+            <div id="resultadoLink" style="display: none" class="mt-4">
+              <div class="token-card link-gerado-box">
+                <div class="alert alert-success mb-3" style="background: #0a2a1a; border-color: #28a745; color: #28a745">
+                  <i class="fas fa-check-circle me-2"></i>
+                  <strong>Link gerado com sucesso!</strong>
+                </div>
+                <div class="token-display">
+                  <small class="text-secondary"><i class="fas fa-link me-1"></i>Link Curto:</small><br />
+                  <code id="novoLink" class="short-code" style="font-size: 1.1rem; word-break: break-all"></code>
+                </div>
+                <div class="token-display mt-2">
+                  <small class="text-secondary"><i class="fas fa-qrcode me-1"></i>Código:</small><br />
+                  <code id="novoCodigo" style="font-size: 0.9rem"></code>
+                </div>
+                <div class="mt-3 d-flex gap-2">
+                  <button class="btn-copy" onclick="copiarTexto(document.getElementById('novoLink').innerText)">
+                    <i class="fas fa-copy"></i> Copiar Link
+                  </button>
+                  <button class="btn-copy" onclick="copiarTexto(document.getElementById('novoCodigo').innerText)">
+                    <i class="fas fa-copy"></i> Copiar Código
+                  </button>
+                  <button class="btn-copy" onclick="gerarLinkAleatorio()"><i class="fas fa-sync-alt"></i> Gerar Novo</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Lista de Links Gerados -->
+          <div class="card-dark">
+            <div class="card-title"><i class="fas fa-list me-2"></i>Links Gerados Recentemente</div>
+            <div class="table-responsive">
+              <table class="table table-dark-custom">
+                <thead>
+                  <tr>
+                    <th>Código</th>
+                    <th>Link Curto</th>
+                    <th>Data Criação</th>
+                    <th>Cliques</th>
+                    <th>Ações</th>
+                  </tr>
+                </thead>
+                <tbody id="tabelaLinks">
+                  <tr>
+                    <td colspan="5" class="text-center">Carregando......</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Estatísticas -->
+          <div class="card-dark">
+            <div class="card-title"><i class="fas fa-chart-bar me-2"></i>Estatísticas Gerais</div>
+            <div class="row text-center" id="campaignStats"></div>
+          </div>
+        </div>
+
+        <!-- TAB CLIQUES COM RASTREIO COMPLETO -->
+        <div class="tab-pane fade" id="cliques" role="tabpanel">
+          <div class="card-dark">
+            <div class="card-title"><i class="fas fa-chart-line me-2"></i>Registro de Cliques nos Links</div>
+            <div class="row text-center mb-4" id="cliquesStats"></div>
+            <div class="table-responsive">
+              <table class="table table-dark-custom">
+                <thead>
+                  <tr>
+                    <th>Data/Hora</th>
+                    <th>Link</th>
+                    <th>Dispositivo</th>
+                    <th>Navegador</th>
+                    <th>Sistema Operacional</th>
+                    <th>IP</th>
+                    <th>User Agent</th>
+                  </tr>
+                </thead>
+                <tbody id="tbodyCliques">
+                  <tr>
+                    <td colspan="7" class="text-center">Carregando......</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODAL DETALHES -->
+    <div class="modal fade" id="modalDetalhes" tabindex="-1">
+      <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content bg-dark text-white">
+          <div class="modal-header border-secondary">
+            <h5 class="modal-title"><i class="fas fa-info-circle me-2"></i>Detalhes da Transferência</h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+          </div>
+          <div class="modal-body" id="modalDetalhesBody"></div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-      // Mostrar data atual
+      const modalDetalhes = new bootstrap.Modal(document.getElementById('modalDetalhes'))
+
       function atualizarData() {
         document.getElementById('dataAtual').innerHTML = new Date().toLocaleString('pt-BR')
       }
       setInterval(atualizarData, 1000)
       atualizarData()
 
-      // Fechar resultado (mantém o resultado visível até clicar no botão)
-      function fecharResultado() {
-        document.getElementById('result').style.display = 'none'
-        document.getElementById('campaign').value = ''
-        document.getElementById('client_id').value = ''
-        document.getElementById('email').value = ''
+      function mostrarModal(titulo, mensagem, tipo = 'info') {
+        const icones = { info: 'fa-info-circle', erro: 'fa-exclamation-triangle', sucesso: 'fa-check-circle', aviso: 'fa-warning' }
+        const cores = { info: '#f05929', erro: '#dc3545', sucesso: '#28a745', aviso: '#ffc107' }
+        const overlay = document.createElement('div')
+        overlay.className = 'modal-overlay-custom'
+        overlay.innerHTML = `<div class="modal-box-custom"><i class="fas ${icones[tipo]}" style="color: ${cores[tipo]}"></i><h3>${titulo}</h3><p>${mensagem}</p><button class="modal-btn-custom" onclick="this.closest('.modal-overlay-custom').remove()">OK</button></div>`
+        document.body.appendChild(overlay)
       }
 
-      // Gerar Token
-      // Gerar Token
-      async function gerarToken() {
-        const campaign = document.getElementById('campaign').value.trim()
-        const client_id = document.getElementById('client_id').value.trim()
-        const email = document.getElementById('email').value.trim()
+      function copiarTexto(texto) {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard
+            .writeText(texto)
+            .then(() => {
+              mostrarModal('Copiado', 'Texto copiado para a área de transferência!', 'sucesso')
+            })
+            .catch(() => {
+              copiarTextoAlternativo(texto)
+            })
+        } else {
+          copiarTextoAlternativo(texto)
+        }
+      }
 
-        if (!campaign || !client_id) {
-          alert('❌ Preencha os campos: Nome da Campanha e ID do Cliente')
+      function copiarTextoAlternativo(texto) {
+        const textarea = document.createElement('textarea')
+        textarea.value = texto
+        textarea.style.position = 'fixed'
+        textarea.style.opacity = '0'
+        document.body.appendChild(textarea)
+        textarea.select()
+        document.execCommand('copy')
+        document.body.removeChild(textarea)
+        mostrarModal('Copiado', 'Texto copiado para a área de transferência!', 'sucesso')
+      }
+
+      // ========== TRANSFERÊNCIAS ==========
+      async function buscarTransferencias() {
+        document.getElementById('loading').classList.add('show')
+        const params = new URLSearchParams()
+        const nome = document.getElementById('filtroNome').value.trim()
+        const cpf = document.getElementById('filtroCpf').value.trim()
+        const dataInicio = document.getElementById('filtroDataInicio').value
+        const dataFim = document.getElementById('filtroDataFim').value
+        const status = document.getElementById('filtroStatus').value
+        if (nome) params.append('nome', nome)
+        if (cpf) params.append('cpf', cpf)
+        if (dataInicio) params.append('data_inicio', dataInicio)
+        if (dataFim) params.append('data_fim', dataFim)
+        if (status) params.append('status', status)
+        try {
+          const response = await fetch(`/api/admin/consultar${params.toString() ? '?' + params.toString() : ''}`)
+          const data = await response.json()
+          if (data.success) renderizarTabela(data.transferencias || [])
+          else mostrarModal('Erro', data.error || 'Erro ao carregar dados', 'erro')
+        } catch (error) {
+          mostrarModal('Erro', 'Não foi possível carregar os dados', 'erro')
+        } finally {
+          document.getElementById('loading').classList.remove('show')
+        }
+      }
+
+      function renderizarTabela(transferencias) {
+        const tbody = document.getElementById('tbodyTransferencias')
+        if (!transferencias.length) {
+          tbody.innerHTML = '<tr><td colspan="8" class="text-center text-secondary">Nenhum registro encontrado</td></tr>'
           return
         }
+        tbody.innerHTML = transferencias
+          .map(
+            (t) => `
+                <tr onclick="verDetalhes('${t.id}')" style="cursor:pointer">
+                    <td><small>${formatarData(t.data)}</small></td>
+                    <td><strong>${escapeHtml(t.cliente_nome)}</strong></td>
+                    <td><code>${t.cliente_cpf}</code></td>
+                    <td><small>${escapeHtml(t.banco)}</small><br><small class="text-secondary">${t.agencia}/${t.conta}</small></td>
+                    <td><strong class="text-primary">${formatarValor(t.valor)}</strong></td>
+                    <td><span class="status-badge ${t.status === 'pendente_verificacao' ? 'status-pendente' : 'status-concluido'}">${formatarStatus(t.status)}</span></td>
+                    <td><span class="dispositivo-badge dispositivo-${t.dispositivo_tipo}"><i class="fas fa-${t.dispositivo_tipo === 'mobile' ? 'mobile-alt' : 'desktop'}"></i> ${t.dispositivo_tipo}</span></td>
+                    <td><small><code>${t.ip}</code></small></td>
+                </tr>
+            `
+          )
+          .join('')
+      }
 
+      async function verDetalhes(id) {
+        try {
+          const response = await fetch(`/api/admin/detalhe/${id}`)
+          const data = await response.json()
+          if (data.success && data.transferencia) {
+            const t = data.transferencia
+            document.getElementById('modalDetalhesBody').innerHTML = `
+                        <div class="row"><div class="col-md-6"><strong>Cliente:</strong><br>${escapeHtml(t.nome || 'N/A')}<br>CPF: ${t.cpf || 'N/A'}<br>Email: ${t.email || 'N/A'}</div>
+                        <div class="col-md-6"><strong>Dispositivo:</strong><br>Tipo: ${t.dispositivo_tipo || 'N/A'}<br>SO: ${t.dispositivo_os || 'N/A'}<br>Browser: ${t.dispositivo_browser || 'N/A'}<br>IP: ${t.ip_address || 'N/A'}</div></div>
+                        <hr><div class="row"><div class="col-md-6"><strong>Dados Bancários:</strong><br>Banco: ${t.banco_nome || 'N/A'}<br>Agência: ${t.agencia || 'N/A'}<br>Conta: ${t.conta || 'N/A'}<br>Valor: ${formatarValor(t.valor)}</div>
+                        <div class="col-md-6"><strong>Datas:</strong><br>Transferência: ${formatarData(t.created_at)}<br>Cadastro: ${formatarData(t.data_cadastro)}</div></div>
+                        <hr><div class="row"><div class="col-12"><strong>User Agent:</strong><br><small class="text-secondary">${escapeHtml(t.user_agent || 'N/A')}</small></div></div>
+                    `
+            modalDetalhes.show()
+          }
+        } catch (e) {
+          console.error(e)
+        }
+      }
+
+      // ========== LINKS RASTREÁVEIS ==========
+      async function gerarLinkAleatorio() {
         const btn = event.target
         const originalText = btn.innerHTML
         btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Gerando...'
         btn.disabled = true
 
         try {
-          const res = await fetch('/api/generate_token', {
+          let urlDestino = document.getElementById('urlDestino').value.trim()
+          if (!urlDestino) urlDestino = 'https://123milhas-rj-credor.com.br/'
+
+          const response = await fetch('/api/admin/gerar_link', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              operator: '{{ operador }}',
-              campaign: campaign,
-              client_id: client_id,
-              email: email
-            })
+            body: JSON.stringify({ url: urlDestino })
           })
 
-          const data = await res.json()
+          const data = await response.json()
+
           if (data.success) {
-            const linkCurto = data.click_url_base
-
-            document.getElementById('pixelUrl').innerText = data.pixel_url
-            document.getElementById('clickUrl').innerText = linkCurto
-
-            const emailHtml = `<img src="${data.pixel_url}" width="1" height="1" style="display:none">
-<br>
-<a href="${linkCurto}" style="background:#f05929;color:#fff;padding:12px 24px;border-radius:8px;text-decoration:none;display:inline-block">Clique aqui para acessar</a>`
-
-            document.getElementById('emailHtml').value = emailHtml
-            document.getElementById('result').style.display = 'block'
-
-            document.getElementById('campaign').value = ''
-            document.getElementById('client_id').value = ''
-            document.getElementById('email').value = ''
-
-            alert('✅ Token gerado com sucesso!')
-
-            // Recarregar estatísticas apenas (sem recarregar a página)
-            carregarStatsHoje()
-            // setTimeout(() => location.reload(), 120000); ← REMOVA ESTA LINHA
+            document.getElementById('novoLink').innerText = data.short_url
+            document.getElementById('novoCodigo').innerText = data.short_code
+            document.getElementById('resultadoLink').style.display = 'block'
+            mostrarModal('Sucesso', 'Link curto gerado com sucesso!', 'sucesso')
+            carregarLinks()
           } else {
-            alert('❌ Erro: ' + data.message)
+            mostrarModal('Erro', data.error || 'Erro ao gerar link', 'erro')
           }
         } catch (err) {
-          alert('❌ Erro ao gerar token: ' + err.message)
+          mostrarModal('Erro', err.message, 'erro')
         } finally {
           btn.innerHTML = originalText
           btn.disabled = false
         }
       }
 
-      // Copiar texto
-      function copiarTexto(id) {
-        const el = document.getElementById(id)
-        const texto = el.tagName === 'TEXTAREA' ? el.value : el.innerText
-        navigator.clipboard.writeText(texto)
-        alert('✅ Copiado para a área de transferência!')
-      }
-
-      // Carregar estatísticas do dia
-      async function carregarStatsHoje() {
+      async function carregarLinks() {
         try {
-          const res = await fetch(`/api/daily_stats?operador={{ operador }}`)
-          const data = await res.json()
-          document.getElementById('todaySent').innerText = data.sent || 0
-          document.getElementById('todayOpens').innerText = data.opens || 0
-          document.getElementById('todayClicks').innerText = data.clicks || 0
-        } catch (err) {
-          console.error('Erro ao carregar stats:', err)
-        }
-      }
-
-      // Confirmar reset do dia
-      function confirmarResetDia() {
-        const box = document.getElementById('resetConfirmBox')
-        if (box.style.display === 'none' || box.style.display === '') {
-          box.style.display = 'block'
-        } else {
-          box.style.display = 'none'
-        }
-      }
-
-      function cancelarReset() {
-        document.getElementById('resetConfirmBox').style.display = 'none'
-      }
-
-      // Executar reset do dia
-      async function executarResetDia() {
-        if (
-          !confirm(
-            '⚠️ ÚLTIMA CONFIRMAÇÃO: Tem certeza que deseja remover TODOS os dados de tracking de HOJE?\n\nEsta ação não pode ser desfeita!'
-          )
-        ) {
-          document.getElementById('resetConfirmBox').style.display = 'none'
-          return
-        }
-
-        try {
-          const res = await fetch('/api/clear_tracking', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ operator: '{{ operador }}' })
-          })
-
-          const data = await res.json()
+          const response = await fetch('/api/admin/links')
+          const data = await response.json()
           if (data.success) {
-            alert('✅ Dados do dia limpos com sucesso!\n\n' + data.message)
-            document.getElementById('resetConfirmBox').style.display = 'none'
-            carregarStatsHoje()
-            setTimeout(() => location.reload(), 1000)
-          } else {
-            alert('❌ Erro: ' + data.message)
+            const tbody = document.getElementById('tabelaLinks')
+            if (!data.links.length) {
+              tbody.innerHTML = '<tr><td colspan="5" class="text-center">Nenhum link gerado ainda</td></tr>'
+              return
+            }
+            tbody.innerHTML = data.links
+              .map(
+                (l) => `
+                        <tr>
+                            <td><code>${l.short_code}</code></td>
+                            <td><small class="text-success">${l.short_url}</small></td>
+                            <td><small>${formatarData(l.created_at)}</small></td>
+                            <td><span class="badge bg-primary">${l.cliques || 0}</span></td>
+                            <td><button class="btn-copy btn-sm" onclick="copiarTexto('${l.short_url}')"><i class="fas fa-copy"></i> Copiar</button></td>
+                        </tr>
+                    `
+              )
+              .join('')
           }
-        } catch (err) {
-          alert('❌ Erro ao limpar dados: ' + err.message)
+        } catch (e) {
+          console.error(e)
         }
       }
 
-      // Exportar Relatório
-      async function exportarRelatorio() {
+      async function carregarEstatisticas() {
         try {
-          const res = await fetch(`/api/export_tracking?operador={{ operador }}`)
-          const data = await res.json()
-          let csv = 'Tipo,Data/Hora,IP,Dispositivo,Campanha,Cliente,Detalhe\n'
-          data.forEach((item) => {
-            csv += `"${item.event_type}","${item.dt}","${item.ip}","${item.device}","${item.campaign || ''}","${item.client_id || ''}","${item.detail}"\n`
-          })
-          const blob = new Blob([csv], { type: 'text/csv;charset=utf-8' })
-          const link = document.createElement('a')
-          link.href = URL.createObjectURL(blob)
-          link.download = `tracking_${new Date().toISOString().split('T')[0]}.csv`
-          link.click()
-          alert('✅ Relatório exportado com sucesso!')
-        } catch (err) {
-          alert('❌ Erro ao exportar: ' + err.message)
+          const response = await fetch('/api/admin/estatisticas')
+          const data = await response.json()
+          if (data.success) {
+            document.getElementById('campaignStats').innerHTML = `
+                        <div class="col-md-3"><div style="font-size:1.8rem;color:#f05929">${data.total_links || 0}</div><small>Links Gerados</small></div>
+                        <div class="col-md-3"><div style="font-size:1.8rem;color:#f05929">${data.total_cliques || 0}</div><small>Total Cliques</small></div>
+                        <div class="col-md-3"><div style="font-size:1.8rem;color:#f05929">${data.total_transferencias || 0}</div><small>Transferências</small></div>
+                        <div class="col-md-3"><div style="font-size:1.8rem;color:#f05929">${data.transferencias_hoje || 0}</div><small>Hoje</small></div>
+                    `
+          }
+        } catch (e) {
+          console.error(e)
         }
       }
 
-      // Inicializar
-      carregarStatsHoje()
+      // ========== CLIQUES ==========
+      async function carregarCliques() {
+        try {
+          const response = await fetch('/api/tracking/cliques')
+          const data = await response.json()
+          if (data.success) {
+            document.getElementById('cliquesStats').innerHTML =
+              `<div class="col-md-12"><div style="font-size:2rem;color:#f05929">${data.total}</div><small>Total de cliques registrados</small></div>`
+            const tbody = document.getElementById('tbodyCliques')
+            if (!data.cliques.length) {
+              tbody.innerHTML = '<tr><td colspan="7" class="text-center">Nenhum clique registrado</td></tr>'
+              return
+            }
+            tbody.innerHTML = data.cliques
+              .map(
+                (c) => `
+                        <tr>
+                            <td><small>${formatarData(c.clicked_at)}</small></td>
+                            <td><code>${c.short_code}</code><br><small class="text-secondary">${c.original_url ? c.original_url.substring(0, 40) + '...' : '-'}</small></td>
+                            <td><span class="dispositivo-badge dispositivo-${c.device_type}">${c.device_type || 'N/A'}</span></td>
+                            <td><small>${c.browser || 'N/A'}</small></td>
+                            <td><small>${c.os || 'N/A'}</small></td>
+                            <td><small><code>${c.ip_address || 'N/A'}</code></small></td>
+                            <td><small class="text-secondary" style="max-width:200px; display:block; overflow:hidden; text-overflow:ellipsis;">${c.user_agent ? c.user_agent.substring(0, 60) + '...' : 'N/A'}</small></td>
+                        </tr>
+                    `
+              )
+              .join('')
+          }
+        } catch (e) {
+          console.error(e)
+        }
+      }
 
-      // Auto-refresh a cada 60 segundos
-      setInterval(() => location.reload(), 60000)
+      function formatarData(data) {
+        if (!data) return 'N/A'
+        return new Date(data).toLocaleString('pt-BR')
+      }
+      function formatarValor(valor) {
+        return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(valor)
+      }
+      function formatarStatus(status) {
+        const map = { pendente_verificacao: 'Pendente', concluido: 'Concluído', recusado: 'Recusado' }
+        return map[status] || status
+      }
+      function escapeHtml(str) {
+        if (!str) return 'N/A'
+        const div = document.createElement('div')
+        div.textContent = str
+        return div.innerHTML
+      }
+
+      document.querySelectorAll('#filtroNome, #filtroCpf, #filtroDataInicio, #filtroDataFim, #filtroStatus').forEach((el) =>
+        el.addEventListener('keypress', (e) => {
+          if (e.key === 'Enter') buscarTransferencias()
+        })
+      )
+
+      buscarTransferencias()
+      carregarEstatisticas()
+      carregarLinks()
+      carregarCliques()
+      setInterval(carregarCliques, 10000)
     </script>
   </body>
 </html>

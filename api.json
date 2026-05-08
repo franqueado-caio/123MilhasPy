@@ -1,0 +1,212 @@
+{
+  "_type": "export",
+  "__export_format": 4,
+  "__export_date": "2026-05-07T20:00:00.000Z",
+  "__export_source": "insomnia.desktop.app:v2023.5.8",
+  "resources": [
+    {
+      "_id": "req_workspace_123milhas",
+      "parentId": null,
+      "modified": 1649362800000,
+      "created": 1649362800000,
+      "name": "123Milhas API Tests",
+      "scope": "collection",
+      "_type": "workspace"
+    },
+    {
+      "_id": "env_123milhas_local",
+      "parentId": "req_workspace_123milhas",
+      "modified": 1649362800000,
+      "created": 1649362800000,
+      "name": "Local Environment",
+      "data": {
+        "base_url": "http://localhost:5000",
+        "tracking_id": "{{ tracking_id }}",
+        "session_id": "{{ session_id }}",
+        "transferencia_id": "{{ transferencia_id }}"
+      },
+      "dataPropertyOrder": {
+        "base_url": 0,
+        "tracking_id": 1,
+        "session_id": 2,
+        "transferencia_id": 3
+      },
+      "_type": "environment"
+    },
+    {
+      "_id": "req_init_tracking",
+      "parentId": "req_workspace_123milhas",
+      "modified": 1649362800000,
+      "created": 1649362800000,
+      "url": "{{ base_url }}/api/tracking/init",
+      "name": "1. Iniciar Tracking",
+      "description": "Inicializa o tracking do usuário e gera tokens",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"campanha_id\": \"campanha_google_ads_001\",\n  \"pagina_entrada\": \"/transferir\",\n  \"metadata\": {\n    \"utm_source\": \"google\",\n    \"utm_medium\": \"cpc\",\n    \"utm_campaign\": \"black_friday\"\n  }\n}"
+      },
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "parameters": [],
+      "_type": "request"
+    },
+    {
+      "_id": "req_tracking_event",
+      "parentId": "req_workspace_123milhas",
+      "modified": 1649362800000,
+      "created": 1649362800000,
+      "url": "{{ base_url }}/api/tracking/event",
+      "name": "2. Registrar Evento",
+      "description": "Registra evento de navegação do usuário",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"tracking_id\": \"{{ tracking_id }}\",\n  \"event_type\": \"page_view\",\n  \"event_name\": \"acessou_transferencia\",\n  \"page_url\": \"/transferir\",\n  \"page_title\": \"Transferir Cota\",\n  \"event_data\": {\n    \"tempo_pagina\": 5,\n    \"rolagem\": 75\n  }\n}"
+      },
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "_type": "request"
+    },
+    {
+      "_id": "req_update_user",
+      "parentId": "req_workspace_123milhas",
+      "modified": 1649362800000,
+      "created": 1649362800000,
+      "url": "{{ base_url }}/api/tracking/update_user",
+      "name": "3. Atualizar Dados Usuário",
+      "description": "Atualiza os dados pessoais do usuário no tracking",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"tracking_id\": \"{{ tracking_id }}\",\n  \"nome\": \"EDNA MARIA ALVES DA SILVA\",\n  \"cpf\": \"037.526.842-34\",\n  \"email\": \"edna@email.com\"\n}"
+      },
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "_type": "request"
+    },
+    {
+      "_id": "req_tentativa_transferencia",
+      "parentId": "req_workspace_123milhas",
+      "modified": 1649362800000,
+      "created": 1649362800000,
+      "url": "{{ base_url }}/api/transfer/tentativa",
+      "name": "4. Registrar Tentativa de Transferência",
+      "description": "Registra uma tentativa de transferência no banco",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"tracking_id\": \"{{ tracking_id }}\",\n  \"transferencia\": {\n    \"banco_codigo\": \"001\",\n    \"banco_nome\": \"Banco do Brasil\",\n    \"agencia\": \"1234\",\n    \"conta\": \"56789-0\",\n    \"valor\": 10782.48,\n    \"valor_original_total\": 43129.95,\n    \"numero_cota\": 1\n  },\n  \"usuario\": {\n    \"nome\": \"EDNA MARIA ALVES DA SILVA\",\n    \"cpf\": \"03752684234\",\n    \"email\": \"edna@email.com\"\n  },\n  \"dispositivo\": {\n    \"device\": {\n      \"type\": \"desktop\",\n      \"os\": \"Windows\",\n      \"browser\": \"Chrome\"\n    },\n    \"screen\": {\n      \"width\": 1920,\n      \"height\": 1080\n    }\n  }\n}"
+      },
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "_type": "request"
+    },
+    {
+      "_id": "req_chat_entrar_fila",
+      "parentId": "req_workspace_123milhas",
+      "modified": 1649362800000,
+      "created": 1649362800000,
+      "url": "{{ base_url }}/api/chat/entrar_fila",
+      "name": "5. Chat - Entrar na Fila",
+      "description": "Usuário entra na fila de atendimento",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"nome\": \"EDNA MARIA ALVES DA SILVA\",\n  \"tracking_id\": \"{{ tracking_id }}\"\n}"
+      },
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "_type": "request"
+    },
+    {
+      "_id": "req_chat_verificar_sala",
+      "parentId": "req_workspace_123milhas",
+      "modified": 1649362800000,
+      "created": 1649362800000,
+      "url": "{{ base_url }}/api/chat/verificar_sala/{{ cliente_id }}",
+      "name": "6. Chat - Verificar Sala",
+      "description": "Verifica se o atendente já entrou na sala",
+      "method": "GET",
+      "body": {},
+      "_type": "request"
+    },
+    {
+      "_id": "req_chat_enviar_mensagem",
+      "parentId": "req_workspace_123milhas",
+      "modified": 1649362800000,
+      "created": 1649362800000,
+      "url": "{{ base_url }}/api/chat/enviar_mensagem",
+      "name": "7. Chat - Enviar Mensagem",
+      "description": "Envia mensagem no chat",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"sala_id\": \"{{ sala_id }}\",\n  \"de\": \"Cliente\",\n  \"texto\": \"Olá, preciso de ajuda com minha transferência!\"\n}"
+      },
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "_type": "request"
+    },
+    {
+      "_id": "req_consulta_transferencias",
+      "parentId": "req_workspace_123milhas",
+      "modified": 1649362800000,
+      "created": 1649362800000,
+      "url": "{{ base_url }}/api/transfer/consultar/03752684234",
+      "name": "8. Consultar Transferências por CPF",
+      "description": "Busca todas transferências de um CPF",
+      "method": "GET",
+      "body": {},
+      "_type": "request"
+    },
+    {
+      "_id": "req_tracking_visit_info",
+      "parentId": "req_workspace_123milhas",
+      "modified": 1649362800000,
+      "created": 1649362800000,
+      "url": "{{ base_url }}/api/tracking/visit/{{ tracking_id }}",
+      "name": "9. Consultar Informações da Visita",
+      "description": "Busca dados completos da visita/usuário",
+      "method": "GET",
+      "body": {},
+      "_type": "request"
+    },
+    {
+      "_id": "req_visualizar_banco",
+      "parentId": "req_workspace_123milhas",
+      "modified": 1649362800000,
+      "created": 1649362800000,
+      "url": "{{ base_url }}/api/banco/consultar",
+      "name": "10. Consultar Banco (opcional)",
+      "description": "Endpoint para consultar dados do banco (se implementado)",
+      "method": "GET",
+      "body": {},
+      "_type": "request"
+    }
+  ]
+}

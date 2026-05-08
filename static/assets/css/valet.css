@@ -1,0 +1,665 @@
+/* ===== TODO SEU CSS EXISTENTE PERMANECE IGUAL ===== */
+:root {
+  --primary-color: #f05929;
+  --primary-dark: #d94a1a;
+  --success-color: #28a745;
+  --text-dark: #2c3e50;
+  --text-light: #6c757d;
+  --bg-light: #f8f9fa;
+  --border-color: #e9ecef;
+  --white: #ffffff;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Montserrat', 'Nunito', sans-serif;
+  background: linear-gradient(135deg, #fff5f0 0%, #ffffff 50%, #fff5f0 100%);
+  min-height: 100vh;
+  color: var(--text-dark);
+}
+
+.main-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.rj-card {
+  background: var(--white);
+  border-radius: 32px;
+  box-shadow:
+    0 20px 40px rgba(0, 0, 0, 0.08),
+    0 5px 15px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+  max-width: 680px;
+  margin: 0 auto;
+  width: 100%;
+  transition: transform 0.3s ease;
+}
+
+.rj-card:hover {
+  transform: translateY(-4px);
+}
+
+.card-header-rj {
+  background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+  padding: 2rem 2rem 1.5rem;
+  text-align: center;
+  color: white;
+}
+
+.card-header-rj h1 {
+  font-size: 2rem;
+  font-weight: 800;
+  margin-bottom: 0.25rem;
+  letter-spacing: -0.5px;
+}
+
+.status-badge {
+  display: inline-block;
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  padding: 0.5rem 1.5rem;
+  border-radius: 50px;
+  margin-top: 1rem;
+  font-weight: 700;
+  font-size: 1rem;
+  letter-spacing: 1px;
+}
+
+.status-badge i {
+  margin-right: 0.5rem;
+}
+
+.card-body-rj {
+  padding: 2rem;
+}
+
+.protocolo-box {
+  background: linear-gradient(135deg, var(--bg-light) 0%, #ffffff 100%);
+  border-radius: 20px;
+  padding: 1.2rem;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  border: 1px solid var(--border-color);
+}
+
+.protocolo-label {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text-light);
+  margin-bottom: 0.25rem;
+}
+
+.protocolo-number {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--primary-color);
+  font-family: monospace;
+}
+
+.beneficiario-box {
+  background: var(--white);
+  border-radius: 20px;
+  padding: 1.2rem;
+  margin-bottom: 1.5rem;
+  border: 1px solid var(--border-color);
+}
+
+.section-title {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text-light);
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.section-title i {
+  color: var(--primary-color);
+}
+
+.beneficiario-nome {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-dark);
+  margin-bottom: 0.5rem;
+}
+
+.beneficiario-detalhes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 0.5rem;
+}
+
+.detalhe-item {
+  background: var(--bg-light);
+  padding: 0.3rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.detalhe-item i {
+  margin-right: 0.3rem;
+  color: var(--primary-color);
+}
+
+.valores-box {
+  background: linear-gradient(135deg, #fff8f5 0%, #ffffff 100%);
+  border-radius: 20px;
+  padding: 1.2rem;
+  margin-bottom: 1.5rem;
+  border-left: 4px solid var(--primary-color);
+}
+
+.valor-total {
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px dashed var(--border-color);
+}
+
+.valor-label {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  color: var(--text-light);
+  margin-bottom: 0.25rem;
+}
+
+.valor-number {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: var(--text-dark);
+}
+
+.cotas-container {
+  margin: 1rem 0;
+}
+
+.cotas-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 0.8rem;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.cotas-title {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--primary-color);
+}
+
+.cotas-badge {
+  background: var(--primary-color);
+  color: white;
+  padding: 0.2rem 0.7rem;
+  border-radius: 20px;
+  font-size: 0.7rem;
+  font-weight: 600;
+}
+
+.cotas-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  gap: 0.8rem;
+  margin-bottom: 1rem;
+}
+
+.cota-card {
+  background: var(--bg-light);
+  border-radius: 16px;
+  padding: 0.8rem;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.cota-card.liberada {
+  background: linear-gradient(135deg, #d4edda 0%, #e8f5e9 100%);
+  border: 1px solid var(--success-color);
+}
+
+.cota-card.pendente {
+  background: var(--white);
+  border: 1px solid var(--border-color);
+  opacity: 0.7;
+}
+
+.cota-numero {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--text-light);
+  margin-bottom: 0.3rem;
+}
+
+.cota-valor {
+  font-size: 1rem;
+  font-weight: 800;
+  color: var(--text-dark);
+}
+
+.cota-status {
+  font-size: 0.65rem;
+  margin-top: 0.3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.2rem;
+}
+
+.cota-card.liberada .cota-valor {
+  color: var(--success-color);
+}
+
+.cota-liberada-atual {
+  background: linear-gradient(135deg, #d4edda 0%, #e8f5e9 100%);
+  border-radius: 16px;
+  padding: 1rem;
+  margin-top: 0.5rem;
+}
+
+.cota-label {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  color: var(--success-color);
+  font-weight: 700;
+}
+
+.cota-number {
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: var(--success-color);
+}
+
+.prazo-box {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 1rem;
+  padding: 0.8rem;
+  background: var(--bg-light);
+  border-radius: 16px;
+}
+
+.prazo-icon {
+  width: 40px;
+  height: 40px;
+  background: var(--primary-color);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 1.2rem;
+}
+
+.prazo-text {
+  flex: 1;
+}
+
+.prazo-text strong {
+  color: var(--primary-color);
+  font-size: 1rem;
+}
+
+.prazo-text p {
+  margin: 0;
+  font-size: 0.8rem;
+  color: var(--text-light);
+}
+
+.btn-confirmar {
+  background: linear-gradient(135deg, var(--success-color) 0%, #218838 100%);
+  border: none;
+  padding: 1rem;
+  font-size: 1.1rem;
+  font-weight: 700;
+  border-radius: 50px;
+  width: 100%;
+  color: white;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  cursor: pointer;
+}
+
+.btn-confirmar:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(40, 167, 69, 0.4);
+  background: #218838;
+}
+
+.info-footer {
+  margin-top: 1.5rem;
+  text-align: center;
+  font-size: 0.7rem;
+  color: var(--text-light);
+}
+
+/* ERRO - SEM CACHE */
+.error-no-cache {
+  text-align: center;
+  padding: 3rem 2rem;
+}
+.error-no-cache i {
+  font-size: 4rem;
+  color: var(--primary-color);
+  margin-bottom: 1rem;
+}
+.error-no-cache h3 {
+  color: var(--text-dark);
+  margin-bottom: 0.5rem;
+}
+.error-no-cache p {
+  color: var(--text-light);
+  margin-bottom: 1.5rem;
+}
+.error-no-cache .btn-voltar {
+  background: var(--primary-color);
+  color: white;
+  border: none;
+  padding: 0.8rem 1.5rem;
+  border-radius: 50px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.chat-btn-custom {
+  position: fixed !important;
+  bottom: 30px !important;
+  right: 30px !important;
+  width: 60px !important;
+  height: 60px !important;
+  border-radius: 50% !important;
+  background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%) !important;
+  border: none !important;
+  cursor: pointer !important;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2) !important;
+  z-index: 1000 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.chat-btn-custom i {
+  font-size: 1.8rem !important;
+  color: white !important;
+}
+
+.chat-modal-custom {
+  position: fixed !important;
+  bottom: 100px !important;
+  right: 30px !important;
+  width: 380px !important;
+  max-width: calc(100vw - 60px) !important;
+  background: white !important;
+  border-radius: 20px !important;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2) !important;
+  z-index: 1001 !important;
+  display: none !important;
+  flex-direction: column !important;
+  overflow: hidden !important;
+}
+
+.chat-modal-custom.active {
+  display: flex !important;
+}
+
+.chat-modal-header {
+  background: linear-gradient(135deg, var(--primary-color) 0%, #d94a1a 100%) !important;
+  color: white !important;
+  padding: 16px 20px !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+}
+
+.chat-modal-logo {
+  width: 40px !important;
+  height: 40px !important;
+  background: white !important;
+  border-radius: 12px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.chat-modal-logo span {
+  font-size: 1rem;
+  font-weight: bold;
+  color: var(--primary-color);
+}
+
+.chat-modal-title {
+  flex: 1 !important;
+}
+
+.chat-modal-title h4 {
+  margin: 0 !important;
+  font-size: 1rem !important;
+  font-weight: 700 !important;
+}
+
+.chat-modal-title p {
+  margin: 0 !important;
+  font-size: 0.7rem !important;
+  opacity: 0.9 !important;
+}
+
+.chat-modal-close {
+  background: none !important;
+  border: none !important;
+  color: white !important;
+  font-size: 1.2rem !important;
+  cursor: pointer !important;
+}
+
+.chat-modal-body {
+  flex: 1 !important;
+  height: 400px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  background: #f5f7fa !important;
+}
+
+.chat-modal-messages {
+  flex: 1 !important;
+  overflow-y: auto !important;
+  padding: 15px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 10px !important;
+}
+
+.message-bubble {
+  max-width: 85% !important;
+  padding: 10px 14px !important;
+  border-radius: 18px !important;
+  font-size: 0.85rem !important;
+}
+
+.message-bubble.system {
+  background: #e9ecef !important;
+  color: #495057 !important;
+  align-self: flex-start !important;
+}
+
+.message-bubble.user {
+  background: var(--primary-color) !important;
+  color: white !important;
+  align-self: flex-end !important;
+}
+
+.message-bubble.operator {
+  background: white !important;
+  color: var(--text-dark) !important;
+  align-self: flex-start !important;
+  border: 1px solid #e0e0e0 !important;
+}
+
+.message-time {
+  font-size: 0.65rem !important;
+  opacity: 0.7 !important;
+  margin-top: 4px !important;
+  display: block !important;
+}
+
+.chat-modal-input-area {
+  padding: 15px !important;
+  background: white !important;
+  border-top: 1px solid #e0e0e0 !important;
+  display: flex !important;
+  gap: 10px !important;
+}
+
+.chat-modal-input-area input {
+  flex: 1 !important;
+  padding: 12px 15px !important;
+  border: 1px solid #e0e0e0 !important;
+  border-radius: 25px !important;
+  font-size: 0.85rem !important;
+  outline: none !important;
+}
+
+.chat-modal-input-area button {
+  background: var(--primary-color) !important;
+  border: none !important;
+  color: white !important;
+  width: 40px !important;
+  height: 40px !important;
+  border-radius: 50% !important;
+  cursor: pointer !important;
+}
+
+.chat-online-indicator {
+  display: inline-block !important;
+  width: 8px !important;
+  height: 8px !important;
+  border-radius: 50% !important;
+  background: #4caf50 !important;
+  margin-left: 8px !important;
+  animation: pulse 1.5s infinite !important;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(0.8);
+    opacity: 0.5;
+  }
+  100% {
+    transform: scale(1.2);
+    opacity: 0;
+  }
+}
+
+.toast-success {
+  position: fixed;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--success-color);
+  color: white;
+  padding: 1rem 2rem;
+  border-radius: 50px;
+  font-weight: 600;
+  z-index: 2000;
+  animation: slideUp 0.3s ease;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  width: 90% !important;
+}
+
+.loading-spinner {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: white;
+  animation: spin 0.8s linear infinite;
+  margin-right: 8px;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+@media (max-width: 768px) {
+  .main-container {
+    padding: 1.5rem 1rem;
+  }
+  .card-header-rj h1 {
+    font-size: 1.5rem;
+  }
+  .valor-number {
+    font-size: 1.3rem;
+  }
+  .cota-number {
+    font-size: 1.2rem;
+  }
+  .btn-confirmar {
+    font-size: 1rem;
+    padding: 0.9rem;
+  }
+  .cotas-grid {
+    grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+  }
+}
+
+@media (max-width: 480px) {
+  .card-body-rj {
+    padding: 1.5rem;
+  }
+  .beneficiario-detalhes {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .prazo-box {
+    flex-direction: column;
+    text-align: center;
+  }
+}
+
+.logo {
+  position: relative;
+  left: 10px;
+  top: 10px;
+}
+.chat-modal-logo {
+  width: 35px !important;
+  height: 35px !important;
+  background: white !important;
+  border-radius: 10px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
