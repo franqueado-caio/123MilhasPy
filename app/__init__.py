@@ -30,12 +30,14 @@ def create_app(config_name=None):
         from app.routes.transfer_routes import transfer_bp
         from app.routes.chat_routes import chat_bp
         from app.routes.admin_routes import admin_bp
+        from app.routes.short_routes import short_bp
 
         app.register_blueprint(main_bp)
-        app.register_blueprint(tracking_bp, url_prefix="/api/tracking")
+        app.register_blueprint(tracking_bp)
         app.register_blueprint(transfer_bp, url_prefix="/api/transfer")
         app.register_blueprint(chat_bp, url_prefix="/api/chat")
         app.register_blueprint(admin_bp, url_prefix="/api/admin")
+        app.register_blueprint(short_bp)  # SEM url_prefix
 
         print("✅ Blueprints registrados com sucesso!")
         print(f"📁 Templates: {app.template_folder}")
