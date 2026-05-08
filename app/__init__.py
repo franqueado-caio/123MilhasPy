@@ -32,16 +32,30 @@ def create_app(config_name=None):
         from app.routes.admin_routes import admin_bp
         from app.routes.short_routes import short_bp
 
-        app.register_blueprint(main_bp)
-        app.register_blueprint(tracking_bp)
-        app.register_blueprint(transfer_bp, url_prefix="/api/transfer")
-        app.register_blueprint(chat_bp, url_prefix="/api/chat")
-        app.register_blueprint(admin_bp, url_prefix="/api/admin")
-        app.register_blueprint(short_bp)  # SEM url_prefix
+        # Blueprints com prefixos
+        app.register_blueprint(main_bp)  # Rotas principais: /, /home, /transferir, etc.
+        app.register_blueprint(
+            tracking_bp, url_prefix="/api/tracking"
+        )  # Rotas de tracking: /api/tracking/*
+        app.register_blueprint(
+            transfer_bp, url_prefix="/api/transfer"
+        )  # Rotas de transferência
+        app.register_blueprint(chat_bp, url_prefix="/api/chat")  # Rotas de chat
+        app.register_blueprint(
+            admin_bp, url_prefix="/api/admin"
+        )  # Rotas administrativas
+        app.register_blueprint(short_bp)  # Rotas de links curtos: /s/* (SEM prefixo)
 
         print("✅ Blueprints registrados com sucesso!")
         print(f"📁 Templates: {app.template_folder}")
         print(f"📁 Static: {app.static_folder}")
+        print("📋 Rotas disponíveis:")
+        print("   - / (página inicial)")
+        print("   - /api/tracking/* (tracking)")
+        print("   - /api/transfer/* (transferências)")
+        print("   - /api/chat/* (chat)")
+        print("   - /api/admin/* (admin)")
+        print("   - /s/* (links curtos)")
     except ImportError as e:
         print(f"⚠️ Erro ao importar blueprints: {e}")
 
