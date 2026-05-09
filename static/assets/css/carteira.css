@@ -203,6 +203,20 @@ body {
   align-items: center;
   gap: 0.5rem;
 }
+/* Para dispositivos móveis */
+@media (max-width: 768px) {
+  .toast-message {
+    width: 90% !important;
+    max-width: 90%;
+    bottom: 20px;
+    padding: 0.8rem 1rem;
+    font-size: 0.85rem;
+    white-space: normal;
+    word-break: break-word;
+    text-align: center;
+    justify-content: center;
+  }
+}
 .toast-success {
   background: var(--success-color);
   color: white;
