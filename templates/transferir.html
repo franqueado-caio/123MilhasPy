@@ -18,7 +18,7 @@
 
     <div class="main-container">
       <div class="page-header">
-        <button class="btn-back" onclick="window.location.href = '/index'">
+        <button class="btn-back" onclick="window.location.href = '/'">
           <i class="fas fa-arrow-left"></i>
         </button>
         <h1>TRANSFERIR COTA</h1>
@@ -226,7 +226,7 @@
               titulo: 'Erro ao carregar dados',
               mensagem: 'Não foi possível carregar seus dados. Volte e tente novamente.',
               callbackPrimario: () => {
-                window.location.href = '/index'
+                window.location.href = '/'
               }
             })
             return null
@@ -238,7 +238,7 @@
             titulo: 'Dados não encontrados',
             mensagem: 'Nenhum dado encontrado. Volte e consulte seu CPF.',
             callbackPrimario: () => {
-              window.location.href = '/index'
+              window.location.href = '/'
             }
           })
           return null
@@ -370,7 +370,7 @@
             titulo: 'Dados não carregados',
             mensagem: 'Por favor, volte e consulte seu CPF novamente.',
             callbackPrimario: () => {
-              window.location.href = '/index'
+              window.location.href = '/'
             }
           })
           return
@@ -399,7 +399,7 @@
         mostrarCountdown()
 
         const bancoSelect = document.getElementById('bancoDestino')
-        const bancoNome = bancoSelect.options[bancoSelect.selectedIndex]?.text || 'Banco não identificado'
+        const bancoNome = bancoSelect.options[bancoSelect.selected]?.text || 'Banco não identificado'
 
         // ============================================
         // PAYLOAD CORRIGIDO - AGORA BATE COM O BACKEND
