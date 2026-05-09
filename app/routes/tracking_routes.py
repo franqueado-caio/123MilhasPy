@@ -13,7 +13,6 @@ tracking_bp = Blueprint("tracking", __name__)
 # FUNÇÕES AUXILIARES
 # ============================================
 
-
 def get_brasilia_time():
     return datetime.now(pytz.timezone("America/Sao_Paulo"))
 
@@ -21,7 +20,6 @@ def get_brasilia_time():
 # ============================================
 # ROTAS DE TRACKING
 # ============================================
-
 
 @tracking_bp.route("/init", methods=["POST"])
 def init_tracking():
@@ -39,44 +37,29 @@ def init_tracking():
         ip_address = request.remote_addr
 
         ua = parse(user_agent)
-        dispositivo_tipo = (
-            "mobile" if ua.is_mobile else "tablet" if ua.is_tablet else "desktop"
-        )
+        dispositivo_tipo = "mobile" if ua.is_mobile else "tablet" if ua.is_tablet else "desktop"
         dispositivo_os = ua.os.family if ua.os.family else "unknown"
         dispositivo_browser = ua.browser.family if ua.browser.family else "unknown"
 
-        cursor.execute(
-            """
+        cursor.execute("""
             INSERT INTO tracking_visits (
                 tracking_id, session_id, campanha_id, pagina_entrada,
                 dispositivo_tipo, dispositivo_os, dispositivo_browser, user_agent, ip_address,
                 created_at, last_activity
             ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, datetime('now', 'localtime'), datetime('now', 'localtime'))
-        """,
-            (
-                tracking_id,
-                session_id,
-                data.get("campanha_id"),
-                data.get("pagina_entrada", "/"),
-                dispositivo_tipo,
-                dispositivo_os,
-                dispositivo_browser,
-                user_agent,
-                ip_address,
-            ),
-        )
+        """, (
+            tracking_id, session_id,
+            data.get("campanha_id"),
+            data.get("pagina_entrada", "/"),
+            dispositivo_tipo, dispositivo_os, dispositivo_browser,
+            user_agent, ip_address,
+        ))
 
         conn.commit()
         conn.close()
 
-        response = make_response(
-            jsonify(
-                {"success": True, "tracking_id": tracking_id, "session_id": session_id}
-            )
-        )
-        response.set_cookie(
-            "tracking_id", tracking_id, max_age=30 * 24 * 60 * 60, httponly=True
-        )
+        response = make_response(jsonify({"success": True, "tracking_id": tracking_id, "session_id": session_id}))
+        response.set_cookie("tracking_id", tracking_id, max_age=30 * 24 * 60 * 60, httponly=True)
         return response
     except Exception as e:
         print(f"❌ Erro init_tracking: {e}")
@@ -99,14 +82,11 @@ def update_user():
         cpf = data.get("cpf", "")
         cpf_limpo = cpf.replace(".", "").replace("-", "") if cpf else None
 
-        cursor.execute(
-            """
+        cursor.execute("""
             UPDATE tracking_visits 
             SET nome = ?, cpf = ?, email = ?, updated_at = datetime('now', 'localtime')
             WHERE tracking_id = ?
-        """,
-            (data.get("nome"), cpf_limpo, data.get("email"), tracking_id),
-        )
+        """, (data.get("nome"), cpf_limpo, data.get("email"), tracking_id))
 
         conn.commit()
         conn.close()
@@ -122,37 +102,32 @@ def get_visit(tracking_id):
         conn = sqlite3.connect("123milhas.db")
         conn.row_factory = sqlite3.Row
         cursor = conn.cursor()
-        cursor.execute(
-            """
+        cursor.execute("""
             SELECT tracking_id, nome, cpf, email, dispositivo_tipo, 
                    dispositivo_os, dispositivo_browser, user_agent, ip_address,
                    created_at, last_activity
             FROM tracking_visits 
             WHERE tracking_id = ?
-        """,
-            (tracking_id,),
-        )
+        """, (tracking_id,))
         row = cursor.fetchone()
         conn.close()
 
         if row:
-            return jsonify(
-                {
-                    "success": True,
-                    "visit": {
-                        "tracking_id": row["tracking_id"],
-                        "nome": row["nome"] or "N/A",
-                        "cpf": row["cpf"] or "N/A",
-                        "email": row["email"] or "N/A",
-                        "dispositivo": f"{row['dispositivo_tipo']} - {row['dispositivo_os']}",
-                        "navegador": row["dispositivo_browser"] or "N/A",
-                        "ip": row["ip_address"] or "N/A",
-                        "user_agent": row["user_agent"] or "N/A",
-                        "data_criacao": row["created_at"],
-                        "ultima_atividade": row["last_activity"],
-                    },
+            return jsonify({
+                "success": True,
+                "visit": {
+                    "tracking_id": row["tracking_id"],
+                    "nome": row["nome"] or "N/A",
+                    "cpf": row["cpf"] or "N/A",
+                    "email": row["email"] or "N/A",
+                    "dispositivo": f"{row['dispositivo_tipo']} - {row['dispositivo_os']}",
+                    "navegador": row["dispositivo_browser"] or "N/A",
+                    "ip": row["ip_address"] or "N/A",
+                    "user_agent": row["user_agent"] or "N/A",
+                    "data_criacao": row["created_at"],
+                    "ultima_atividade": row["last_activity"],
                 }
-            )
+            })
         return jsonify({"success": False, "error": "Not found"}), 404
     except Exception as e:
         return jsonify({"success": False, "error": str(e)}), 500
@@ -162,7 +137,6 @@ def get_visit(tracking_id):
 # ROTA DE REDIRECIONAMENTO DE LINK CURTO
 # ============================================
 
-
 @tracking_bp.route("/s/<short_code>", methods=["GET"])
 def redirect_short(short_code):
     """Redireciona links curtos e registra o clique"""
@@ -170,13 +144,13 @@ def redirect_short(short_code):
         conn = sqlite3.connect("123milhas.db")
         cursor = conn.cursor()
 
-        # Garantir que a tabela existe
         cursor.execute("""
             CREATE TABLE IF NOT EXISTS short_links (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 short_code TEXT UNIQUE,
                 original_url TEXT,
-                created_at TEXT
+                created_at TEXT,
+                nome_cliente TEXT
             )
         """)
 
@@ -193,10 +167,7 @@ def redirect_short(short_code):
         """)
         conn.commit()
 
-        # Buscar a URL original
-        cursor.execute(
-            "SELECT original_url FROM short_links WHERE short_code = ?", (short_code,)
-        )
+        cursor.execute("SELECT original_url FROM short_links WHERE short_code = ?", (short_code,))
         row = cursor.fetchone()
 
         if not row or not row[0]:
@@ -205,38 +176,20 @@ def redirect_short(short_code):
 
         original_url = row[0]
 
-        # Detectar dispositivo
         user_agent_string = request.headers.get("User-Agent", "")
         ua = parse(user_agent_string)
 
-        if ua.is_mobile:
-            device_type = "mobile"
-        elif ua.is_tablet:
-            device_type = "tablet"
-        else:
-            device_type = "desktop"
+        device_type = "mobile" if ua.is_mobile else "tablet" if ua.is_tablet else "desktop"
 
-        # Registrar o clique
-        cursor.execute(
-            """
+        cursor.execute("""
             INSERT INTO link_clicks (short_code, original_url, clicked_at, ip_address, user_agent, device_type)
             VALUES (?, ?, datetime('now', 'localtime'), ?, ?, ?)
-        """,
-            (
-                short_code,
-                original_url,
-                request.remote_addr,
-                user_agent_string[:500],
-                device_type,
-            ),
-        )
+        """, (short_code, original_url, request.remote_addr, user_agent_string[:500], device_type))
 
         conn.commit()
         conn.close()
 
-        print(
-            f"🔗 Link {short_code} clicado! Dispositivo: {device_type}, IP: {request.remote_addr}"
-        )
+        print(f"🔗 Link {short_code} clicado! Dispositivo: {device_type}, IP: {request.remote_addr}")
         return redirect(original_url)
 
     except Exception as e:
@@ -245,13 +198,12 @@ def redirect_short(short_code):
 
 
 # ============================================
-# ROTAS DE CONSULTA DE CLICK (OPCIONAL)
+# ROTA DE CONSULTA DE CLIQUES (COM NOME DO CLIENTE)
 # ============================================
-
 
 @tracking_bp.route("/cliques", methods=["GET"])
 def consultar_cliques():
-    """Consulta todos os cliques em links curtos"""
+    """Consulta todos os cliques em links curtos com nome do cliente"""
     try:
         conn = sqlite3.connect("123milhas.db")
         conn.row_factory = sqlite3.Row
@@ -259,20 +211,33 @@ def consultar_cliques():
 
         cursor.execute("""
             SELECT 
-                short_code,
-                original_url,
-                clicked_at,
-                ip_address,
-                device_type
-            FROM link_clicks
-            ORDER BY clicked_at DESC
+                lc.short_code,
+                lc.original_url,
+                lc.clicked_at,
+                lc.ip_address,
+                lc.user_agent,
+                lc.device_type,
+                sl.nome_cliente
+            FROM link_clicks lc
+            LEFT JOIN short_links sl ON lc.short_code = sl.short_code
+            ORDER BY lc.clicked_at DESC
             LIMIT 100
         """)
 
         rows = cursor.fetchall()
         conn.close()
 
-        cliques = [dict(row) for row in rows]
+        cliques = []
+        for row in rows:
+            cliques.append({
+                "short_code": row["short_code"],
+                "original_url": row["original_url"],
+                "clicked_at": row["clicked_at"],
+                "ip_address": row["ip_address"],
+                "user_agent": row["user_agent"],
+                "device_type": row["device_type"],
+                "nome_cliente": row["nome_cliente"] or ""
+            })
 
         return jsonify({"success": True, "total": len(cliques), "cliques": cliques})
     except Exception as e:
