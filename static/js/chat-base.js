@@ -1,10 +1,10 @@
-// static/js/chat-base.js
-// ========== CHAT COMPLETO - FUNCIONAL ==========
+// static/js/chat-base.js - VERSÃO CORRIGIDA PARA SEU BACKEND
+// ========== CHAT COMPLETO - BACKEND CORRESPONDENTE ==========
 
 const CHAT_CONFIG = {
   API: {
     ENTRAR_FILA: "/api/entrar_fila",
-    VERIFICAR_SALA: "/api/verificar_sala",
+    VERIFICAR_SALA: "/api/status_cliente", // ROTA CORRETA
     MENSAGENS: "/api/mensagens",
     ENVIAR: "/api/enviar_mensagem",
   },
@@ -27,6 +27,7 @@ let chatState = {
 };
 
 function escHtml(s) {
+  if (!s) return "";
   const d = document.createElement("div");
   d.textContent = s;
   return d.innerHTML;
@@ -64,11 +65,19 @@ async function entrarFila(nome) {
       body: JSON.stringify({ nome }),
     });
     const d = await r.json();
+
+    // CORREÇÃO: Verificar success
+    if (!d.success) {
+      throw new Error(d.error || "Erro ao entrar na fila");
+    }
+
     chatState.clienteId = d.cliente_id;
     chatState.nome = nome;
+
+    const posicao = d.posicao || 1;
     addChatMessage(
       "system",
-      `Olá ${nome}, você entrou na fila. Aguarde um atendente.`
+      `Olá ${nome}, você entrou na fila. Posição: ${posicao}`
     );
 
     if (chatState.verifInterval) clearInterval(chatState.verifInterval);
@@ -76,7 +85,8 @@ async function entrarFila(nome) {
       verificarSala,
       CHAT_CONFIG.POLLING.VERIFICAR
     );
-  } catch {
+  } catch (error) {
+    console.error("Erro ao entrar na fila:", error);
     addChatMessage("system", "❌ Erro ao conectar. Tente novamente.");
   }
 }
@@ -85,18 +95,26 @@ async function verificarSala() {
   if (chatState.salaId || !chatState.clienteId) return;
 
   try {
+    // CORREÇÃO: Usar a rota /api/status_cliente/<cliente_id>
     const r = await fetch(
       `${CHAT_CONFIG.API.VERIFICAR_SALA}/${chatState.clienteId}`
     );
+
+    if (r.status === 404) {
+      // Cliente não encontrado, ainda está na fila
+      return;
+    }
+
     const d = await r.json();
 
+    // CORREÇÃO: O backend retorna { status, sala_id, operador }
     if (d.status === "em_atendimento" && d.sala_id) {
       chatState.salaId = d.sala_id;
       clearInterval(chatState.verifInterval);
       chatState.verifInterval = null;
       addChatMessage(
         "operator",
-        "🎧 Um atendente entrou no chat! Como posso ajudar?"
+        `🎧 Atendente ${d.operador || ""} entrou no chat! Como posso ajudar?`
       );
 
       if (chatState.msgInterval) clearInterval(chatState.msgInterval);
@@ -104,40 +122,50 @@ async function verificarSala() {
         buscarMensagens,
         CHAT_CONFIG.POLLING.MENSAGENS
       );
+    } else if (d.status === "aguardando") {
+      // Apenas atualiza silenciosamente, sem spam
+      console.log(`Aguardando na fila. Posição: ${d.posicao}/${d.total_fila}`);
     }
-  } catch {}
+  } catch (error) {
+    console.error("Erro ao verificar sala:", error);
+  }
 }
 
 async function buscarMensagens() {
   if (!chatState.salaId) return;
 
   try {
-    const r = await fetch(
-      `${CHAT_CONFIG.API.MENSAGENS}/${chatState.salaId}?ultimo_timestamp=${chatState.ultimoTimestamp}`
-    );
+    // CORREÇÃO: O backend espera ultimo_timestamp (não ultimo)
+    const url = `${CHAT_CONFIG.API.MENSAGENS}/${chatState.salaId}?ultimo_timestamp=${chatState.ultimoTimestamp}`;
+    const r = await fetch(url);
     const d = await r.json();
 
+    // CORREÇÃO: Backend retorna { mensagens, total_novas, ultimo_timestamp }
     if (d.mensagens && d.mensagens.length > 0) {
       d.mensagens.forEach((msg) => {
-        if (msg.time > chatState.ultimoTimestamp)
-          chatState.ultimoTimestamp = msg.time;
+        const msgTime = msg.time || 0;
+        if (msgTime > chatState.ultimoTimestamp) {
+          chatState.ultimoTimestamp = msgTime;
+        }
+
+        // Não exibir mensagens enviadas pelo próprio usuário
         if (msg.de === chatState.nome) return;
 
         if (msg.de === "sistema") {
-          if (msg.texto && msg.texto.includes("encerrado")) {
-            clearInterval(chatState.msgInterval);
-            chatState.msgInterval = null;
-            chatState.salaId = null;
-          }
           addChatMessage("system", msg.texto);
         } else {
           addChatMessage("operator", msg.texto, msg.de);
         }
       });
-      if (d.ultimo_timestamp > chatState.ultimoTimestamp)
-        chatState.ultimoTimestamp = d.ultimo_timestamp;
     }
-  } catch {}
+
+    // Atualizar timestamp
+    if (d.ultimo_timestamp > chatState.ultimoTimestamp) {
+      chatState.ultimoTimestamp = d.ultimo_timestamp;
+    }
+  } catch (error) {
+    console.error("Erro ao buscar mensagens:", error);
+  }
 }
 
 async function enviarMensagem() {
@@ -148,7 +176,10 @@ async function enviarMensagem() {
   addChatMessage("user", texto);
   input.value = "";
 
-  if (!chatState.salaId) return;
+  if (!chatState.salaId) {
+    console.warn("Sem sala ativa para enviar mensagem");
+    return;
+  }
 
   try {
     const r = await fetch(CHAT_CONFIG.API.ENVIAR, {
@@ -162,14 +193,16 @@ async function enviarMensagem() {
       }),
     });
     const d = await r.json();
-    if (
-      d.success &&
-      d.mensagem &&
-      d.mensagem.time > chatState.ultimoTimestamp
-    ) {
-      chatState.ultimoTimestamp = d.mensagem.time;
+
+    if (d.success && d.mensagem && d.mensagem.time) {
+      if (d.mensagem.time > chatState.ultimoTimestamp) {
+        chatState.ultimoTimestamp = d.mensagem.time;
+      }
     }
-  } catch {}
+  } catch (error) {
+    console.error("Erro ao enviar mensagem:", error);
+    addChatMessage("system", "❌ Erro ao enviar mensagem. Tente novamente.");
+  }
 }
 
 function mostrarModalNome() {
@@ -178,7 +211,7 @@ function mostrarModalNome() {
   if (existingModal) existingModal.remove();
 
   const modalHtml = `
-    <div id="nomeModal" style="position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:9999;display:flex;align-items:center;justify-content:center;">
+    <div id="nomeModal" style="position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:9999;display:flex;align-items:center;justify-content:center;z-index:10000;">
       <div style="background:white;border-radius:20px;padding:25px;max-width:350px;width:90%;text-align:center;">
         <div style="margin-bottom:20px;">
           <img src="/static/assets/img/logo.avif" style="max-height:50px;" alt="Logo">
