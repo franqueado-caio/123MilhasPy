@@ -73,7 +73,7 @@
     </div>
 
     <script>
-      // ===== SISTEMA DE CACHE =====
+      // ===== SISTEMA DE CACHE (INALTERADO) =====
       const STORAGE_KEYS = {
         CREDOR_DATA: 'credorData',
         USER_NAME: 'chatUserName'
@@ -104,19 +104,14 @@
         `
       }
 
-      // FUNÇÃO CORRIGIDA: Extrair valor do campo correto
       function extrairValor(credor) {
-        // Tenta extrair de diferentes formatos possíveis
         let valorString = credor.valor || credor.valor_real || credor.valor_total || 'R$ 0,00'
-
-        // Remove R$, espaços e converte vírgula para ponto
         let valorNumerico = parseFloat(
           valorString
-            .replace(/[R$\s]/g, '') // Remove R$ e espaços
-            .replace(/\./g, '') // Remove pontos de milhar
-            .replace(',', '.') // Substitui vírgula decimal por ponto
+            .replace(/[R$\s]/g, '')
+            .replace(/\./g, '')
+            .replace(',', '.')
         )
-
         console.log('Valor extraído:', valorString, '=>', valorNumerico)
         return isNaN(valorNumerico) ? 0 : valorNumerico
       }
@@ -124,7 +119,6 @@
       function calcularCotas(valorTotal) {
         const numeroCotas = valorTotal > 20000 ? 4 : 2
         const valorCota = valorTotal / numeroCotas
-
         return {
           numeroCotas: numeroCotas,
           valorCota: valorCota,
@@ -243,30 +237,22 @@
         }, 1500)
       }
 
-      // FUNÇÃO CORRIGIDA: Carregar dados do cache com as chaves corretas
       function carregarDoCache() {
         const cached = localStorage.getItem(STORAGE_KEYS.CREDOR_DATA)
-
         if (cached) {
           try {
             const credor = JSON.parse(cached)
             console.log('📦 Dados carregados do cache:', credor)
-
-            // CORREÇÃO PRINCIPAL: Usar as chaves corretas
-            // O objeto tem: cpf_limpo, nome, valor, classe_txt, telefone, email
             const valorNumerico = extrairValor(credor)
-
             credorData = {
               nome: credor.nome || 'NÃO INFORMADO',
               cpf: credor.cpf_limpo || credor.cpf || '00000000000',
               classe: credor.classe_txt || credor.classe || 'QUIROGRAFÁRIO',
               protocolo: 'RJ-123-502.943/2024',
               creditoTotal: valorNumerico,
-              // Preservar dados extras se necessário
               telefone: credor.telefone,
               email: credor.email
             }
-
             console.log('✅ Dados processados:', credorData)
             renderizarCard()
           } catch (e) {
@@ -279,10 +265,9 @@
         }
       }
 
-      // Inicializar
       carregarDoCache()
 
-      // ===== TODO CÓDIGO DO CHAT AQUI (mantido igual) =====
+      // ===== CHAT CORRIGIDO - USANDO /api/chat/ =====
       let clienteIdCustom = null
       let salaIdCustom = null
       let ultimoIndexMsgCustom = -1
@@ -317,7 +302,7 @@
 
       async function iniciarConexaoChat(nome) {
         try {
-          const response = await fetch('/api/entrar_fila', {
+          const response = await fetch('/api/chat/entrar_fila', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ nome: nome })
@@ -345,7 +330,7 @@
         }
         nomeCliente = nome
         try {
-          const response = await fetch('/api/entrar_fila', {
+          const response = await fetch('/api/chat/entrar_fila', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ nome: nome })
@@ -365,7 +350,7 @@
         if (salaIdCustom) return
         if (!clienteIdCustom) return
         try {
-          const response = await fetch(`/api/verificar_sala/${clienteIdCustom}`)
+          const response = await fetch(`/api/chat/verificar_sala/${clienteIdCustom}`)
           const data = await response.json()
           if (data.sala_id) {
             salaIdCustom = data.sala_id
@@ -385,7 +370,7 @@
       async function buscarMensagensCustom() {
         if (!salaIdCustom) return
         try {
-          const response = await fetch(`/api/mensagens/${salaIdCustom}?ultimo=${ultimoIndexMsgCustom}`)
+          const response = await fetch(`/api/chat/mensagens/${salaIdCustom}?ultimo=${ultimoIndexMsgCustom}`)
           const data = await response.json()
           if (data.mensagens && data.mensagens.length > 0) {
             data.mensagens.forEach((msg) => {
@@ -422,7 +407,7 @@
         input.value = ''
         if (salaIdCustom) {
           try {
-            await fetch('/api/enviar_mensagem', {
+            await fetch('/api/chat/enviar_mensagem', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({ sala_id: salaIdCustom, de: 'Cliente', texto: texto })
