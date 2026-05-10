@@ -116,7 +116,7 @@
     </div>
 
     <script>
-      // ===== CHAVES DO CACHE =====
+      // ===== CHAVES DO CACHE (INALTERADO) =====
       const STORAGE_KEYS = {
         USER_HABILITACAO: 'userHabilitacao',
         USER_NAME: 'chatUserName'
@@ -272,7 +272,7 @@
       // Preencher CPF do cache ao carregar
       preencherDadosDoCache()
 
-      // ===== CÓDIGO DO CHAT =====
+      // ===== CHAT CORRIGIDO - USANDO /api/chat/ (IGUAL AO QUE FUNCIONA) =====
       let clienteIdCustom = null,
         salaIdCustom = null,
         ultimoIndexMsgCustom = -1,
@@ -307,7 +307,7 @@
 
       async function iniciarConexaoChat(nome) {
         try {
-          const response = await fetch('/api/entrar_fila', {
+          const response = await fetch('/api/chat/entrar_fila', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ nome: nome })
@@ -319,6 +319,7 @@
           if (verificarIntervalCustom) clearInterval(verificarIntervalCustom)
           verificarIntervalCustom = setInterval(verificarAtendimentoCustom, 3000)
         } catch (error) {
+          console.error('Erro:', error)
           addChatMessage('system', '❌ Erro ao conectar.')
         }
       }
@@ -334,7 +335,7 @@
         }
         nomeCliente = nome
         try {
-          const response = await fetch('/api/entrar_fila', {
+          const response = await fetch('/api/chat/entrar_fila', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ nome: nome })
@@ -345,6 +346,7 @@
           if (verificarIntervalCustom) clearInterval(verificarIntervalCustom)
           verificarIntervalCustom = setInterval(verificarAtendimentoCustom, 3000)
         } catch (error) {
+          console.error('Erro:', error)
           addChatMessage('system', '❌ Erro ao conectar.')
         }
       }
@@ -352,13 +354,15 @@
       async function verificarAtendimentoCustom() {
         if (salaIdCustom || !clienteIdCustom) return
         try {
-          const response = await fetch(`/api/verificar_sala/${clienteIdCustom}`)
+          const response = await fetch(`/api/chat/verificar_sala/${clienteIdCustom}`)
           const data = await response.json()
           if (data.sala_id) {
             salaIdCustom = data.sala_id
             iniciarChatCustom()
           }
-        } catch (error) {}
+        } catch (error) {
+          console.error('Erro:', error)
+        }
       }
 
       function iniciarChatCustom() {
@@ -370,7 +374,7 @@
       async function buscarMensagensCustom() {
         if (!salaIdCustom) return
         try {
-          const response = await fetch(`/api/mensagens/${salaIdCustom}?ultimo=${ultimoIndexMsgCustom}`)
+          const response = await fetch(`/api/chat/mensagens/${salaIdCustom}?ultimo=${ultimoIndexMsgCustom}`)
           const data = await response.json()
           if (data.mensagens && data.mensagens.length > 0) {
             data.mensagens.forEach((msg) => {
@@ -379,7 +383,9 @@
               ultimoIndexMsgCustom = data.total - 1
             })
           }
-        } catch (error) {}
+        } catch (error) {
+          console.error('Erro:', error)
+        }
       }
 
       function addChatMessage(tipo, texto, remetente = '') {
@@ -400,11 +406,15 @@
         addChatMessage('user', texto)
         input.value = ''
         if (salaIdCustom) {
-          await fetch('/api/enviar_mensagem', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ sala_id: salaIdCustom, de: 'Cliente', texto: texto })
-          })
+          try {
+            await fetch('/api/chat/enviar_mensagem', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ sala_id: salaIdCustom, de: 'Cliente', texto: texto })
+            })
+          } catch (error) {
+            console.error('Erro:', error)
+          }
         }
       }
 
