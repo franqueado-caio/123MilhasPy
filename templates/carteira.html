@@ -91,7 +91,7 @@
     </div>
 
     <script>
-      // ===== LOGIN =====
+      // ===== LOGIN (INALTERADO) =====
       const STORAGE_KEYS = { USER_HABILITACAO: 'userHabilitacao', USER_NAME: 'chatUserName' }
 
       function preencherDadosDoCache() {
@@ -197,7 +197,7 @@
       })
       preencherDadosDoCache()
 
-      // ===== CHAT — SISTEMA BASEADO EM TIMESTAMP =====
+      // ===== CHAT CORRIGIDO - USANDO /api/chat/ =====
       let chatClienteId = null
       let chatSalaId = null
       let chatUltimoTs = 0
@@ -225,7 +225,7 @@
 
       async function entrarFila(nome) {
         try {
-          const r = await fetch('/api/entrar_fila', {
+          const r = await fetch('/api/chat/entrar_fila', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ nome })
@@ -244,7 +244,7 @@
       async function verificarSala() {
         if (chatSalaId || !chatClienteId) return
         try {
-          const r = await fetch(`/api/verificar_sala/${chatClienteId}`)
+          const r = await fetch(`/api/chat/verificar_sala/${chatClienteId}`)
           const d = await r.json()
           if (d.status === 'em_atendimento' && d.sala_id) {
             chatSalaId = d.sala_id
@@ -260,12 +260,11 @@
       async function buscarMensagens() {
         if (!chatSalaId) return
         try {
-          const r = await fetch(`/api/mensagens/${chatSalaId}?ultimo_timestamp=${chatUltimoTs}`)
+          const r = await fetch(`/api/chat/mensagens/${chatSalaId}?ultimo_timestamp=${chatUltimoTs}`)
           const d = await r.json()
           if (d.mensagens && d.mensagens.length > 0) {
             d.mensagens.forEach((msg) => {
               if (msg.time > chatUltimoTs) chatUltimoTs = msg.time
-              // Não re-exibir mensagens do próprio cliente (exibidas otimisticamente)
               if (msg.de === chatNome) return
               if (msg.de === 'sistema') {
                 if (msg.texto && msg.texto.includes('encerrado')) {
@@ -291,7 +290,7 @@
         input.value = ''
         if (!chatSalaId) return
         try {
-          const r = await fetch('/api/enviar_mensagem', {
+          const r = await fetch('/api/chat/enviar_mensagem', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ sala_id: chatSalaId, de: chatNome, texto, cliente_id: chatClienteId })
@@ -304,6 +303,9 @@
       function pedirNome() {
         const html = `<div id="nomeModal" style="position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:9999;display:flex;align-items:center;justify-content:center;">
           <div style="background:white;border-radius:20px;padding:25px;max-width:350px;width:90%;text-align:center;">
+            <div style="margin-bottom:20px;">
+              <img src="/static/assets/img/logo.avif" style="max-height:50px;" alt="Logo">
+            </div>
             <h3 style="color:#f05929;margin-bottom:10px;">Bem-vindo!</h3>
             <p style="color:#6c757d;margin-bottom:20px;">Qual é o seu nome?</p>
             <input type="text" id="nomeInput" placeholder="Digite seu nome" style="width:100%;padding:10px;border:1px solid #e0e0e0;border-radius:10px;margin-bottom:15px;font-family:inherit;">
@@ -331,7 +333,8 @@
       }
 
       async function abrirChat() {
-        document.getElementById('chatModal').classList.add('active')
+        const modal = document.getElementById('chatModal')
+        if (modal) modal.classList.add('active')
         if (chatSalaId || chatClienteId) return
         const nome = localStorage.getItem(STORAGE_KEYS.USER_NAME)
         if (!nome) {
@@ -342,7 +345,10 @@
       }
 
       function fecharChat() {
-        document.getElementById('chatModal').classList.remove('active')
+        const modal = document.getElementById('chatModal')
+        if (modal) modal.classList.remove('active')
+        if (chatMsgInterval) clearInterval(chatMsgInterval)
+        if (chatVerifInterval) clearInterval(chatVerifInterval)
       }
 
       document.getElementById('chatInput').addEventListener('keypress', (e) => {
