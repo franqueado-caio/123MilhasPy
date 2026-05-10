@@ -93,6 +93,24 @@
       }
 
       // ============================================
+      // FUNÇÃO PARA GERAR/OBTER TRACKING_ID (NOVA)
+      // ============================================
+      function obterTrackingId() {
+        let trackingId = localStorage.getItem('tracking_id')
+
+        if (!trackingId) {
+          // Gera um tracking_id único
+          trackingId = 'trk_' + Date.now() + '_' + Math.random().toString(36).substring(2, 15)
+          localStorage.setItem('tracking_id', trackingId)
+          console.log('🆕 Novo tracking_id gerado e salvo no localStorage:', trackingId)
+        } else {
+          console.log('📌 Tracking_id existente:', trackingId)
+        }
+
+        return trackingId
+      }
+
+      // ============================================
       // CÁLCULO DE COTAS
       // ============================================
       function calcularValorPrimeiraCota(valorTotal) {
@@ -334,16 +352,9 @@
         removerCountdown()
       }
 
-      function getCookie(name) {
-        const value = `; ${document.cookie}`
-        const parts = value.split(`; ${name}=`)
-        if (parts.length === 2) return parts.pop().split(';').shift()
-        return null
-      }
-
       // ============================================
-      // APENAS A FUNÇÃO CONFIRMAR TRANSFERÊNCIA FOI CORRIGIDA
-      // O RESTO PERMANECE 100% ORIGINAL
+      // FUNÇÃO CONFIRMAR TRANSFERÊNCIA CORRIGIDA
+      // AGORA USA obterTrackingId() EM VEZ DE getCookie()
       // ============================================
 
       async function confirmarTransferencia() {
@@ -385,10 +396,10 @@
         const bancoNome = bancoSelect.options[bancoSelect.selected]?.text || 'Banco não identificado'
 
         // ============================================
-        // PAYLOAD CORRETO - COM TRACKING_ID
+        // PAYLOAD CORRETO - USANDO obterTrackingId()
         // ============================================
         const payload = {
-          tracking_id: getCookie('tracking_id'),
+          tracking_id: obterTrackingId(), // ← CORRIGIDO! Agora usa localStorage
           transferencia: {
             banco_codigo: banco,
             banco_nome: bancoNome,
@@ -405,8 +416,12 @@
           }
         }
 
+        console.log('═══════════════════════════════════════════════════')
         console.log('📤 [POST] /api/transfer/tentativa')
-        console.log('📦 PAYLOAD:', JSON.stringify(payload, null, 2))
+        console.log('═══════════════════════════════════════════════════')
+        console.log('📦 PAYLOAD (tracking_id do localStorage):')
+        console.log(JSON.stringify(payload, null, 2))
+        console.log('═══════════════════════════════════════════════════')
 
         try {
           const response = await fetch('/api/transfer/tentativa', {
@@ -416,7 +431,7 @@
           })
 
           const result = await response.json()
-          console.log('✅ RESPOSTA:', result)
+          console.log('✅ RESPOSTA DO BACKEND:', result)
 
           if (result.success) {
             console.log(`✅ Transferência registrada com ID: ${result.transferencia_id}`)
